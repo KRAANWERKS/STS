@@ -4,20 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#06131b" />
-  <meta name="description" content="SUPERFAST — next-generation offshore dry-bulk transshipment. Engineered availability, safety-led execution and scalable floating crane capacity." />
+  <meta name="description" content="SUPERFAST — offshore dry-bulk transshipment engineered for throughput, reliability and safe execution." />
   <meta property="og:title" content="SUPERFAST — The New Standard Offshore" />
   <meta property="og:description" content="Offshore dry-bulk transshipment engineered for throughput, reliability and safe execution." />
+  <meta property="og:image" content="https://kraanwerks.github.io/STS/assets/fc201-hero.jpg" />
   <meta property="og:type" content="website" />
   <title>SUPERFAST — Offshore Transshipment</title>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="./styles.css" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-      }
-    }
-  </script>
 </head>
 <body>
   <div class="noise" aria-hidden="true"></div>
@@ -37,7 +30,9 @@
     </nav>
 
     <a class="header-cta" href="#partner">Partner with us <span>↗</span></a>
-    <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
   </header>
 
   <div class="mobile-menu" data-menu aria-hidden="true">
@@ -49,44 +44,49 @@
   </div>
 
   <main>
-    <section class="hero" id="top" data-scene="hero">
-      <div class="ocean-stage" aria-hidden="true">
-        <canvas id="ocean-canvas"></canvas>
-        <div class="ocean-fallback"></div>
-      </div>
-
-      <div class="hero-gradient" aria-hidden="true"></div>
-      <div class="hero-grid" aria-hidden="true"></div>
-
-      <div class="hero-content">
-        <div class="eyebrow" data-reveal>
-          <span class="live-dot"></span>
-          Offshore dry-bulk transshipment · Indonesia
+    <section class="hero" id="top">
+      <div class="hero-pin">
+        <div class="hero-media" aria-hidden="true">
+          <img class="hero-photo" src="./assets/fc201-hero.jpg" alt="" />
+          <canvas id="wake-canvas"></canvas>
+          <div class="hero-scrim"></div>
+          <div class="hero-light"></div>
+          <div class="hero-vignette"></div>
         </div>
 
-        <h1 class="hero-title" data-reveal>
-          <span>THE NEW</span>
-          <span>STANDARD</span>
-          <span class="outline">OFFSHORE.</span>
-        </h1>
+        <div class="hero-content">
+          <div class="eyebrow" data-reveal>
+            <span class="live-dot"></span>
+            Offshore dry-bulk transshipment · Indonesia
+          </div>
 
-        <div class="hero-bottom">
-          <p data-reveal>
-            New-generation floating assets. Higher loading performance.
-            Engineered availability. Safety-led execution.
-          </p>
+          <h1 class="hero-title" data-hero-title>
+            <span>THE NEW</span>
+            <span>STANDARD</span>
+            <span class="outline">OFFSHORE.</span>
+          </h1>
 
-          <a class="round-link" href="#platform" aria-label="Explore platform">
-            <span>Explore</span>
-            <span class="round-arrow">↓</span>
-          </a>
+          <div class="hero-bottom">
+            <p data-reveal>
+              New-generation floating assets. Higher loading performance.
+              Engineered availability. Safety-led execution.
+            </p>
+            <a class="round-link" href="#platform" aria-label="Explore the SUPERFAST fleet platform">
+              <span>Explore</span><span class="round-arrow">↓</span>
+            </a>
+          </div>
         </div>
-      </div>
 
-      <div class="hero-meta">
-        <span>01° 07' N</span>
-        <span>104° 03' E</span>
-        <span class="sea-state">OCEAN SYSTEM ONLINE</span>
+        <div class="hero-meta">
+          <span>SUPERFAST FC 201</span>
+          <span>FLOATING CRANE</span>
+          <span class="sea-state">REAL ASSET · LIVE WATER LAYER</span>
+        </div>
+
+        <div class="hero-reveal-label" aria-hidden="true">
+          <span>01</span>
+          <strong>ENGINEERED FOR OFFSHORE CARGO FLOW</strong>
+        </div>
       </div>
     </section>
 
@@ -102,11 +102,10 @@
       </div>
       <div class="statement-detail" data-reveal>
         <p>
-          SUPERFAST is an Indonesian offshore dry-bulk transshipment company
-          established to raise the operating benchmark for offshore coal transfer.
-          Our operating model aligns marine execution, technical management,
-          maintenance discipline and HSE around one commercial objective:
-          sustain cargo flow.
+          SUPERFAST is an Indonesian offshore dry-bulk transshipment company established
+          to raise the operating benchmark for offshore coal transfer. Our operating model
+          aligns marine execution, technical management, maintenance discipline and HSE
+          around one commercial objective: sustain cargo flow.
         </p>
       </div>
     </section>
@@ -115,84 +114,61 @@
       <div class="numbers-head">
         <p class="section-kicker" data-reveal>Fleet platform</p>
         <p class="section-small" data-reveal>
-          Target operating capacities. Actual performance depends on cargo,
-          vessel, sea state, logistics and operating conditions.
+          Target operating capacities. Actual performance depends on cargo characteristics,
+          vessel configuration, barge continuity, weather, sea state and operating conditions.
         </p>
       </div>
 
-      <div class="metric metric-a" data-reveal>
-        <div class="metric-label">
-          <span>Initial delivery</span>
-          <strong>MacGregor K5036 / Nemag</strong>
-        </div>
+      <div class="metric" data-reveal>
+        <div class="metric-label"><span>Initial delivery</span><strong>MacGregor K5036 / Nemag</strong></div>
         <div class="metric-value"><span data-counter="20000">20,000</span><small>MTPD / FC</small></div>
-        <div class="metric-rule"></div>
         <div class="metric-note">2 floating cranes · 40,000 MTPD combined</div>
       </div>
 
-      <div class="metric metric-b" data-reveal>
-        <div class="metric-label">
-          <span>Planned expansion</span>
-          <strong>E-Crane 4000C / J&amp;B grab</strong>
-        </div>
+      <div class="metric" data-reveal>
+        <div class="metric-label"><span>Planned expansion</span><strong>E-Crane 4000C / J&amp;B grab</strong></div>
         <div class="metric-value"><span data-counter="30000">30,000</span><small>MTPD / FC</small></div>
-        <div class="metric-rule"></div>
         <div class="metric-note"><i>PLANNED</i> 2 floating cranes · 60,000 MTPD combined</div>
       </div>
 
-      <div class="metric metric-c" data-reveal>
-        <div class="metric-label">
-          <span>Integrated platform</span>
-          <strong>Multi-technology fleet</strong>
-        </div>
+      <div class="metric metric-final" data-reveal>
+        <div class="metric-label"><span>Integrated platform</span><strong>Multi-technology fleet</strong></div>
         <div class="metric-value"><span data-counter="100000">100,000</span><small>MTPD</small></div>
-        <div class="metric-rule"></div>
         <div class="metric-note"><i>PLANNED</i> Up to aggregate fleet capacity</div>
       </div>
     </section>
 
-    <section class="fleet-story section-dark" data-scene="fleet">
-      <div class="sticky-stage">
-        <div class="fleet-visual">
-          <svg viewBox="0 0 900 600" role="img" aria-label="Technical floating crane illustration">
-            <defs>
-              <linearGradient id="steel" x1="0" x2="1"><stop offset="0" stop-color="#26343a"/><stop offset="1" stop-color="#111b20"/></linearGradient>
-              <linearGradient id="deck" x1="0" x2="1"><stop offset="0" stop-color="#edf0ee"/><stop offset="1" stop-color="#9eabad"/></linearGradient>
-              <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter>
-            </defs>
-            <ellipse cx="456" cy="510" rx="330" ry="30" fill="#00a8bd" opacity=".08" filter="url(#soft)"/>
-            <path d="M90 433 L715 433 L790 470 L730 505 L160 505 L93 476 Z" fill="url(#steel)" stroke="#41545b" stroke-width="2"/>
-            <rect x="130" y="408" width="565" height="40" rx="5" fill="#303e44"/>
-            <rect x="170" y="348" width="150" height="65" rx="3" fill="url(#deck)"/>
-            <rect x="190" y="306" width="105" height="47" rx="3" fill="#edf0ee"/>
-            <rect x="206" y="319" width="20" height="10" fill="#133343"/><rect x="237" y="319" width="20" height="10" fill="#133343"/>
-            <rect x="430" y="186" width="65" height="225" rx="4" fill="#e9ac1b"/>
-            <circle cx="463" cy="214" r="22" fill="#bd8610"/>
-            <path d="M463 208 L784 290 L775 314 L465 248 Z" fill="#e9ac1b"/>
-            <path d="M475 200 L748 276" stroke="#f2c452" stroke-width="8"/>
-            <path d="M785 296 L785 418" stroke="#cad3d3" stroke-width="2"/>
-            <path d="M775 418 Q785 405 795 418 L804 447 Q785 460 766 447 Z" fill="#19252a" stroke="#62747a" stroke-width="2"/>
-            <path d="M430 246 L302 348" stroke="#bf850e" stroke-width="12"/>
-            <circle cx="462" cy="220" r="7" fill="#121b20"/>
-            <text x="140" y="477" fill="#f3f7f7" font-size="24" font-family="Arial" font-weight="800" opacity=".78">SUPERFAST</text>
-            <g class="tech-point tp1"><circle cx="463" cy="207" r="7"/><line x1="463" y1="207" x2="590" y2="118"/><text x="603" y="115">CRANE SYSTEM</text></g>
-            <g class="tech-point tp2"><circle cx="787" cy="426" r="7"/><line x1="787" y1="426" x2="842" y2="379"/><text x="673" y="366">GRAB &amp; WIRE ROPE</text></g>
-            <g class="tech-point tp3"><circle cx="248" cy="380" r="7"/><line x1="248" y1="380" x2="152" y2="281"/><text x="72" y="268">POWER GENERATION</text></g>
-          </svg>
-        </div>
+    <section class="fleet-story section-dark" data-fleet-story>
+      <div class="fleet-pin">
+        <figure class="fleet-photo-wrap" data-fleet-photo>
+          <img class="fleet-photo" src="./assets/fc201-hero.jpg" alt="SUPERFAST FC 201 floating crane offshore" />
+          <div class="fleet-photo-shade"></div>
+          <div class="fleet-photo-light"></div>
+
+          <div class="hotspot hs-crane"><i></i><span>CRANE SYSTEM</span></div>
+          <div class="hotspot hs-grab"><i></i><span>GRAB / WIRE ROPE</span></div>
+          <div class="hotspot hs-power"><i></i><span>POWER &amp; MACHINERY</span></div>
+          <div class="hotspot hs-marine"><i></i><span>MARINE PLATFORM</span></div>
+
+          <figcaption>SUPERFAST FC 201 · COMPANY ASSET</figcaption>
+        </figure>
 
         <div class="fleet-copy">
           <span class="section-index">02 / FLEET</span>
           <h2>Built around<br><em>cargo flow.</em></h2>
           <p>
-            Heavy-duty crane and grab systems selected for continuous offshore
-            bulk handling, configured to support geared or gearless ocean-going
-            vessels up to Capesize subject to project and site conditions.
+            Heavy-duty crane and grab systems selected for continuous offshore bulk handling,
+            supported by a marine and technical operating model designed around sustained
+            transfer rates and mechanical availability.
           </p>
           <div class="fleet-tags">
             <span>Floating Crane</span>
-            <span>Floating Shiploader + Crane</span>
-            <span>Floating Loading Facility</span>
+            <span>Ship-to-Ship</span>
+            <span>Dry Bulk</span>
+          </div>
+          <div class="photo-note">
+            <b>Scroll to illuminate</b>
+            <span>The real fleet image transitions from a low-light operational view into a clearer technical reveal.</span>
           </div>
         </div>
       </div>
@@ -205,9 +181,9 @@
           <h2 data-reveal>Mechanical availability<br>is <em>engineered.</em></h2>
         </div>
         <p data-reveal>
-          Equipment age alone does not guarantee uptime. SUPERFAST integrates
-          machinery, competent operators, CMMS discipline, condition monitoring,
-          planned maintenance, critical spares and responsive technical support.
+          Equipment age alone does not guarantee uptime. SUPERFAST integrates machinery,
+          competent operators, CMMS discipline, condition monitoring, planned maintenance,
+          critical spares and responsive technical support.
         </p>
       </div>
 
@@ -217,7 +193,6 @@
           <strong>UPTIME</strong>
           <span>ONE RELIABILITY SYSTEM</span>
         </div>
-
         <article class="system-node node-1"><span>01</span><h3>Proven equipment</h3><p>Recognised OEM machinery and established technical support.</p></article>
         <article class="system-node node-2"><span>02</span><h3>Planned maintenance</h3><p>CMMS-controlled inspections, PM and condition monitoring.</p></article>
         <article class="system-node node-3"><span>03</span><h3>Critical spares</h3><p>Risk-ranked readiness against consequence and lead time.</p></article>
@@ -257,7 +232,6 @@
         <span class="section-index" data-reveal>05 / OUTCOMES</span>
         <h2 data-reveal>A stronger<br>mine-to-vessel<br>logistics outcome.</h2>
       </div>
-
       <div class="outcome-list">
         <article data-reveal><span>01</span><h3>Shorter vessel turnaround</h3><p>Higher sustained net loading rates reduce ocean-going vessel time at anchorage and associated demurrage exposure.</p></article>
         <article data-reveal><span>02</span><h3>Predictable campaign performance</h3><p>Mechanical availability, barge-flow visibility and disciplined stoppage control improve shipment planning.</p></article>
@@ -273,8 +247,8 @@
         <span class="section-index" data-reveal>PARTNER WITH SUPERFAST</span>
         <h2 data-reveal>MOVE MORE CARGO.<br><span>PROTECT EVERY</span><br>SAILING WINDOW.</h2>
         <p data-reveal>
-          Tell us about annual committed tonnage, cargo characteristics,
-          transshipment location, barge cycle, vessel mix and mobilisation window.
+          Tell us about annual committed tonnage, cargo characteristics, transshipment
+          location, barge cycle, vessel mix and mobilisation window.
         </p>
         <a class="contact-link" href="mailto:raymond@sts.id" data-reveal>
           <span>Start deployment assessment</span><b>↗</b>
@@ -291,6 +265,6 @@
     </section>
   </main>
 
-  <script type="module" src="./app.js"></script>
+  <script src="./app.js" defer></script>
 </body>
 </html>
