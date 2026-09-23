@@ -82,7 +82,8 @@ let userPaused = false;
 let heroVisible = true;
 let scrollScheduled = false;
 let zoomReady = false;
-let lastZoomTime = -1;
+let zoomTargetTime = 0;
+let zoomFrame = 0;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -136,13 +137,10 @@ function getHeroProgress() {
   return clamp01(-bounds.top / travel);
 }
 
-function getZoomScrubProgress() {
-  const heroTop = scrollY + hero.getBoundingClientRect().top;
-  const companyTop = scrollY + company.getBoundingClientRect().top;
-  const heroTravel = Math.max(1, hero.offsetHeight - innerHeight);
-  const start = heroTop + heroTravel * .22;
-  const end = companyTop + innerHeight * .34;
-  return clamp01((scrollY - start) / Math.max(1, end - start));
+function getZoomScrubProgress(heroProgress) {
+  // Replace the opening hero clip almost immediately, then run the
+  // complete zoom-out shot over a shorter scroll distance.
+  return smoothstep(.035, .58, heroProgress);
 }
 
 function renderScroll() {
@@ -155,22 +153,18 @@ function renderScroll() {
     line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * heroProgress * 7}vw,${heroProgress * 1.5}vh,0)`;
   });
 
-  const primaryFade = smoothstep(.32, .94, heroProgress);
-  const transitionIn = smoothstep(.28, .90, heroProgress);
-  const transitionOut = smoothstep(.10, .98, companyDepth);
-  const transitionOpacity = reducedMotion.matches ? 0 : transitionIn * (1 - transitionOut);
+  // The zoom-out clip replaces the opening video shortly after scroll begins.
+  const replaceMix = smoothstep(.025, .18, heroProgress);
+  const transitionOut = smoothstep(.16, .98, companyDepth);
+  const transitionOpacity = reducedMotion.matches ? 0 : replaceMix * (1 - transitionOut);
 
   hero.style.setProperty('--hero-progress', heroProgress.toFixed(4));
-  hero.style.setProperty('--primary-opacity', (1 - primaryFade).toFixed(4));
+  hero.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
   heroFlow.style.setProperty('--transition-opacity', transitionOpacity.toFixed(4));
 
   if (zoomReady && heroZoomVideo?.duration && !reducedMotion.matches && !userPaused) {
-    const scrub = getZoomScrubProgress();
-    const target = scrub * Math.max(0, heroZoomVideo.duration - .04);
-    if (Math.abs(target - lastZoomTime) > .025) {
-      heroZoomVideo.currentTime = target;
-      lastZoomTime = target;
-    }
+    const scrub = getZoomScrubProgress(heroProgress);
+    zoomTargetTime = scrub * Math.max(0, heroZoomVideo.duration - .04);
   }
 }
 
@@ -199,8 +193,25 @@ function prepareZoomVideo() {
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
   zoomReady = true;
   heroZoomVideo.pause();
-  lastZoomTime = -1;
+  zoomTargetTime = heroZoomVideo.currentTime || 0;
   renderScroll();
+}
+
+function animateZoomScrub() {
+  if (zoomReady && heroZoomVideo && !reducedMotion.matches && !userPaused && !document.hidden) {
+    const current = heroZoomVideo.currentTime || 0;
+    const delta = zoomTargetTime - current;
+
+    // Ease toward the scroll target every animation frame. Large deltas catch
+    // up faster; small deltas are damped to avoid visible frame stepping.
+    if (Math.abs(delta) > .003 && !heroZoomVideo.seeking) {
+      const ease = Math.abs(delta) > .45 ? .38 : Math.abs(delta) > .16 ? .28 : .20;
+      const next = current + delta * ease;
+      const maxTime = Math.max(0, heroZoomVideo.duration - .04);
+      heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, next));
+    }
+  }
+  zoomFrame = requestAnimationFrame(animateZoomScrub);
 }
 
 if (heroZoomVideo?.readyState >= 1) prepareZoomVideo();
@@ -224,3 +235,8 @@ requestAnimationFrame(() => {
 
 renderScroll();
 syncHeroPlayback();
+zoomFrame = requestAnimationFrame(animateZoomScrub);
+
+addEventListener('pagehide', () => {
+  if (zoomFrame) cancelAnimationFrame(zoomFrame);
+}, { once: true });
