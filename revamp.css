@@ -1512,3 +1512,103 @@ nav{z-index:1001}
     font-size:14px;
   }
 }
+
+
+/* V16 — quicker smooth zoom playback, Company edge fades, fleet header visibility, original outcome hover motion. */
+
+/* Company: retain the video-to-white fade at the top and add a soft matching fade at the bottom edge. */
+.intro{
+  overflow:hidden;
+}
+.intro::after{
+  content:'';
+  position:absolute;
+  z-index:1;
+  left:0;
+  right:0;
+  bottom:0;
+  height:72px;
+  pointer-events:none;
+  background:linear-gradient(
+    to bottom,
+    rgba(255,255,255,0) 0%,
+    rgba(241,248,251,.45) 46%,
+    var(--paper) 100%
+  );
+}
+.intro .section-label,
+.intro .company-story{
+  position:relative;
+  z-index:2;
+}
+
+/* Fleet section must sit above the completed hero/company media layer. */
+.fleet{
+  position:relative!important;
+  z-index:5!important;
+  background:#fff!important;
+}
+.fleet .section-top{
+  position:relative!important;
+  z-index:6!important;
+  opacity:1!important;
+  transform:none!important;
+  visibility:visible!important;
+}
+.fleet .section-top .eyebrow,
+.fleet .section-top h2,
+.fleet .section-top>p{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+/* Restore the original Customer Outcomes hover movement/dark inversion.
+   Description simply expands underneath the same animated title row. */
+.outcome-list .outcome-card{
+  padding:0!important;
+  transition:padding .25s ease,background .25s ease,color .25s ease!important;
+}
+.outcome-toggle{
+  transition:padding .25s ease,color .25s ease!important;
+}
+.outcome-toggle h3{
+  transition:transform .25s ease,color .25s ease!important;
+}
+@media(hover:hover){
+  .outcome-list .outcome-card:hover{
+    padding:0 20px!important;
+    background:#08161d!important;
+    color:#fff!important;
+  }
+  .outcome-list .outcome-card:hover .outcome-toggle h3{
+    transform:translateX(4px);
+    color:#fff!important;
+  }
+  .outcome-list .outcome-card:hover .outcome-detail>p{
+    color:#c6d7df!important;
+  }
+  .outcome-list .outcome-card:hover .outcome-toggle i{
+    border-color:var(--red)!important;
+    color:var(--red)!important;
+  }
+}
+.outcome-card.is-open{
+  background:#08161d!important;
+  color:#fff!important;
+  padding:0 20px!important;
+}
+.outcome-card.is-open .outcome-toggle h3{
+  color:#fff!important;
+}
+.outcome-card.is-open .outcome-detail>p{
+  color:#c6d7df!important;
+}
+
+@media(max-width:760px){
+  .intro::after{
+    height:52px;
+  }
+  .outcome-card.is-open{
+    padding:0 12px!important;
+  }
+}

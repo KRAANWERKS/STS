@@ -82,7 +82,7 @@ let lastScrollAt = performance.now();
 let scrollVelocity = 0;
 let scrollDirection = 0;
 let scrollingUntil = 0;
-let zoomPlaybackRate = .82;
+let zoomPlaybackRate = .96;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -161,10 +161,10 @@ function animateZoomPlayback(now = performance.now()) {
     } else if (activelyScrolling && scrollDirection > 0) {
       // Smooth forward motion: no currentTime seeking at all.
       // Scroll only controls how long the clip plays and gently modulates its speed.
-      const velocityBoost = Math.min(.28, Math.abs(scrollVelocity) * .12);
-      const desiredRate = .78 + velocityBoost;
-      zoomPlaybackRate += (desiredRate - zoomPlaybackRate) * .10;
-      heroZoomVideo.playbackRate = Math.min(1.08, Math.max(.72, zoomPlaybackRate));
+      const velocityBoost = Math.min(.40, Math.abs(scrollVelocity) * .18);
+      const desiredRate = .96 + velocityBoost;
+      zoomPlaybackRate += (desiredRate - zoomPlaybackRate) * .12;
+      heroZoomVideo.playbackRate = Math.min(1.35, Math.max(.86, zoomPlaybackRate));
 
       if (heroZoomVideo.paused && !heroZoomVideo.ended) {
         heroZoomVideo.play().catch(() => {});
@@ -217,7 +217,7 @@ function renderScroll() {
   if (progress <= .012) {
     zoomActive = false;
     zoomTargetTime = 0;
-    zoomPlaybackRate = .82;
+    zoomPlaybackRate = .96;
     if (heroZoomVideo && !heroZoomVideo.seeking && heroZoomVideo.currentTime > .02) {
       try { heroZoomVideo.currentTime = 0; } catch {}
     }
