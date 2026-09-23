@@ -1943,3 +1943,172 @@ footer small{
     font-size:9px!important;
   }
 }
+
+
+/* V23 — smoother direct video scrub: more scroll distance per decoded frame. */
+.hero{
+  height:260svh!important;
+}
+
+@media(max-width:1000px){
+  .hero{
+    height:238svh!important;
+  }
+}
+
+@media(max-width:760px){
+  .hero{
+    height:218svh!important;
+  }
+}
+
+
+/* V24 — image-led SAFE / TRUSTED / SWIFT promise cards. */
+.promise-grid{
+  gap:18px!important;
+  border:0!important;
+  align-items:stretch;
+}
+.promise-grid article,
+.promise-grid article:nth-child(2){
+  min-height:0!important;
+  padding:0!important;
+  border:1px solid var(--line)!important;
+  background:#fff!important;
+  color:var(--ink)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden;
+  isolation:isolate;
+}
+.promise-visual{
+  position:relative;
+  aspect-ratio:6 / 5;
+  overflow:hidden;
+  background:#083f72;
+}
+.promise-visual img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scale(1.001);
+  transition:transform .75s cubic-bezier(.2,.7,.25,1);
+  will-change:transform;
+}
+.promise-grid article:hover .promise-visual img{
+  transform:scale(1.045);
+}
+.promise-copy{
+  position:relative;
+  z-index:2;
+  margin-top:-58px;
+  padding:76px 30px 30px;
+  min-height:190px;
+  display:flex;
+  align-items:flex-end;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0) 0,
+      rgba(255,255,255,.62) 32px,
+      #fff 60px,
+      #fff 100%
+    );
+}
+.promise-title{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+.promise-copy p,
+.promise-grid article:nth-child(2) .promise-copy p{
+  margin:0!important;
+  color:#52666f!important;
+  font-size:14px!important;
+  line-height:1.72!important;
+}
+@media(max-width:1000px){
+  .promise-grid{
+    grid-template-columns:1fr!important;
+    gap:16px!important;
+  }
+  .promise-visual{
+    aspect-ratio:16 / 9;
+  }
+}
+@media(max-width:760px){
+  .promise-grid{
+    display:grid!important;
+    margin-top:32px!important;
+  }
+  .promise-grid article{
+    min-height:0!important;
+  }
+  .promise-copy{
+    margin-top:-44px;
+    padding:60px 22px 24px;
+    min-height:150px;
+  }
+  .promise-copy p,
+  .promise-grid article:nth-child(2) .promise-copy p{
+    font-size:14px!important;
+  }
+}
+
+
+/* V25 — generated blueprint imagery + restored large promise h3 titles. */
+.promise-visual{
+  aspect-ratio:1374 / 1145!important;
+}
+.promise-copy{
+  display:block!important;
+  align-items:initial!important;
+  margin-top:-64px!important;
+  padding:82px 30px 30px!important;
+  min-height:250px!important;
+}
+.promise-copy h3{
+  position:relative!important;
+  width:auto!important;
+  height:auto!important;
+  padding:0!important;
+  margin:0 0 18px!important;
+  overflow:visible!important;
+  clip:auto!important;
+  white-space:normal!important;
+  border:0!important;
+  color:var(--ink)!important;
+  font:600 clamp(34px,3.1vw,46px)/.96 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.025em!important;
+  text-transform:uppercase!important;
+}
+.promise-copy p,
+.promise-grid article:nth-child(2) .promise-copy p{
+  max-width:34rem;
+}
+@media(max-width:1000px){
+  .promise-visual{
+    aspect-ratio:1374 / 1145!important;
+  }
+  .promise-copy{
+    min-height:220px!important;
+  }
+}
+@media(max-width:760px){
+  .promise-copy{
+    margin-top:-46px!important;
+    padding:64px 22px 24px!important;
+    min-height:0!important;
+  }
+  .promise-copy h3{
+    font-size:34px!important;
+    margin-bottom:14px!important;
+  }
+}
