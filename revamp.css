@@ -1719,3 +1719,60 @@ nav{z-index:1001}
       )!important;
   }
 }
+
+
+/* V19 — frame-aware bidirectional hero scrub + smooth engineered-availability accordion. */
+.reliability-list{
+  interpolate-size:allow-keywords;
+}
+.reliability-list details{
+  overflow:hidden;
+  transition:border-color .28s ease,background .28s ease;
+}
+.reliability-list summary{
+  position:relative;
+  transition:color .28s ease,background .28s ease;
+}
+.reliability-list summary b{
+  transform-origin:50% 50%;
+  transition:transform .34s cubic-bezier(.2,.75,.25,1),color .24s ease;
+}
+.reliability-list details::details-content{
+  block-size:0;
+  opacity:0;
+  overflow:hidden;
+  transition:
+    block-size .42s cubic-bezier(.22,.8,.25,1),
+    opacity .24s ease,
+    content-visibility .42s allow-discrete;
+}
+.reliability-list details[open]::details-content{
+  block-size:auto;
+  opacity:1;
+}
+.reliability-list details p{
+  margin:0!important;
+  padding:0 10px 24px 39px!important;
+  transform:translateY(-7px);
+  opacity:.86;
+  transition:transform .34s cubic-bezier(.22,.8,.25,1),opacity .24s ease;
+}
+.reliability-list details[open] p{
+  transform:translateY(0);
+  opacity:1;
+}
+.reliability-list details[open] summary{
+  color:#fff;
+}
+.reliability-list details[open] summary b{
+  transform:rotate(45deg);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .reliability-list details::details-content,
+  .reliability-list details p,
+  .reliability-list summary,
+  .reliability-list summary b{
+    transition:none!important;
+  }
+}
