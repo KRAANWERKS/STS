@@ -1943,3 +1943,21 @@ footer small{
     font-size:9px!important;
   }
 }
+
+
+/* V23 — smoother direct video scrub: more scroll distance per decoded frame. */
+.hero{
+  height:260svh!important;
+}
+
+@media(max-width:1000px){
+  .hero{
+    height:238svh!important;
+  }
+}
+
+@media(max-width:760px){
+  .hero{
+    height:218svh!important;
+  }
+}

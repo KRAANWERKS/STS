@@ -74,6 +74,8 @@ let lastScrollAt = performance.now();
 let scrollVelocity = 0;
 let zoomFrameDuration = 1 / 30;
 let zoomLastMediaTime = null;
+let zoomSeekTarget = 0;
+let zoomSeekBusy = false;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -139,7 +141,7 @@ if (!reducedMotion.matches) {
 function getZoomEndTime() {
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return 0;
 
-  // Keep the physical final frame out of view; stop on the second-to-last decoded frame.
+  // Keep the physical final frame out of view; finish on frame -2.
   const frame = Math.max(1 / 60, zoomFrameDuration);
   return Math.max(0, heroZoomVideo.duration - frame * 2);
 }
@@ -150,56 +152,39 @@ function getZoomProgress() {
   const heroTop = scrollY + hero.getBoundingClientRect().top;
   const companyTop = scrollY + company.getBoundingClientRect().top;
 
-  // CodePen-style scrub range: map scroll position directly to video time.
-  // The clip reaches frame -2 just as #company becomes visible at the bottom.
+  // Linear CodePen-style mapping: every scroll position maps to one video time.
+  // The final mapped frame is reached just as #company starts entering the viewport.
   const start = heroTop + Math.max(24, innerHeight * .035);
-  const end = companyTop - innerHeight * .98;
+  const end = companyTop - innerHeight * .96;
   return clamp01((scrollY - start) / Math.max(1, end - start));
 }
 
-function animateZoomPlayback(now = performance.now()) {
-  const blocked = reducedMotion.matches || userPaused || !flowVisible || document.hidden;
+function requestZoomSeek(targetTime) {
+  if (!heroZoomVideo || !zoomReady) return;
 
-  if (zoomReady && heroZoomVideo) {
-    // Scrubbing is deterministic: the zoom clip itself never "plays".
-    if (!heroZoomVideo.paused) heroZoomVideo.pause();
+  const endTime = getZoomEndTime();
+  const frame = Math.max(1 / 60, zoomFrameDuration);
+  zoomSeekTarget = Math.min(endTime, Math.max(0, targetTime));
 
-    const endTime = getZoomEndTime();
-    const frame = Math.max(1 / 60, zoomFrameDuration);
-    const current = heroZoomVideo.currentTime || 0;
-    const target = Math.min(endTime, Math.max(0, zoomTargetTime));
-    const delta = target - current;
-    const zoomProgress = getZoomProgress();
+  // Let the browser finish the current decode, then jump immediately to the
+  // newest scroll target. This avoids piling up seeks that visibly stutter.
+  if (zoomSeekBusy || heroZoomVideo.seeking) return;
 
-    if (!blocked && zoomActive) {
-      if (zoomProgress >= .9995) {
-        // Guarantee the exact end state as Company enters: second-to-last frame.
-        if (!heroZoomVideo.seeking && Math.abs(current - endTime) > frame * .12) {
-          try { heroZoomVideo.currentTime = endTime; } catch {}
-          zoomLastCorrectionAt = now;
-        }
-      } else if (Math.abs(delta) > frame * .18 &&
-                 !heroZoomVideo.seeking &&
-                 now - zoomLastCorrectionAt > 28) {
-        // Smooth in both directions. Small, frequent seeks follow the scroll target
-        // symmetrically, so scrolling up naturally rewinds the clip.
-        const velocity = now - lastScrollAt < 120 ? Math.abs(scrollVelocity) : 0;
-        const normalizedLag = endTime > 0 ? Math.min(1, Math.abs(delta) / endTime) : 0;
-        const smoothing = .24 + normalizedLag * .18;
-        const desiredStep = delta * smoothing;
-        const maxStep = Math.min(.22, Math.max(frame * 2.2, frame * (3.2 + velocity * 1.8)));
-        const step = Math.max(-maxStep, Math.min(maxStep, desiredStep));
+  const delta = zoomSeekTarget - (heroZoomVideo.currentTime || 0);
+  if (Math.abs(delta) <= frame * .20) return;
 
-        let nextTime = current + step;
-        if (Math.abs(delta) < frame * 1.15) nextTime = target;
-        nextTime = Math.min(endTime, Math.max(0, nextTime));
-
-        try { heroZoomVideo.currentTime = nextTime; } catch {}
-        zoomLastCorrectionAt = now;
-      }
-    }
+  zoomSeekBusy = true;
+  try {
+    heroZoomVideo.currentTime = zoomSeekTarget;
+  } catch {
+    zoomSeekBusy = false;
   }
+}
 
+function animateZoomPlayback() {
+  // The zoom clip is always paused. Scroll position, not playback time,
+  // is the clock, so up/down scrubbing is perfectly symmetric.
+  if (heroZoomVideo && !heroZoomVideo.paused) heroZoomVideo.pause();
   zoomControlFrame = requestAnimationFrame(animateZoomPlayback);
 }
 
@@ -222,13 +207,14 @@ function renderScroll() {
 
   if (zoomReady && heroZoomVideo?.duration && !reducedMotion.matches && !userPaused) {
     zoomTargetTime = zoomProgress * getZoomEndTime();
+    requestZoomSeek(zoomTargetTime);
   }
 
   if (progress <= .012) {
     zoomActive = false;
     zoomTargetTime = 0;
-    if (heroZoomVideo && !heroZoomVideo.seeking && heroZoomVideo.currentTime > .02) {
-      try { heroZoomVideo.currentTime = 0; } catch {}
+    if (heroZoomVideo && heroZoomVideo.currentTime > .02) {
+      requestZoomSeek(0);
     }
     if (heroVideo?.paused && !userPaused && flowVisible && !document.hidden) syncHeroPlayback();
   } else if (progress >= .14 && !heroVideo?.paused) {
@@ -279,6 +265,18 @@ function trackZoomFrame(now, metadata) {
   }
   heroZoomVideo?.requestVideoFrameCallback?.(trackZoomFrame);
 }
+
+heroZoomVideo?.addEventListener('seeked', () => {
+  zoomSeekBusy = false;
+
+  if (!zoomReady || reducedMotion.matches || userPaused) return;
+
+  const frame = Math.max(1 / 60, zoomFrameDuration);
+  const current = heroZoomVideo.currentTime || 0;
+  if (Math.abs(zoomSeekTarget - current) > frame * .20) {
+    requestAnimationFrame(() => requestZoomSeek(zoomSeekTarget));
+  }
+});
 
 function prepareZoomVideo() {
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
