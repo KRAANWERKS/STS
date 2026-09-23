@@ -69,10 +69,8 @@ tabs.forEach((tab, index) => {
 });
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
 const heroStage = $('.hero-stage');
-const company = $('#company');
 const heroVideo = $('#hero-video');
 const heroZoomVideo = $('#hero-zoom-video');
 const heroLines = $$('.hero h1 > *');
@@ -82,8 +80,7 @@ let userPaused = false;
 let heroVisible = true;
 let scrollScheduled = false;
 let zoomReady = false;
-let zoomTargetTime = 0;
-let zoomFrame = 0;
+let zoomActive = false;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -98,13 +95,27 @@ function updateMotionLabel() {
 }
 
 async function syncHeroPlayback() {
-  if (!heroVideo) return;
-  const shouldPause = reducedMotion.matches || userPaused || !heroVisible || document.hidden;
-  if (shouldPause) heroVideo.pause();
-  else {
-    try { await heroVideo.play(); } catch {}
+  const blocked = reducedMotion.matches || userPaused || !heroVisible || document.hidden;
+  const heroProgress = getHeroProgress();
+
+  if (heroVideo) {
+    const keepLoopPlaying = !blocked && heroProgress < .18;
+    if (keepLoopPlaying) {
+      try { await heroVideo.play(); } catch {}
+    } else {
+      heroVideo.pause();
+    }
   }
-  if (heroZoomVideo) heroZoomVideo.pause();
+
+  if (heroZoomVideo) {
+    heroZoomVideo.playbackRate = 1.35;
+    if (blocked || !zoomActive) {
+      heroZoomVideo.pause();
+    } else if (!heroZoomVideo.ended) {
+      try { await heroZoomVideo.play(); } catch {}
+    }
+  }
+
   updateMotionLabel();
 }
 
@@ -137,34 +148,35 @@ function getHeroProgress() {
   return clamp01(-bounds.top / travel);
 }
 
-function getZoomScrubProgress(heroProgress) {
-  // Replace the opening hero clip almost immediately, then run the
-  // complete zoom-out shot over a shorter scroll distance.
-  return smoothstep(.035, .58, heroProgress);
-}
-
 function renderScroll() {
   const heroProgress = getHeroProgress();
-  const companyBounds = company.getBoundingClientRect();
-  const companyDepth = clamp01(-companyBounds.top / Math.max(1, innerHeight * .46));
 
   heroLines.forEach((line, index) => {
     const direction = index === 1 ? -1 : 1;
     line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * heroProgress * 7}vw,${heroProgress * 1.5}vh,0)`;
   });
 
-  // The zoom-out clip replaces the opening video shortly after scroll begins.
-  const replaceMix = smoothstep(.025, .18, heroProgress);
-  const transitionOut = smoothstep(.16, .98, companyDepth);
-  const transitionOpacity = reducedMotion.matches ? 0 : replaceMix * (1 - transitionOut);
-
+  // Fast crossfade in the SAME media viewport.
+  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.025, .14, heroProgress);
   hero.style.setProperty('--hero-progress', heroProgress.toFixed(4));
   hero.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
-  heroFlow.style.setProperty('--transition-opacity', transitionOpacity.toFixed(4));
+  hero.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
 
-  if (zoomReady && heroZoomVideo?.duration && !reducedMotion.matches && !userPaused) {
-    const scrub = getZoomScrubProgress(heroProgress);
-    zoomTargetTime = scrub * Math.max(0, heroZoomVideo.duration - .04);
+  const shouldUseZoom = zoomReady && !reducedMotion.matches && heroProgress > .045;
+
+  if (shouldUseZoom && !zoomActive) {
+    zoomActive = true;
+    if (heroZoomVideo.ended || heroZoomVideo.currentTime < .02) {
+      try { heroZoomVideo.currentTime = 0; } catch {}
+    }
+    syncHeroPlayback();
+  } else if (!shouldUseZoom && zoomActive) {
+    zoomActive = false;
+    heroZoomVideo.pause();
+    try { heroZoomVideo.currentTime = 0; } catch {}
+    syncHeroPlayback();
+  } else if (!shouldUseZoom && heroProgress <= .045 && heroVideo?.paused && !userPaused && heroVisible && !document.hidden) {
+    syncHeroPlayback();
   }
 }
 
@@ -193,25 +205,9 @@ function prepareZoomVideo() {
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
   zoomReady = true;
   heroZoomVideo.pause();
-  zoomTargetTime = heroZoomVideo.currentTime || 0;
+  heroZoomVideo.playbackRate = 1.35;
+  try { heroZoomVideo.currentTime = 0; } catch {}
   renderScroll();
-}
-
-function animateZoomScrub() {
-  if (zoomReady && heroZoomVideo && !reducedMotion.matches && !userPaused && !document.hidden) {
-    const current = heroZoomVideo.currentTime || 0;
-    const delta = zoomTargetTime - current;
-
-    // Ease toward the scroll target every animation frame. Large deltas catch
-    // up faster; small deltas are damped to avoid visible frame stepping.
-    if (Math.abs(delta) > .003 && !heroZoomVideo.seeking) {
-      const ease = Math.abs(delta) > .45 ? .38 : Math.abs(delta) > .16 ? .28 : .20;
-      const next = current + delta * ease;
-      const maxTime = Math.max(0, heroZoomVideo.duration - .04);
-      heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, next));
-    }
-  }
-  zoomFrame = requestAnimationFrame(animateZoomScrub);
 }
 
 if (heroZoomVideo?.readyState >= 1) prepareZoomVideo();
@@ -223,7 +219,9 @@ heroZoomVideo?.addEventListener('durationchange', () => {
 
 heroZoomVideo?.addEventListener('error', () => {
   zoomReady = false;
-  heroFlow.style.setProperty('--transition-opacity', '0');
+  zoomActive = false;
+  hero.style.setProperty('--zoom-opacity', '0');
+  hero.style.setProperty('--primary-opacity', '1');
 }, { once: true });
 
 heroVideo?.addEventListener('play', updateMotionLabel);
@@ -235,8 +233,3 @@ requestAnimationFrame(() => {
 
 renderScroll();
 syncHeroPlayback();
-zoomFrame = requestAnimationFrame(animateZoomScrub);
-
-addEventListener('pagehide', () => {
-  if (zoomFrame) cancelAnimationFrame(zoomFrame);
-}, { once: true });

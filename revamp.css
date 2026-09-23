@@ -800,3 +800,113 @@ nav{z-index:1001}
 .hero-transition-media video{
   will-change:opacity;
 }
+
+
+/* Hero V9 — true same-layer video replacement and compact right-side glass caption. */
+.hero-company-flow{
+  background:#fff!important;
+}
+.hero-transition-media{
+  display:none!important;
+}
+
+.hero-media{
+  top:92px!important;
+  right:0!important;
+  bottom:0!important;
+  left:0!important;
+  overflow:hidden!important;
+  background:#08161d!important;
+}
+.hero-video-primary,
+.hero-video-zoom{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:50% 0%!important;
+  transform:none!important;
+  filter:saturate(.98) contrast(1.015) brightness(.98)!important;
+}
+.hero-video-primary{
+  z-index:0!important;
+  opacity:var(--primary-opacity,1)!important;
+}
+.hero-video-zoom{
+  z-index:1!important;
+  opacity:var(--zoom-opacity,0)!important;
+}
+.hero-media:before{
+  z-index:2!important;
+}
+
+/* Restore Company to a clean section now that zoom video replaces the hero in-place. */
+.intro{
+  min-height:78vh!important;
+  padding-top:130px!important;
+  padding-bottom:130px!important;
+  background:#fff!important;
+}
+
+/* Compact caption. Blur starts around the center and builds toward the right edge. */
+.hero-caption{
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  padding:10px 5%!important;
+  min-height:46px;
+  background:transparent!important;
+  border-top:1px solid rgba(255,255,255,.12)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  box-shadow:none!important;
+  overflow:hidden;
+}
+.hero-caption::before{
+  content:'';
+  position:absolute;
+  z-index:-1;
+  top:0;
+  right:0;
+  bottom:0;
+  left:44%;
+  background:linear-gradient(90deg,rgba(8,22,29,0),rgba(8,22,29,.18) 35%,rgba(8,22,29,.40) 100%);
+  backdrop-filter:blur(16px) saturate(130%);
+  -webkit-backdrop-filter:blur(16px) saturate(130%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.45) 32%,#000 68%);
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.45) 32%,#000 68%);
+  pointer-events:none;
+}
+.hero-caption>span,
+.hero-caption>button{
+  position:relative;
+  z-index:1;
+}
+.hero-caption button{
+  padding:6px 10px!important;
+  background:rgba(8,22,29,.18)!important;
+}
+
+@media(max-width:760px){
+  .hero-media{
+    top:72px!important;
+  }
+  .hero-video-primary,
+  .hero-video-zoom{
+    object-position:56% 0%!important;
+  }
+  .intro{
+    min-height:0!important;
+    padding-top:85px!important;
+    padding-bottom:85px!important;
+  }
+  .hero-caption{
+    padding:8px 5%!important;
+    min-height:40px;
+  }
+  .hero-caption::before{
+    left:38%;
+  }
+}
