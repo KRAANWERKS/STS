@@ -32,7 +32,7 @@ addEventListener('keydown', (event) => {
 });
 $('#year').textContent = new Date().getFullYear();
 
-const reliabilityDetails = $('.reliability-list details');
+const reliabilityDetails = $$('.reliability-list details');
 reliabilityDetails.forEach((detail) => {
   detail.addEventListener('toggle', () => {
     if (!detail.open) return;
