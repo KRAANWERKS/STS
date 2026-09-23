@@ -61,11 +61,6 @@ const motion = $('#motion');
 let userPaused = false;
 let heroVisible = true;
 let scrollScheduled = false;
-let pointerFrame = 0;
-let pointerTargetX = 0;
-let pointerTargetY = 0;
-let pointerX = 0;
-let pointerY = 0;
 
 function updateMotionLabel() {
   const paused = reducedMotion.matches || userPaused || heroVideo?.paused;
@@ -126,27 +121,6 @@ addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-function animatePointer() {
-  pointerFrame = requestAnimationFrame(animatePointer);
-  pointerX += (pointerTargetX - pointerX) * .055;
-  pointerY += (pointerTargetY - pointerY) * .055;
-  hero.style.setProperty('--hero-media-x', `${(pointerX * 14).toFixed(2)}px`);
-  hero.style.setProperty('--hero-media-y', `${(pointerY * 9).toFixed(2)}px`);
-}
-
-if (!reducedMotion.matches && matchMedia('(pointer:fine)').matches) {
-  hero.addEventListener('pointermove', (event) => {
-    const bounds = hero.getBoundingClientRect();
-    pointerTargetX = ((event.clientX - bounds.left) / bounds.width - .5) * 2;
-    pointerTargetY = ((event.clientY - bounds.top) / bounds.height - .5) * 2;
-  }, { passive: true });
-  hero.addEventListener('pointerleave', () => {
-    pointerTargetX = 0;
-    pointerTargetY = 0;
-  });
-  animatePointer();
-}
-
 new IntersectionObserver((entries) => {
   heroVisible = entries[0]?.isIntersecting ?? true;
   syncHeroPlayback();
@@ -167,6 +141,3 @@ requestAnimationFrame(() => {
 renderScroll();
 syncHeroPlayback();
 
-addEventListener('pagehide', () => {
-  if (pointerFrame) cancelAnimationFrame(pointerFrame);
-}, { once: true });
