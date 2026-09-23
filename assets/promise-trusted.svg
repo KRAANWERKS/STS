@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" role="img" aria-label="02 / TRUSTED Every commitment. Made visible.">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07518d"/><stop offset=".5" stop-color="#0b4a82"/><stop offset="1" stop-color="#0a3f71"/></linearGradient>
+  <pattern id="minor" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0H0V18" fill="none" stroke="#3d79a9" stroke-width=".7" opacity=".28"/></pattern>
+  <pattern id="major" width="72" height="72" patternUnits="userSpaceOnUse"><path d="M72 0H0V72" fill="none" stroke="#72a1c7" stroke-width="1" opacity=".25"/></pattern>
+  <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1200" height="1000" fill="url(#bg)"/><rect width="1200" height="1000" fill="url(#minor)"/><rect width="1200" height="1000" fill="url(#major)"/>
+<g fill="none" stroke="#dcecff" stroke-width="2" opacity=".95">
+<rect x="24" y="24" width="1152" height="952"/><path d="M24 48V12M12 24h36M1176 48V12M1152 24h48M24 952v36M12 976h36M1176 952v36M1152 976h48"/>
+<path d="M50 52H950M980 52h145"/></g>
+<text x="58" y="132" fill="#eef6ff" font-family="Arial Narrow,Arial,sans-serif" font-size="78" font-weight="700" letter-spacing="2">02 / TRUSTED</text>
+<text x="60" y="190" fill="#d9e8f8" font-family="Arial Narrow,Arial,sans-serif" font-size="34" letter-spacing="1">Every commitment. Made visible.</text>
+<text x="985" y="58" fill="#d9e8f8" font-family="monospace" font-size="15" letter-spacing="2">OFFSHORE TRANSFER OPERATIONS</text>
+<g fill="none" stroke="#e6f2ff" stroke-width="3" filter="url(#glow)">
+  <path d="M55 704H302l18-40h125l24 40h210v38H55z"/><path d="M115 704v-82h54v-62h66v144M195 560v-78"/>
+  <path d="M468 742h302v-52H468z"/><path d="M535 690V600h70l55 90M584 600l142-214 25 17-126 287"/>
+  <path d="M745 404v166M735 570h20M745 570l-35 82h70z"/>
+  <path d="M806 704h338v-40H806z"/><path d="M1000 664v-84h54v-58h46v142M1078 522v-74"/>
+</g>
+<g fill="none" stroke="#ff7900" stroke-width="4"><path d="M742 575c-65 6-116 26-150 62" stroke-dasharray="12 10"/><path d="M592 637l15-3-5 15"/><circle cx="742" cy="575" r="7"/></g>
+<text x="545" y="548" fill="#ff7900" font-family="monospace" font-size="18">VISIBLE CARGO FLOW</text>
+<g transform="translate(842 250)"><rect width="284" height="228" fill="#073a69" fill-opacity=".55" stroke="#dcecff" stroke-width="2"/><text x="18" y="34" fill="#eef6ff" font-family="monospace" font-size="16">CAMPAIGN VISIBILITY</text><path d="M18 52h248" stroke="#dcecff"/><g fill="#dcecff" font-family="monospace" font-size="15"><text x="24" y="88">TONNES</text><text x="186" y="88">REPORTED</text><text x="24" y="126">NET RATE</text><text x="186" y="126">VISIBLE</text><text x="24" y="164">AVAILABILITY</text><text x="186" y="164">TRACKED</text><text x="24" y="202">STOPPAGES</text><text x="186" y="202">ATTRIBUTED</text></g></g>
+<g fill="#dcecff" font-family="monospace" font-size="18"><text x="102" y="770">SOURCE VESSEL</text><text x="540" y="770">CRANE BARGE</text><text x="942" y="770">RECEIVING VESSEL</text></g>
+<g fill="#dcecff" font-family="monospace" font-size="17" letter-spacing="2"><text x="58" y="900">TRANSPARENT REPORTING.  DISCIPLINED EXECUTION.  CLEAR CAMPAIGNS.</text></g>
+<g fill="none" stroke="#dcecff" stroke-width="1.6"><rect x="950" y="866" width="180" height="72"/></g>
+<g fill="#dcecff" font-family="monospace" font-size="12" text-anchor="middle"><text x="1040" y="891">PLAN 02-TRUSTED</text><text x="1040" y="912">REV. A</text><text x="1040" y="930">SCALE NTS</text></g>
+</svg>
