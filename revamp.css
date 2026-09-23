@@ -1177,3 +1177,194 @@ nav{z-index:1001}
     line-height:1.65;
   }
 }
+
+
+/* V13 — scroll-coupled zoom, tighter Company alignment, parallel fleet phases. */
+.intro{
+  display:grid!important;
+  grid-template-columns:minmax(180px,.38fr) minmax(0,1.62fr)!important;
+  gap:clamp(38px,6vw,96px)!important;
+  align-items:start!important;
+  padding-top:clamp(145px,18svh,205px)!important;
+  padding-bottom:78px!important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0) 0,
+      rgba(255,255,255,.06) 4svh,
+      rgba(255,255,255,.58) 10svh,
+      rgba(255,255,255,.94) 17svh,
+      #fff 22svh,
+      #fff 100%
+    )!important;
+}
+.intro .section-label{
+  padding-top:5px!important;
+  align-self:start;
+}
+.company-story{
+  width:100%;
+  max-width:none!important;
+}
+.company-promise{
+  max-width:1080px!important;
+  margin-bottom:30px!important;
+}
+.intro .intro-copy{
+  max-width:1080px!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  gap:clamp(32px,4.4vw,68px)!important;
+}
+.intro .intro-copy p{
+  max-width:520px;
+}
+
+.fleet{
+  background:#fff;
+}
+.fleet-phase-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+  margin-top:56px;
+}
+.fleet-phase-card{
+  position:relative;
+  min-height:650px;
+  overflow:hidden;
+  isolation:isolate;
+  background:#08161d;
+  color:#fff;
+}
+.fleet-phase-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(0deg,rgba(5,20,28,.95) 0%,rgba(5,20,28,.75) 38%,rgba(5,20,28,.20) 72%,rgba(5,20,28,.05) 100%);
+  pointer-events:none;
+}
+.fleet-phase-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  z-index:0;
+  filter:saturate(.88) contrast(1.04);
+  transform:scale(1.01);
+}
+.fleet-phase-expansion{
+  background:#eaf0f2;
+}
+.fleet-phase-expansion::after{
+  background:
+    linear-gradient(0deg,rgba(8,22,29,.97) 0%,rgba(8,22,29,.82) 42%,rgba(8,22,29,.38) 73%,rgba(8,22,29,.10) 100%);
+}
+.fleet-phase-drawing{
+  object-fit:cover;
+  object-position:center 42%;
+  filter:grayscale(1) contrast(.70) brightness(1.13) blur(1.5px);
+  opacity:.78;
+  transform:scale(1.035);
+}
+.fleet-phase-content{
+  position:relative;
+  z-index:2;
+  min-height:650px;
+  padding:34px 36px 30px;
+  display:flex;
+  flex-direction:column;
+}
+.fleet-phase-content .eyebrow{
+  color:#fff!important;
+  margin-bottom:auto;
+}
+.fleet-phase-content h3{
+  margin:0 0 18px;
+  max-width:560px;
+  font:600 clamp(42px,4.2vw,64px)/.90 'Barlow Condensed',sans-serif;
+  text-transform:uppercase;
+  letter-spacing:-.035em;
+}
+.fleet-phase-description{
+  max-width:590px;
+  margin:0 0 26px;
+  color:#d5e0e4;
+  line-height:1.65;
+}
+.fleet-phase-content dl{
+  margin:0;
+  border-top:1px solid rgba(255,255,255,.25);
+}
+.fleet-phase-content dl>div{
+  display:grid;
+  grid-template-columns:minmax(150px,.8fr) minmax(0,1.2fr);
+  gap:18px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.18);
+}
+.fleet-phase-content dt{
+  color:#9fb1b9;
+  font-size:11px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.fleet-phase-content dd{
+  margin:0;
+  text-align:right;
+  font-weight:600;
+}
+.fleet-phase-tag{
+  margin-top:22px;
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.5px;
+}
+.fleet .configurations{
+  margin-top:18px!important;
+}
+
+@media(max-width:1000px){
+  .intro{
+    grid-template-columns:1fr!important;
+    gap:28px!important;
+  }
+  .intro .intro-copy{
+    grid-template-columns:1fr!important;
+    gap:22px!important;
+  }
+  .fleet-phase-grid{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:760px){
+  .intro{
+    padding-top:clamp(120px,15svh,165px)!important;
+    padding-bottom:60px!important;
+  }
+  .fleet-phase-grid{
+    margin-top:34px;
+    gap:12px;
+  }
+  .fleet-phase-card,
+  .fleet-phase-content{
+    min-height:560px;
+  }
+  .fleet-phase-content{
+    padding:26px 22px 24px;
+  }
+  .fleet-phase-content h3{
+    font-size:clamp(40px,12vw,58px);
+  }
+  .fleet-phase-content dl>div{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+  .fleet-phase-content dd{
+    text-align:left;
+  }
+}

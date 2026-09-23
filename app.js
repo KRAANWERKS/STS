@@ -32,42 +32,6 @@ addEventListener('keydown', (event) => {
 });
 $('#year').textContent = new Date().getFullYear();
 
-const phases = {
-  initial: {
-    status: 'INITIAL DELIVERY / 2 FLOATING CRANES',
-    name: 'Heavy duty.\nReady for the long run.',
-    description: 'MacGregor K5036 cranes paired with Nemag clamshell grabs form the initial platform for continuous offshore bulk handling.',
-    crane: 'MacGregor K5036', grab: 'Nemag clamshell', capacity: '40,000 mtpd',
-  },
-  expansion: {
-    status: 'PLANNED EXPANSION / 2 FLOATING CRANES',
-    name: 'More capacity.\nThe same discipline.',
-    description: 'Two planned E-Crane units add a target 60,000 mtpd, taking the combined fleet programme to up to 100,000 mtpd under suitable operating conditions.',
-    crane: 'E-Crane 4000C EC28421', grab: 'J&B grab', capacity: '60,000 mtpd (planned)',
-  },
-};
-const tabs = $$('[data-phase]');
-function selectTab(tab) {
-  tabs.forEach((item) => {
-    item.setAttribute('aria-selected', item === tab);
-    item.tabIndex = item === tab ? 0 : -1;
-  });
-  const phase = phases[tab.dataset.phase];
-  $('#fleet-panel').setAttribute('aria-labelledby', tab.id);
-  ['status', 'name', 'description'].forEach((key) => $(`#fleet-${key}`).textContent = phase[key]);
-  ['crane', 'grab', 'capacity'].forEach((key) => $(`#${key}`).textContent = phase[key]);
-}
-tabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => selectTab(tab));
-  tab.addEventListener('keydown', (event) => {
-    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault();
-    const target = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + 1) % tabs.length;
-    selectTab(tabs[target]);
-    tabs[target].focus();
-  });
-});
-
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
@@ -85,6 +49,10 @@ let zoomActive = false;
 let zoomTargetTime = 0;
 let zoomControlFrame = 0;
 let zoomLastCorrectionAt = 0;
+let lastScrollY = scrollY;
+let lastScrollAt = performance.now();
+let scrollVelocity = 0;
+let scrollDirection = 0;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -148,13 +116,14 @@ if (!reducedMotion.matches) {
 }
 
 function getZoomProgress(heroProgress) {
-  // Use almost the full sticky hero travel so the final wide frame lands
-  // immediately before the Company handoff.
-  return smoothstep(.025, .90, heroProgress);
+  // Use nearly the full sticky travel so the final wide frame lands
+  // as the Company section begins entering the viewport.
+  return smoothstep(.025, .96, heroProgress);
 }
 
 function animateZoomPlayback(now = performance.now()) {
   const blocked = reducedMotion.matches || userPaused || !flowVisible || document.hidden;
+  const activelyScrolling = now - lastScrollAt < 115;
 
   if (zoomReady && heroZoomVideo) {
     const current = heroZoomVideo.currentTime || 0;
@@ -162,24 +131,33 @@ function animateZoomPlayback(now = performance.now()) {
 
     if (blocked || !zoomActive) {
       if (!heroZoomVideo.paused) heroZoomVideo.pause();
-    } else if (delta > .045) {
-      // Let the browser decode video normally instead of seeking every frame.
-      // Playback rate only nudges the clip toward the scroll target.
-      const rate = Math.min(1.65, Math.max(.72, .82 + delta * .34));
-      heroZoomVideo.playbackRate = rate;
+    } else if (activelyScrolling && scrollDirection > 0 && delta > .018) {
+      // Down-scroll uses normal browser video playback, not frame-by-frame seeking.
+      // Speed follows scroll velocity and remaining distance to the target frame.
+      const velocityRate = Math.min(1.15, Math.abs(scrollVelocity) * .42);
+      const catchup = Math.min(.42, Math.max(0, delta) * .14);
+      heroZoomVideo.playbackRate = Math.min(1.65, Math.max(.35, .38 + velocityRate + catchup));
       if (heroZoomVideo.paused && !heroZoomVideo.ended) {
         heroZoomVideo.play().catch(() => {});
       }
-    } else if (delta < -.28) {
-      // Reverse scrolling cannot play video backward natively. Correct only
-      // occasionally so downward motion remains fully decoded and smooth.
-      if (!heroZoomVideo.seeking && now - zoomLastCorrectionAt > 180) {
+    } else {
+      if (!heroZoomVideo.paused) heroZoomVideo.pause();
+
+      // Reverse has no native smooth video playback path; correct less often so
+      // forward motion stays decoded and smooth.
+      if (activelyScrolling && scrollDirection < 0 && delta < -.16 &&
+          !heroZoomVideo.seeking && now - zoomLastCorrectionAt > 120) {
+        const corrected = current + delta * .55;
+        const maxTime = Math.max(0, heroZoomVideo.duration - .04);
+        heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, corrected));
+        zoomLastCorrectionAt = now;
+      } else if (!activelyScrolling && Math.abs(delta) > .38 &&
+                 !heroZoomVideo.seeking && now - zoomLastCorrectionAt > 220) {
+        // Settle to the exact scroll frame after motion stops.
         const maxTime = Math.max(0, heroZoomVideo.duration - .04);
         heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, zoomTargetTime));
         zoomLastCorrectionAt = now;
       }
-    } else if (!heroZoomVideo.paused) {
-      heroZoomVideo.pause();
     }
   }
 
@@ -194,7 +172,7 @@ function renderScroll() {
     line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 7}vw,${progress * 1.5}vh,0)`;
   });
 
-  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.02, .20, progress);
+  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.025, .23, progress);
   heroFlow.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
   heroFlow.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
   hero.style.setProperty('--hero-progress', progress.toFixed(4));
@@ -221,6 +199,15 @@ function renderScroll() {
 }
 
 addEventListener('scroll', () => {
+  const now = performance.now();
+  const y = scrollY;
+  const dy = y - lastScrollY;
+  const dt = Math.max(8, now - lastScrollAt);
+  scrollVelocity = dy / dt;
+  scrollDirection = Math.sign(dy);
+  lastScrollY = y;
+  lastScrollAt = now;
+
   if (scrollScheduled) return;
   scrollScheduled = true;
   requestAnimationFrame(() => {
