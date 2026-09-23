@@ -1081,3 +1081,99 @@ nav{z-index:1001}
     padding-right:5%!important;
   }
 }
+
+
+/* Hero V12 — smoother decoded zoom playback and denser Company composition. */
+.hero{
+  height:180svh!important;
+}
+.intro{
+  min-height:0!important;
+  padding-top:clamp(190px,24svh,270px)!important;
+  padding-bottom:92px!important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0) 0,
+      rgba(255,255,255,0) 7svh,
+      rgba(255,255,255,.42) 13svh,
+      rgba(255,255,255,.90) 20svh,
+      #fff 27svh,
+      #fff 100%
+    )!important;
+}
+.intro .section-label{
+  padding-top:6px;
+}
+.company-story{
+  max-width:1040px;
+}
+.company-promise{
+  margin:0 0 34px!important;
+  max-width:980px;
+  color:var(--ink)!important;
+  font:600 clamp(28px,3.25vw,52px)/.98 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.025em!important;
+  text-transform:uppercase;
+}
+.intro .intro-copy{
+  margin:0!important;
+  max-width:920px!important;
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(28px,4vw,58px);
+  align-items:start;
+}
+.intro .intro-copy p{
+  margin:0!important;
+  color:#445963;
+  font-size:17px;
+  line-height:1.72;
+}
+.intro .intro-copy .company-lead{
+  color:var(--ink);
+  font-size:clamp(20px,1.7vw,25px)!important;
+  line-height:1.45;
+}
+.intro .intro-copy .company-lead em{
+  font-style:italic;
+}
+
+@media(max-width:1000px){
+  .hero{
+    height:172svh!important;
+  }
+  .intro .intro-copy{
+    grid-template-columns:1fr;
+    gap:24px;
+  }
+}
+@media(max-width:760px){
+  .hero{
+    height:158svh!important;
+  }
+  .intro{
+    padding-top:clamp(150px,20svh,210px)!important;
+    padding-bottom:72px!important;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(255,255,255,0) 0,
+        rgba(255,255,255,.12) 6svh,
+        rgba(255,255,255,.78) 13svh,
+        #fff 20svh,
+        #fff 100%
+      )!important;
+  }
+  .company-promise{
+    margin-bottom:24px!important;
+    font-size:clamp(27px,8vw,40px)!important;
+  }
+  .intro .intro-copy .company-lead{
+    font-size:19px!important;
+  }
+  .intro .intro-copy p{
+    font-size:15px;
+    line-height:1.65;
+  }
+}

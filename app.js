@@ -83,8 +83,8 @@ let scrollScheduled = false;
 let zoomReady = false;
 let zoomActive = false;
 let zoomTargetTime = 0;
-let zoomSeekFrame = 0;
-let zoomLastSeekAt = 0;
+let zoomControlFrame = 0;
+let zoomLastCorrectionAt = 0;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -148,27 +148,42 @@ if (!reducedMotion.matches) {
 }
 
 function getZoomProgress(heroProgress) {
-  // Let the zoom-out develop through most of the hero's sticky travel,
-  // so the widest frame lands just before the Company section takes over.
-  return smoothstep(.02, .74, heroProgress);
+  // Use almost the full sticky hero travel so the final wide frame lands
+  // immediately before the Company handoff.
+  return smoothstep(.025, .90, heroProgress);
 }
 
-function animateZoomSeek(now = performance.now()) {
-  if (zoomReady && heroZoomVideo && !reducedMotion.matches && !userPaused && flowVisible && !document.hidden) {
+function animateZoomPlayback(now = performance.now()) {
+  const blocked = reducedMotion.matches || userPaused || !flowVisible || document.hidden;
+
+  if (zoomReady && heroZoomVideo) {
     const current = heroZoomVideo.currentTime || 0;
     const delta = zoomTargetTime - current;
 
-    // A gentler 25fps seek cadence gives the browser more time to decode each
-    // requested frame, while easing keeps the playhead visually attached to scroll.
-    if (Math.abs(delta) > .006 && !heroZoomVideo.seeking && now - zoomLastSeekAt > 40) {
-      const gain = Math.abs(delta) > .55 ? .34 : Math.abs(delta) > .20 ? .25 : .18;
-      const next = current + delta * gain;
-      const maxTime = Math.max(0, heroZoomVideo.duration - .04);
-      heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, next));
-      zoomLastSeekAt = now;
+    if (blocked || !zoomActive) {
+      if (!heroZoomVideo.paused) heroZoomVideo.pause();
+    } else if (delta > .045) {
+      // Let the browser decode video normally instead of seeking every frame.
+      // Playback rate only nudges the clip toward the scroll target.
+      const rate = Math.min(1.65, Math.max(.72, .82 + delta * .34));
+      heroZoomVideo.playbackRate = rate;
+      if (heroZoomVideo.paused && !heroZoomVideo.ended) {
+        heroZoomVideo.play().catch(() => {});
+      }
+    } else if (delta < -.28) {
+      // Reverse scrolling cannot play video backward natively. Correct only
+      // occasionally so downward motion remains fully decoded and smooth.
+      if (!heroZoomVideo.seeking && now - zoomLastCorrectionAt > 180) {
+        const maxTime = Math.max(0, heroZoomVideo.duration - .04);
+        heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, zoomTargetTime));
+        zoomLastCorrectionAt = now;
+      }
+    } else if (!heroZoomVideo.paused) {
+      heroZoomVideo.pause();
     }
   }
-  zoomSeekFrame = requestAnimationFrame(animateZoomSeek);
+
+  zoomControlFrame = requestAnimationFrame(animateZoomPlayback);
 }
 
 function renderScroll() {
@@ -179,7 +194,7 @@ function renderScroll() {
     line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 7}vw,${progress * 1.5}vh,0)`;
   });
 
-  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.018, .16, progress);
+  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.02, .20, progress);
   heroFlow.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
   heroFlow.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
   hero.style.setProperty('--hero-progress', progress.toFixed(4));
@@ -260,8 +275,8 @@ requestAnimationFrame(() => {
 
 renderScroll();
 syncHeroPlayback();
-zoomSeekFrame = requestAnimationFrame(animateZoomSeek);
+zoomControlFrame = requestAnimationFrame(animateZoomPlayback);
 
 addEventListener('pagehide', () => {
-  if (zoomSeekFrame) cancelAnimationFrame(zoomSeekFrame);
+  if (zoomControlFrame) cancelAnimationFrame(zoomControlFrame);
 }, { once:true });
