@@ -42,7 +42,7 @@ reliabilityDetails.forEach((detail) => {
   });
 });
 
-const outcomeCards = $('.outcome-card');
+const outcomeCards = $$('.outcome-card');
 outcomeCards.forEach((card) => {
   const toggle = card.querySelector('.outcome-toggle');
   if (!toggle) return;
