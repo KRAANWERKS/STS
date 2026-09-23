@@ -2138,3 +2138,411 @@ footer small{
       rgba(5,20,28,0) 100%
     )!important;
 }
+
+
+/* V27 — mobile composition pass: calmer type, clearer imagery, denser rhythm. */
+@media(max-width:760px){
+  html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+  }
+  body{
+    overflow-x:hidden;
+  }
+
+  header{
+    padding-left:20px!important;
+    padding-right:16px!important;
+  }
+  header .brand{
+    width:154px!important;
+    height:40px!important;
+  }
+  header .brand img{
+    width:178px!important;
+    height:89px!important;
+    left:-11px!important;
+    top:-26px!important;
+  }
+  .menu{
+    gap:10px!important;
+    padding:10px 0 10px 12px!important;
+    font-size:12px!important;
+  }
+  nav.open{
+    max-height:calc(100svh - 72px);
+    overflow:auto;
+    padding:10px 20px 18px!important;
+    box-shadow:0 18px 44px rgba(5,20,28,.18)!important;
+  }
+  nav.open>a,
+  nav.open .nav-contact{
+    padding:14px 4px!important;
+    border-bottom:1px solid var(--line)!important;
+  }
+  nav.open .nav-contact{
+    border-bottom:0!important;
+  }
+
+  /* Keep the scroll scrub intact, but make the sticky stage read cleanly on a phone. */
+  .hero-stage{
+    min-height:0!important;
+  }
+  .hero-flow-media .hero-video{
+    object-position:54% 0%!important;
+  }
+  .hero-flow-media::after{
+    background:
+      linear-gradient(180deg,rgba(5,20,28,.12),transparent 28%),
+      radial-gradient(circle at 72% 26%,rgba(230,248,251,.08),transparent 28%)!important;
+  }
+  .hero-overlay{
+    top:72px!important;
+    bottom:72px!important;
+    left:20px!important;
+    right:20px!important;
+    width:auto!important;
+    padding:clamp(48px,7svh,76px) 0 76px!important;
+    justify-content:center!important;
+  }
+  .hero-kicker{
+    max-width:285px!important;
+    margin-bottom:22px!important;
+    font-size:9px!important;
+    line-height:1.55!important;
+    letter-spacing:1.35px!important;
+  }
+  .hero h1{
+    font-size:clamp(58px,18vw,76px)!important;
+    line-height:.78!important;
+    letter-spacing:-.045em!important;
+  }
+  .hero h1 span:nth-child(2){
+    margin-left:.05em!important;
+    -webkit-text-stroke:1px #fff!important;
+  }
+  .hero h1 em{
+    margin-left:.08em!important;
+  }
+  .hero-copy{
+    width:min(100%,310px)!important;
+    margin:28px 0 0 9%!important;
+    gap:14px!important;
+    align-items:center!important;
+  }
+  .hero-copy p{
+    padding-left:14px!important;
+    font-size:13px!important;
+    line-height:1.5!important;
+  }
+  .hero-copy a{
+    font-size:10px!important;
+  }
+  .hero-copy b{
+    width:42px!important;
+    height:42px!important;
+    margin-top:5px!important;
+  }
+  .hero-caption{
+    left:20px!important;
+    right:20px!important;
+    padding:14px 0!important;
+    font-size:8px!important;
+    letter-spacing:.8px!important;
+  }
+  .hero-caption button{
+    margin-left:auto!important;
+    padding:7px 0!important;
+    font-size:9px!important;
+  }
+
+  /* Company: retain the video fade while avoiding an oversized empty gap on small screens. */
+  .intro{
+    padding-top:clamp(155px,20svh,190px)!important;
+    padding-bottom:92px!important;
+  }
+  .company-promise{
+    max-width:300px;
+    margin-bottom:28px!important;
+  }
+  .intro-copy{
+    margin-top:0!important;
+    gap:18px!important;
+  }
+  .intro-copy p{
+    font-size:15px!important;
+    line-height:1.72!important;
+  }
+  .company-lead{
+    font-size:17px!important;
+    line-height:1.62!important;
+  }
+
+  /* Fleet programme figures: easier to scan without huge numerals. */
+  .metrics{
+    padding-top:36px!important;
+    padding-bottom:36px!important;
+    gap:0!important;
+  }
+  .metrics>div,
+  .metrics>div:first-child{
+    padding:18px 0!important;
+  }
+  .metrics>div:first-child{
+    padding-top:0!important;
+  }
+  .metrics>div:last-child{
+    padding-bottom:0!important;
+  }
+  .metrics strong{
+    width:auto!important;
+    float:none!important;
+    font-size:clamp(50px,15vw,62px)!important;
+    line-height:.92!important;
+  }
+  .metrics>div>span{
+    margin:10px 0 5px!important;
+  }
+  .capacity-note{
+    padding-top:14px!important;
+    padding-bottom:14px!important;
+    line-height:1.55!important;
+  }
+
+  /* Section rhythm and headline scale. */
+  .section{
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+  .fleet,
+  .reliability,
+  .safety,
+  .outcomes,
+  .contact{
+    padding-top:64px!important;
+    padding-bottom:64px!important;
+  }
+  .fleet .section-top,
+  .safety .section-top{
+    margin-bottom:28px!important;
+  }
+  .fleet .section-top h2,
+  .reliability-title h2,
+  .safety .section-top h2,
+  .outcomes h2,
+  .contact h2{
+    font-size:clamp(48px,14vw,58px)!important;
+    line-height:.86!important;
+    letter-spacing:-.04em!important;
+  }
+  .section-top>p{
+    margin-top:18px!important;
+    font-size:14px!important;
+    line-height:1.6!important;
+  }
+
+  /* Fleet cards become image + copy panels on mobile instead of text over the whole photo. */
+  .fleet-phase-grid{
+    margin-top:28px!important;
+    gap:18px!important;
+  }
+  .fleet-phase-card{
+    min-height:0!important;
+    overflow:hidden!important;
+    background:#08161d!important;
+  }
+  .fleet-phase-card::after{
+    content:none!important;
+    display:none!important;
+  }
+  .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-drawing{
+    position:relative!important;
+    inset:auto!important;
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:4 / 3!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    transform:scale(1.005)!important;
+  }
+  .fleet-phase-expansion .fleet-phase-drawing{
+    object-position:center 43%!important;
+    filter:saturate(.9) contrast(1.03) blur(.35px)!important;
+  }
+  .fleet-phase-content{
+    min-height:0!important;
+    padding:26px 22px 24px!important;
+    background:#08161d!important;
+  }
+  .fleet-phase-content .eyebrow{
+    margin-bottom:28px!important;
+  }
+  .fleet-phase-content h3{
+    margin-bottom:16px!important;
+    font-size:clamp(40px,11.5vw,48px)!important;
+    line-height:.92!important;
+  }
+  .fleet-phase-description{
+    margin-bottom:22px!important;
+    font-size:14px!important;
+    line-height:1.6!important;
+  }
+  .fleet-phase-content dl>div{
+    grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;
+    gap:12px!important;
+    padding:11px 0!important;
+  }
+  .fleet-phase-content dd{
+    text-align:right!important;
+    font-size:12px!important;
+  }
+  .fleet-phase-tag{
+    margin-top:18px!important;
+  }
+  .configurations{
+    margin-top:18px!important;
+    gap:0!important;
+  }
+  .configurations>div{
+    min-height:0!important;
+    padding:24px 0 26px!important;
+  }
+  .configurations p{
+    margin-top:18px!important;
+  }
+
+  /* Reliability: compact but comfortably tappable. */
+  .reliability{
+    gap:28px!important;
+  }
+  .hours{
+    margin-top:28px!important;
+    padding-top:22px!important;
+  }
+  .hours strong{
+    font-size:44px!important;
+  }
+  .reliability-list{
+    padding-top:0!important;
+  }
+  .reliability-list summary{
+    padding:20px 0!important;
+    gap:14px!important;
+    font-size:17px!important;
+  }
+  .reliability-list details p{
+    padding:0 0 22px 30px!important;
+    font-size:14px!important;
+    line-height:1.65!important;
+  }
+
+  /* Promise cards: preserve the generated artwork and let copy breathe. */
+  .promise-grid{
+    gap:20px!important;
+  }
+  .promise-visual{
+    aspect-ratio:1374 / 1145!important;
+  }
+  .promise-copy{
+    margin-top:-38px!important;
+    padding:54px 20px 22px!important;
+  }
+  .promise-copy h3{
+    font-size:clamp(32px,9.5vw,38px)!important;
+    line-height:.98!important;
+  }
+  .promise-copy p,
+  .promise-grid article:nth-child(2) .promise-copy p{
+    font-size:13.5px!important;
+    line-height:1.65!important;
+  }
+  @media(hover:none){
+    .promise-grid article:hover .promise-visual img{
+      transform:scale(1.001)!important;
+    }
+  }
+  .hse{
+    padding:0 18px!important;
+  }
+  .hse summary{
+    padding:20px 0!important;
+    line-height:1.4!important;
+  }
+
+  /* Outcomes: cleaner rows and less oversized typography. */
+  .outcome-list{
+    margin-top:34px!important;
+  }
+  .outcome-toggle{
+    grid-template-columns:26px minmax(0,1fr) 28px!important;
+    gap:10px!important;
+    padding:20px 0!important;
+  }
+  .outcome-toggle h3{
+    font-size:clamp(23px,7vw,29px)!important;
+    line-height:1.02!important;
+  }
+  .outcome-detail>p{
+    padding-left:36px!important;
+    padding-right:6px!important;
+    font-size:13.5px!important;
+    line-height:1.65!important;
+  }
+  .outcome-card.is-open{
+    padding:0 12px!important;
+  }
+
+  /* Contact + footer: compact final screen and fewer awkward wraps. */
+  .contact{
+    gap:34px!important;
+  }
+  .contact>div>p{
+    font-size:14px!important;
+    line-height:1.65!important;
+  }
+  .contact-info{
+    padding-top:28px!important;
+  }
+  .contact-info h3{
+    margin-top:22px!important;
+    font-size:36px!important;
+  }
+  .contact-info>a:not(.profile-link){
+    font-size:19px!important;
+    overflow-wrap:anywhere;
+  }
+  .assessment{
+    margin-top:28px!important;
+  }
+  .button.white{
+    width:100%;
+    justify-content:space-between;
+  }
+  footer{
+    padding:14px 20px!important;
+    gap:10px 16px!important;
+  }
+  footer p{
+    order:4!important;
+    margin-top:2px!important;
+  }
+}
+
+@media(max-width:390px){
+  .hero h1{
+    font-size:clamp(54px,17.2vw,68px)!important;
+  }
+  .hero-copy{
+    margin-left:5%!important;
+  }
+  .fleet-phase-content dl>div{
+    grid-template-columns:1fr!important;
+    gap:4px!important;
+  }
+  .fleet-phase-content dd{
+    text-align:left!important;
+  }
+}
