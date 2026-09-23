@@ -738,3 +738,43 @@ nav{z-index:1001}
     background:#fff!important;
   }
 }
+
+
+/* Hero V7 — runtime fix companion: preserve source top below fixed header. */
+.hero-stage{
+  top:0!important;
+  height:100svh!important;
+}
+.hero-media{
+  top:92px!important;
+  right:0!important;
+  bottom:0!important;
+  left:0!important;
+}
+.hero-video-primary{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:50% 0%!important;
+  transform:none!important;
+}
+.hero-transition-media video{
+  top:92px!important;
+  bottom:0!important;
+  height:calc(100% - 92px)!important;
+  object-fit:cover!important;
+  object-position:50% 0%!important;
+}
+@media(max-width:760px){
+  .hero-media{
+    top:72px!important;
+  }
+  .hero-video-primary{
+    object-position:56% 0%!important;
+  }
+  .hero-transition-media video{
+    top:72px!important;
+    height:calc(100% - 72px)!important;
+    object-position:56% 0%!important;
+  }
+}

@@ -195,12 +195,20 @@ heroVideo?.addEventListener('loadeddata', () => {
   syncHeroPlayback();
 }, { once: true });
 
-heroZoomVideo?.addEventListener('loadedmetadata', () => {
+function prepareZoomVideo() {
+  if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
   zoomReady = true;
   heroZoomVideo.pause();
   lastZoomTime = -1;
   renderScroll();
-}, { once: true });
+}
+
+if (heroZoomVideo?.readyState >= 1) prepareZoomVideo();
+else heroZoomVideo?.addEventListener('loadedmetadata', prepareZoomVideo, { once: true });
+
+heroZoomVideo?.addEventListener('durationchange', () => {
+  if (!zoomReady) prepareZoomVideo();
+});
 
 heroZoomVideo?.addEventListener('error', () => {
   zoomReady = false;
