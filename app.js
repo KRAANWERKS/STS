@@ -53,15 +53,47 @@ tabs.forEach((tab, index) => {
 });
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let paused = reducedMotion.matches;
+const hero = $('.hero');
+const heroVideo = $('#hero-video');
+const heroLines = $$('.hero h1 > *');
 const motion = $('#motion');
+
+let userPaused = false;
+let heroVisible = true;
+let scrollScheduled = false;
+let pointerFrame = 0;
+let pointerTargetX = 0;
+let pointerTargetY = 0;
+let pointerX = 0;
+let pointerY = 0;
+
 function updateMotionLabel() {
-  motion.setAttribute('aria-pressed', paused);
+  const paused = reducedMotion.matches || userPaused || heroVideo?.paused;
+  motion.setAttribute('aria-pressed', String(paused));
   motion.textContent = paused ? 'Play motion ▷' : 'Pause motion Ⅱ';
 }
-motion.addEventListener('click', () => { paused = !paused; updateMotionLabel(); });
-reducedMotion.addEventListener('change', (event) => { paused = event.matches; updateMotionLabel(); });
-updateMotionLabel();
+
+async function syncHeroPlayback() {
+  if (!heroVideo) return;
+  const shouldPause = reducedMotion.matches || userPaused || !heroVisible || document.hidden;
+  if (shouldPause) {
+    heroVideo.pause();
+  } else {
+    try { await heroVideo.play(); } catch {}
+  }
+  updateMotionLabel();
+}
+
+motion.addEventListener('click', () => {
+  userPaused = !userPaused;
+  syncHeroPlayback();
+});
+
+reducedMotion.addEventListener('change', () => {
+  syncHeroPlayback();
+});
+
+document.addEventListener('visibilitychange', syncHeroPlayback);
 
 if (!reducedMotion.matches) {
   const reveal = new IntersectionObserver((entries) => entries.forEach((entry) => {
@@ -75,78 +107,66 @@ if (!reducedMotion.matches) {
   });
 }
 
-const hero = $('.hero');
-const heroLines = $$('.hero h1 > *');
-let scrollScheduled = false;
 function renderScroll() {
   const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / hero.offsetHeight));
   heroLines.forEach((line, index) => {
     const direction = index === 1 ? -1 : 1;
     line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 9}vw,${progress * 2}vh,0)`;
   });
-  hero.style.setProperty('--hero-progress', progress);
+  hero.style.setProperty('--hero-progress', progress.toFixed(4));
+  hero.style.setProperty('--hero-media-scale', (1.035 + progress * .025).toFixed(4));
 }
+
 addEventListener('scroll', () => {
   if (scrollScheduled) return;
   scrollScheduled = true;
-  requestAnimationFrame(() => { renderScroll(); scrollScheduled = false; });
+  requestAnimationFrame(() => {
+    renderScroll();
+    scrollScheduled = false;
+  });
 }, { passive: true });
-renderScroll();
 
-async function startHero() {
-  try {
-    const THREE = await import('./assets/three.module.js');
-    const host = $('#ocean');
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: 'low-power' });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    host.appendChild(renderer.domElement);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const texture = await new THREE.TextureLoader().loadAsync('./assets/floating-crane.png');
-    texture.colorSpace = THREE.SRGBColorSpace;
-    const uniforms = {
-      image: { value: texture }, time: { value: 0 }, pointer: { value: new THREE.Vector2() }, aspect: { value: 1 },
-    };
-    const material = new THREE.ShaderMaterial({
-      uniforms,
-      vertexShader: 'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,1.);}',
-      fragmentShader: `uniform sampler2D image;uniform float time;uniform float aspect;uniform vec2 pointer;varying vec2 vUv;
-      float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-      void main(){vec2 uv=vUv;float ia=994./533.;if(aspect>ia)uv.y=(uv.y-.5)*ia/aspect+.5;else uv.x=(uv.x-.5)*aspect/ia+.5;uv=(uv-.5)*.95+.5;uv+=pointer*vec2(.012,.007);float water=smoothstep(.44,.02,uv.y);uv.x+=sin(uv.y*72.+time*.8)*.0011*water;uv.y+=cos(uv.x*58.+time*.6)*.0007*water;vec4 c=texture2D(image,uv);vec2 cell=floor(vec2(vUv.x*170.,(vUv.y+time*.025)*95.));float cargo=step(.992,hash(cell))*water;c.rgb+=cargo*vec3(.93,.11,.18)*.72;float glow=.035/max(.04,distance(vUv,pointer*.15+vec2(.5)));c.rgb+=glow*vec3(.08,.13,.15);gl_FragColor=c;
-      #include <tonemapping_fragment>
-      #include <colorspace_fragment>`,
-    });
-    scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
-    function resize() {
-      renderer.setSize(hero.clientWidth, hero.clientHeight);
-      uniforms.aspect.value = hero.clientWidth / hero.clientHeight;
-      renderer.render(scene, camera);
-    }
-    resize();
-    new ResizeObserver(resize).observe(hero);
-    const target = new THREE.Vector2();
-    let visible = true;
-    let last = performance.now();
-    hero.addEventListener('pointermove', (event) => {
-      const bounds = hero.getBoundingClientRect();
-      target.set((event.clientX - bounds.left) / bounds.width - .5, .5 - (event.clientY - bounds.top) / bounds.height);
-    });
-    hero.addEventListener('pointerleave', () => target.set(0, 0));
-    new IntersectionObserver((entries) => visible = entries[0].isIntersecting).observe(hero);
-    function frame(now) {
-      requestAnimationFrame(frame);
-      if (!visible || document.hidden || paused) { last = now; return; }
-      uniforms.time.value += Math.min((now - last) / 1000, .05);
-      uniforms.pointer.value.lerp(target, .035);
-      last = now;
-      renderer.render(scene, camera);
-    }
-    host.classList.add('ready');
-    requestAnimationFrame(frame);
-  } catch {
-    motion.hidden = true;
-  }
+function animatePointer() {
+  pointerFrame = requestAnimationFrame(animatePointer);
+  pointerX += (pointerTargetX - pointerX) * .055;
+  pointerY += (pointerTargetY - pointerY) * .055;
+  hero.style.setProperty('--hero-media-x', `${(pointerX * 14).toFixed(2)}px`);
+  hero.style.setProperty('--hero-media-y', `${(pointerY * 9).toFixed(2)}px`);
 }
-startHero();
+
+if (!reducedMotion.matches && matchMedia('(pointer:fine)').matches) {
+  hero.addEventListener('pointermove', (event) => {
+    const bounds = hero.getBoundingClientRect();
+    pointerTargetX = ((event.clientX - bounds.left) / bounds.width - .5) * 2;
+    pointerTargetY = ((event.clientY - bounds.top) / bounds.height - .5) * 2;
+  }, { passive: true });
+  hero.addEventListener('pointerleave', () => {
+    pointerTargetX = 0;
+    pointerTargetY = 0;
+  });
+  animatePointer();
+}
+
+new IntersectionObserver((entries) => {
+  heroVisible = entries[0]?.isIntersecting ?? true;
+  syncHeroPlayback();
+}, { threshold: .01 }).observe(hero);
+
+heroVideo?.addEventListener('loadeddata', () => {
+  hero.classList.add('media-ready');
+  syncHeroPlayback();
+}, { once: true });
+
+heroVideo?.addEventListener('play', updateMotionLabel);
+heroVideo?.addEventListener('pause', updateMotionLabel);
+
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => hero.classList.add('is-entered'));
+});
+
+renderScroll();
+syncHeroPlayback();
+
+addEventListener('pagehide', () => {
+  if (pointerFrame) cancelAnimationFrame(pointerFrame);
+}, { once: true });
