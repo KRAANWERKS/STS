@@ -66,7 +66,8 @@ const hero = $('.hero');
 const heroStage = $('.hero-stage');
 const heroVideo = $('#hero-video');
 const heroZoomVideo = $('#hero-zoom-video');
-const heroLines = $$('.hero h1 > *');
+const heroLines = $('.hero h1 > *');
+const companyPromise = $('.company-promise');
 const motion = $('#motion');
 
 let userPaused = false;
@@ -82,7 +83,7 @@ let lastScrollAt = performance.now();
 let scrollVelocity = 0;
 let scrollDirection = 0;
 let scrollingUntil = 0;
-let zoomPlaybackRate = .96;
+let zoomPlaybackRate = .98;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -145,10 +146,17 @@ if (!reducedMotion.matches) {
   });
 }
 
-function getZoomProgress(heroProgress) {
-  // Use nearly the full sticky travel so the final wide frame lands
-  // as the Company section begins entering the viewport.
-  return smoothstep(.02, .96, heroProgress);
+function getZoomProgress() {
+  if (!companyPromise) return getHeroProgress();
+
+  const heroTop = scrollY + hero.getBoundingClientRect().top;
+  const promiseTop = scrollY + companyPromise.getBoundingClientRect().top;
+
+  // Begin shortly after the hero starts moving. Finish only when the
+  // Company promise reaches the readable upper-middle of the viewport.
+  const start = heroTop + Math.max(24, innerHeight * .035);
+  const end = promiseTop - innerHeight * .42;
+  return clamp01((scrollY - start) / Math.max(1, end - start));
 }
 
 function animateZoomPlayback(now = performance.now()) {
@@ -156,15 +164,21 @@ function animateZoomPlayback(now = performance.now()) {
   const activelyScrolling = now < scrollingUntil;
 
   if (zoomReady && heroZoomVideo) {
+    const current = heroZoomVideo.currentTime || 0;
+    const delta = zoomTargetTime - current;
+    const maxTime = Math.max(0, heroZoomVideo.duration - .04);
+    const reachedCompanyPromise = zoomTargetTime >= maxTime - .08;
+
     if (blocked || !zoomActive) {
       if (!heroZoomVideo.paused) heroZoomVideo.pause();
-    } else if (activelyScrolling && scrollDirection > 0) {
-      // Smooth forward motion: no currentTime seeking at all.
-      // Scroll only controls how long the clip plays and gently modulates its speed.
-      const velocityBoost = Math.min(.40, Math.abs(scrollVelocity) * .18);
-      const desiredRate = .96 + velocityBoost;
+    } else if ((activelyScrolling && scrollDirection > 0) || (reachedCompanyPromise && delta > .02)) {
+      // Native decoded playback only on the forward path. Scroll velocity and
+      // target lag gently increase playback speed without visible seek stepping.
+      const velocityBoost = activelyScrolling ? Math.min(.42, Math.abs(scrollVelocity) * .18) : 0;
+      const catchupBoost = Math.min(.34, Math.max(0, delta) * .10);
+      const desiredRate = .98 + velocityBoost + catchupBoost;
       zoomPlaybackRate += (desiredRate - zoomPlaybackRate) * .12;
-      heroZoomVideo.playbackRate = Math.min(1.35, Math.max(.86, zoomPlaybackRate));
+      heroZoomVideo.playbackRate = Math.min(1.48, Math.max(.88, zoomPlaybackRate));
 
       if (heroZoomVideo.paused && !heroZoomVideo.ended) {
         heroZoomVideo.play().catch(() => {});
@@ -172,20 +186,13 @@ function animateZoomPlayback(now = performance.now()) {
     } else if (activelyScrolling && scrollDirection < 0) {
       if (!heroZoomVideo.paused) heroZoomVideo.pause();
 
-      // Reverse scrolling cannot decode backward natively. Move backward only
-      // occasionally, leaving normal downward playback completely seek-free.
-      if (!heroZoomVideo.seeking && now - zoomLastCorrectionAt > 150) {
-        const current = heroZoomVideo.currentTime || 0;
-        const target = zoomTargetTime;
-        const delta = target - current;
-        if (delta < -.18) {
-          heroZoomVideo.currentTime = Math.max(0, current + delta * .42);
-          zoomLastCorrectionAt = now;
-        }
+      // Reverse scrolling still needs occasional corrections because HTML video
+      // has no smooth native reverse-decoding mode.
+      if (!heroZoomVideo.seeking && now - zoomLastCorrectionAt > 150 && delta < -.18) {
+        heroZoomVideo.currentTime = Math.max(0, current + delta * .42);
+        zoomLastCorrectionAt = now;
       }
     } else if (!heroZoomVideo.paused) {
-      // A generous grace period means wheel/trackpad event gaps do not cause
-      // visible play/pause chatter.
       heroZoomVideo.pause();
     }
   }
@@ -206,18 +213,18 @@ function renderScroll() {
   heroFlow.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
   hero.style.setProperty('--hero-progress', progress.toFixed(4));
 
-  const shouldUseZoom = zoomReady && !reducedMotion.matches && progress > .025;
+  const zoomProgress = getZoomProgress();
+  const shouldUseZoom = zoomReady && !reducedMotion.matches && zoomProgress > .012;
   zoomActive = shouldUseZoom;
 
   if (zoomReady && heroZoomVideo?.duration && !reducedMotion.matches && !userPaused) {
-    const scrub = getZoomProgress(progress);
-    zoomTargetTime = scrub * Math.max(0, heroZoomVideo.duration - .04);
+    zoomTargetTime = zoomProgress * Math.max(0, heroZoomVideo.duration - .04);
   }
 
   if (progress <= .012) {
     zoomActive = false;
     zoomTargetTime = 0;
-    zoomPlaybackRate = .96;
+    zoomPlaybackRate = .98;
     if (heroZoomVideo && !heroZoomVideo.seeking && heroZoomVideo.currentTime > .02) {
       try { heroZoomVideo.currentTime = 0; } catch {}
     }
