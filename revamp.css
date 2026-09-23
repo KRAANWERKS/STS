@@ -1368,3 +1368,45 @@ nav{z-index:1001}
     text-align:left;
   }
 }
+
+
+/* V14 — reliable scroll playback and navy engineered-availability section. */
+.reliability{
+  background:#143441!important;
+  color:#fff!important;
+}
+.reliability:after{
+  color:rgba(255,255,255,.035)!important;
+}
+.reliability .eyebrow{
+  color:var(--red)!important;
+}
+.reliability-title h2{
+  color:#fff!important;
+}
+.reliability-title h2 em{
+  color:var(--red)!important;
+}
+.reliability-title>p:not(.eyebrow),
+.reliability .hours span,
+.reliability details p{
+  color:#c3d2d9!important;
+}
+.reliability details,
+.reliability .hours{
+  border-color:rgba(255,255,255,.22)!important;
+}
+.reliability summary b{
+  color:var(--red)!important;
+}
+.reliability summary span{
+  color:#93aab5!important;
+}
+
+/* Pure-vector concept background: intentionally soft and low-detail. */
+.fleet-phase-drawing{
+  object-position:center 43%!important;
+  filter:grayscale(1) contrast(.78) brightness(1.10) blur(1.2px)!important;
+  opacity:.78!important;
+  transform:scale(1.025)!important;
+}

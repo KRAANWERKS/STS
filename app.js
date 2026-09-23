@@ -32,6 +32,16 @@ addEventListener('keydown', (event) => {
 });
 $('#year').textContent = new Date().getFullYear();
 
+const reliabilityDetails = $('.reliability-list details');
+reliabilityDetails.forEach((detail) => {
+  detail.addEventListener('toggle', () => {
+    if (!detail.open) return;
+    reliabilityDetails.forEach((other) => {
+      if (other !== detail && other.open) other.open = false;
+    });
+  });
+});
+
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
@@ -53,6 +63,7 @@ let lastScrollY = scrollY;
 let lastScrollAt = performance.now();
 let scrollVelocity = 0;
 let scrollDirection = 0;
+let scrollingUntil = 0;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -118,12 +129,12 @@ if (!reducedMotion.matches) {
 function getZoomProgress(heroProgress) {
   // Use nearly the full sticky travel so the final wide frame lands
   // as the Company section begins entering the viewport.
-  return smoothstep(.025, .96, heroProgress);
+  return smoothstep(.025, .94, heroProgress);
 }
 
 function animateZoomPlayback(now = performance.now()) {
   const blocked = reducedMotion.matches || userPaused || !flowVisible || document.hidden;
-  const activelyScrolling = now - lastScrollAt < 115;
+  const activelyScrolling = now < scrollingUntil;
 
   if (zoomReady && heroZoomVideo) {
     const current = heroZoomVideo.currentTime || 0;
@@ -131,31 +142,29 @@ function animateZoomPlayback(now = performance.now()) {
 
     if (blocked || !zoomActive) {
       if (!heroZoomVideo.paused) heroZoomVideo.pause();
-    } else if (activelyScrolling && scrollDirection > 0 && delta > .018) {
-      // Down-scroll uses normal browser video playback, not frame-by-frame seeking.
-      // Speed follows scroll velocity and remaining distance to the target frame.
-      const velocityRate = Math.min(1.15, Math.abs(scrollVelocity) * .42);
-      const catchup = Math.min(.42, Math.max(0, delta) * .14);
-      heroZoomVideo.playbackRate = Math.min(1.65, Math.max(.35, .38 + velocityRate + catchup));
+    } else if (activelyScrolling && scrollDirection > 0) {
+      // During downward scrolling, keep the MP4 decoding normally.
+      // The playback rate follows scroll speed; the target frame is only a soft guide.
+      const velocityRate = Math.min(1.00, Math.abs(scrollVelocity) * .50);
+      const catchup = Math.min(.28, Math.max(0, delta) * .11);
+      heroZoomVideo.playbackRate = Math.min(1.48, Math.max(.34, .42 + velocityRate + catchup));
+
+      if (heroZoomVideo.ended && zoomTargetTime < heroZoomVideo.duration - .08) {
+        try { heroZoomVideo.currentTime = Math.max(0, zoomTargetTime - .12); } catch {}
+      }
       if (heroZoomVideo.paused && !heroZoomVideo.ended) {
         heroZoomVideo.play().catch(() => {});
       }
     } else {
       if (!heroZoomVideo.paused) heroZoomVideo.pause();
 
-      // Reverse has no native smooth video playback path; correct less often so
-      // forward motion stays decoded and smooth.
-      if (activelyScrolling && scrollDirection < 0 && delta < -.16 &&
-          !heroZoomVideo.seeking && now - zoomLastCorrectionAt > 120) {
-        const corrected = current + delta * .55;
+      // Only correct toward the exact scroll-mapped frame when the scroll burst ends
+      // or when moving upward. That keeps forward motion smooth and decoded.
+      if (Math.abs(delta) > .20 && !heroZoomVideo.seeking && now - zoomLastCorrectionAt > 150) {
+        const gain = scrollDirection < 0 ? .58 : .76;
+        const corrected = current + delta * gain;
         const maxTime = Math.max(0, heroZoomVideo.duration - .04);
         heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, corrected));
-        zoomLastCorrectionAt = now;
-      } else if (!activelyScrolling && Math.abs(delta) > .38 &&
-                 !heroZoomVideo.seeking && now - zoomLastCorrectionAt > 220) {
-        // Settle to the exact scroll frame after motion stops.
-        const maxTime = Math.max(0, heroZoomVideo.duration - .04);
-        heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, zoomTargetTime));
         zoomLastCorrectionAt = now;
       }
     }
@@ -203,10 +212,12 @@ addEventListener('scroll', () => {
   const y = scrollY;
   const dy = y - lastScrollY;
   const dt = Math.max(8, now - lastScrollAt);
+
   scrollVelocity = dy / dt;
-  scrollDirection = Math.sign(dy);
+  if (dy !== 0) scrollDirection = Math.sign(dy);
   lastScrollY = y;
   lastScrollAt = now;
+  scrollingUntil = now + 240;
 
   if (scrollScheduled) return;
   scrollScheduled = true;
