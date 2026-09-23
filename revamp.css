@@ -2122,7 +2122,7 @@ footer small{
 .fleet-phase-expansion .fleet-phase-drawing{
   object-fit:cover!important;
   object-position:center 43%!important;
-  filter:saturate(.88) contrast(1.04)!important;
+  filter:saturate(.88) contrast(1.04) blur(.45px)!important;
   opacity:1!important;
   transform:scale(1.01)!important;
 }
