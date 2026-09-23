@@ -23,20 +23,24 @@
             aria-controls="nav">Menu <span>☰</span></button>
     </header>
     <main id="main">
-        <section class="hero" id="home" aria-label="SUPERFAST floating crane on the water">
-            <div class="hero-image" aria-hidden="true"></div>
-            <div id="ocean" aria-hidden="true"></div>
+        <section class="hero" id="home" aria-label="SUPERFAST tugboat underway at sea">
+            <div class="hero-media" aria-hidden="true">
+                <video class="hero-video" id="hero-video" autoplay muted loop playsinline preload="auto"
+                    poster="assets/floating-crane.png" disablepictureinpicture>
+                    <source src="assets/tugboat-sts.mp4" type="video/mp4">
+                </video>
+            </div>
             <div class="hero-overlay">
                 <p class="hero-kicker">INDONESIA / OFFSHORE TRANSSHIPMENT</p>
-                <h1><span>THE NEW</span><span>STANDARD</span><em>OFFSHORE.</em></h1>
+                <h1><span><i>THE NEW</i></span><span><i>STANDARD</i></span><em><i>OFFSHORE.</i></em></h1>
                 <div class="hero-copy">
                     <p>New-generation floating assets engineered for higher net loading performance.</p><a href="#fleet"
                         aria-label="Discover our fleet">EXPLORE <b>↘</b></a>
                 </div>
             </div>
             <div class="hero-stat"><strong>100K</strong><span>PLANNED MTPD<br>FLEET CAPACITY</span></div>
-            <div class="hero-caption"><span>SUPERFAST FC 201</span><span>SAFE / TRUSTED / SWIFT</span><button
-                    id="motion" aria-pressed="false" aria-label="Pause ocean animation">Pause motion Ⅱ</button></div>
+            <div class="hero-caption"><span>SUPERFAST / MARINE OPERATIONS</span><span>SAFE / TRUSTED / SWIFT</span><button
+                    id="motion" aria-pressed="false" aria-label="Pause hero video">Pause motion Ⅱ</button></div>
         </section>
         <section class="intro section" id="company">
             <div class="section-label"><span>01 / COMPANY</span>
@@ -71,7 +75,7 @@
                 <p>Two loading technologies.<br>One ambition: sustained cargo flow.</p>
             </div>
             <div class="fleet-layout">
-                <div class="fleet-photo"><img src="assets/tugboat-sts.mp4"
+                <div class="fleet-photo"><img src="assets/floating-crane.png"
                         alt="SUPERFAST FC 201 floating crane with a yellow crane and white bridge"
                         loading="lazy"><span>SUPERFAST FC 201 <b>↗</b></span></div>
                 <div class="fleet-info">
