@@ -23,7 +23,7 @@ if (hoverMenu.matches) {
   header.addEventListener('pointerleave', () => setMenuOpen(false));
 }
 
-$('#nav a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
+$$('#nav a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
 addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     setMenuOpen(false);
