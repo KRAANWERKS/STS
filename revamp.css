@@ -2112,3 +2112,29 @@ footer small{
     margin-bottom:14px!important;
   }
 }
+
+
+/* V26 — keep the updated Planned Expansion artwork clear; shade only the lower copy area. */
+.fleet-phase-expansion{
+  background:#08161d!important;
+}
+.fleet-phase-expansion .fleet-phase-bg,
+.fleet-phase-expansion .fleet-phase-drawing{
+  object-fit:cover!important;
+  object-position:center 43%!important;
+  filter:saturate(.88) contrast(1.04)!important;
+  opacity:1!important;
+  transform:scale(1.01)!important;
+}
+.fleet-phase-expansion::after{
+  background:
+    linear-gradient(
+      to top,
+      rgba(5,20,28,.94) 0%,
+      rgba(5,20,28,.76) 20%,
+      rgba(5,20,28,.38) 38%,
+      rgba(5,20,28,.12) 52%,
+      rgba(5,20,28,0) 66%,
+      rgba(5,20,28,0) 100%
+    )!important;
+}
