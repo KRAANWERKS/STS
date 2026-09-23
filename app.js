@@ -142,7 +142,7 @@ if (!reducedMotion.matches) {
 function getZoomEndTime() {
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return 0;
 
-  // Hold on the second-to-last decoded frame, never the physical final frame.
+  // Keep the physical final frame out of view; stop on the second-to-last decoded frame.
   const frame = Math.max(1 / 60, zoomFrameDuration);
   return Math.max(0, heroZoomVideo.duration - frame * 2);
 }
@@ -153,18 +153,17 @@ function getZoomProgress() {
   const heroTop = scrollY + hero.getBoundingClientRect().top;
   const companyTop = scrollY + company.getBoundingClientRect().top;
 
-  // 100% exactly when the top edge of #company reaches the middle of the viewport.
+  // Complete the zoom before the Company panel visibly arrives.
+  // By the time #company reaches the viewport, the clip is already on frame -2.
   const start = heroTop + Math.max(24, innerHeight * .035);
-  const end = companyTop - innerHeight * .50;
+  const end = companyTop - innerHeight * .90;
   const raw = clamp01((scrollY - start) / Math.max(1, end - start));
 
-  // Smooth the scroll/video relationship without changing the exact endpoints.
   return raw * raw * (3 - 2 * raw);
 }
 
 function animateZoomPlayback(now = performance.now()) {
   const blocked = reducedMotion.matches || userPaused || !flowVisible || document.hidden;
-  const activelyScrolling = now < scrollingUntil;
 
   if (zoomReady && heroZoomVideo) {
     const endTime = getZoomEndTime();
@@ -175,40 +174,37 @@ function animateZoomPlayback(now = performance.now()) {
 
     if (blocked || !zoomActive) {
       if (!heroZoomVideo.paused) heroZoomVideo.pause();
-    } else if (zoomProgress >= .9995) {
-      // Guarantee the requested endpoint: when #company reaches screen center,
-      // the clip is exactly on the second-to-last frame.
+    } else if (zoomProgress >= .9985) {
+      // Exact arrival state: second-to-last frame before Company takes over.
       if (!heroZoomVideo.paused) heroZoomVideo.pause();
-      if (!heroZoomVideo.seeking && Math.abs(current - endTime) > frame * .12) {
+      if (!heroZoomVideo.seeking && Math.abs(current - endTime) > frame * .15) {
         try { heroZoomVideo.currentTime = endTime; } catch {}
       }
-    } else if (activelyScrolling && scrollDirection < 0 && delta < -frame * .25) {
-      // Scroll up = visibly rewind. HTML video has no reliable negative
-      // playbackRate, so rewind with small decoded-frame-sized seeks.
-      if (!heroZoomVideo.paused) heroZoomVideo.pause();
-
-      if (!heroZoomVideo.seeking && now - zoomLastCorrectionAt > 20) {
-        const speed = Math.min(4.5, 1.35 + Math.abs(scrollVelocity) * 1.65);
-        const maxStep = Math.min(.14, frame * speed);
-        const step = Math.min(Math.abs(delta), Math.max(frame * .75, maxStep));
-        const nextTime = Math.max(zoomTargetTime, current - step);
-        try { heroZoomVideo.currentTime = Math.max(0, nextTime); } catch {}
-        zoomLastCorrectionAt = now;
-      }
-    } else if ((activelyScrolling && scrollDirection > 0 && delta > frame * .20) ||
-               (!activelyScrolling && delta > frame * 1.4)) {
-      // Scroll down = smooth native forward playback. Increase the rate only
-      // enough to stay close to the scroll-mapped target.
-      const velocityBoost = activelyScrolling ? Math.min(.46, Math.abs(scrollVelocity) * .20) : 0;
+    } else if (delta > frame * .55) {
+      // Scroll down / target moves forward: use native decoding for smooth playback.
       const lagRatio = endTime > 0 ? Math.max(0, delta) / endTime : 0;
-      const catchupBoost = Math.min(.56, lagRatio * 1.65);
-      const desiredRate = 1.00 + velocityBoost + catchupBoost;
+      const velocityBoost = Math.min(.38, Math.max(0, scrollVelocity) * .16);
+      const catchupBoost = Math.min(.46, lagRatio * 1.45);
+      const desiredRate = .98 + velocityBoost + catchupBoost;
 
-      zoomPlaybackRate += (desiredRate - zoomPlaybackRate) * .14;
-      heroZoomVideo.playbackRate = Math.min(1.72, Math.max(.92, zoomPlaybackRate));
+      zoomPlaybackRate += (desiredRate - zoomPlaybackRate) * .12;
+      heroZoomVideo.playbackRate = Math.min(1.55, Math.max(.90, zoomPlaybackRate));
 
       if (heroZoomVideo.paused && !heroZoomVideo.ended) {
         heroZoomVideo.play().catch(() => {});
+      }
+    } else if (delta < -frame * .55) {
+      // Scroll up / target moves backward. Negative playbackRate is not reliable
+      // in browsers, so rewind through small sequential frame-sized seeks.
+      if (!heroZoomVideo.paused) heroZoomVideo.pause();
+
+      if (!heroZoomVideo.seeking && now - zoomLastCorrectionAt > 24) {
+        const distance = Math.abs(delta);
+        const speed = Math.min(3.5, 1.1 + Math.abs(scrollVelocity) * 1.2);
+        const step = Math.min(distance, Math.max(frame, Math.min(.085, frame * speed)));
+        const nextTime = Math.max(zoomTargetTime, current - step);
+        try { heroZoomVideo.currentTime = Math.max(0, nextTime); } catch {}
+        zoomLastCorrectionAt = now;
       }
     } else if (!heroZoomVideo.paused) {
       heroZoomVideo.pause();
@@ -263,7 +259,7 @@ addEventListener('scroll', () => {
   if (dy !== 0) scrollDirection = Math.sign(dy);
   lastScrollY = y;
   lastScrollAt = now;
-  scrollingUntil = now + 300;
+  scrollingUntil = now + 360;
 
   if (scrollScheduled) return;
   scrollScheduled = true;
