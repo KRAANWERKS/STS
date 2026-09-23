@@ -517,3 +517,59 @@ footer .brand img{
   .hero-video-primary{opacity:1!important}
   .hero-video-zoom{display:none!important}
 }
+
+
+/* Hero V5 — preserve the video top edge, crop only the lower edge, keep original red logo. */
+header .brand img,
+footer .brand img{
+  filter:none!important;
+}
+
+.hero-video{
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:50% 0%!important;
+  transform:none!important;
+}
+.hero-video-primary{
+  object-position:50% 0%!important;
+}
+.hero-video-zoom{
+  object-position:50% 0%!important;
+}
+
+/* Keep the footage bright; only shade the typography zone. */
+.hero-media:before{
+  opacity:.18!important;
+}
+.hero-overlay:before{
+  background:linear-gradient(
+    270deg,
+    rgba(5,20,28,.38) 0%,
+    rgba(5,20,28,.20) 45%,
+    rgba(5,20,28,.06) 72%,
+    rgba(5,20,28,0) 100%
+  )!important;
+}
+
+/* Explicit final headline/kicker composition. */
+.hero-kicker{
+  display:block!important;
+  visibility:visible!important;
+}
+.hero h1 .hero-line-one i::after{content:''}
+.hero h1 .hero-line-one,
+.hero h1 .hero-line-two,
+.hero h1 .hero-line-three{
+  display:block!important;
+}
+
+@media(max-width:760px){
+  .hero-video,
+  .hero-video-primary,
+  .hero-video-zoom{
+    object-position:56% 0%!important;
+  }
+}
