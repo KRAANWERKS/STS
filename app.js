@@ -2,17 +2,33 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
 const menu = $('.menu');
+const header = $('header');
+const nav = $('#nav');
+const hoverMenu = matchMedia('(hover:hover) and (pointer:fine)');
+
+function setMenuOpen(open) {
+  menu.setAttribute('aria-expanded', String(open));
+  nav.classList.toggle('open', open);
+}
+
 menu.addEventListener('click', () => {
-  const open = menu.getAttribute('aria-expanded') !== 'true';
-  menu.setAttribute('aria-expanded', open);
-  $('#nav').classList.toggle('open', open);
+  setMenuOpen(menu.getAttribute('aria-expanded') !== 'true');
 });
-$$('#nav a').forEach((link) => link.addEventListener('click', () => {
-  menu.setAttribute('aria-expanded', 'false');
-  $('#nav').classList.remove('open');
-}));
+
+menu.addEventListener('focus', () => setMenuOpen(true));
+
+if (hoverMenu.matches) {
+  menu.addEventListener('pointerenter', () => setMenuOpen(true));
+  nav.addEventListener('pointerenter', () => setMenuOpen(true));
+  header.addEventListener('pointerleave', () => setMenuOpen(false));
+}
+
+$('#nav a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
 addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') menu.click();
+  if (event.key === 'Escape') {
+    setMenuOpen(false);
+    menu.focus();
+  }
 });
 $('#year').textContent = new Date().getFullYear();
 
@@ -53,8 +69,10 @@ tabs.forEach((tab, index) => {
 });
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
 const heroStage = $('.hero-stage');
+const company = $('#company');
 const heroVideo = $('#hero-video');
 const heroZoomVideo = $('#hero-zoom-video');
 const heroLines = $$('.hero h1 > *');
@@ -64,7 +82,13 @@ let userPaused = false;
 let heroVisible = true;
 let scrollScheduled = false;
 let zoomReady = false;
-let zoomActivated = false;
+let lastZoomTime = -1;
+
+const clamp01 = (value) => Math.min(1, Math.max(0, value));
+const smoothstep = (edge0, edge1, value) => {
+  const x = clamp01((value - edge0) / Math.max(.0001, edge1 - edge0));
+  return x * x * (3 - 2 * x);
+};
 
 function updateMotionLabel() {
   const paused = reducedMotion.matches || userPaused || heroVideo?.paused;
@@ -73,19 +97,13 @@ function updateMotionLabel() {
 }
 
 async function syncHeroPlayback() {
+  if (!heroVideo) return;
   const shouldPause = reducedMotion.matches || userPaused || !heroVisible || document.hidden;
-  if (heroVideo) {
-    if (shouldPause) heroVideo.pause();
-    else {
-      try { await heroVideo.play(); } catch {}
-    }
+  if (shouldPause) heroVideo.pause();
+  else {
+    try { await heroVideo.play(); } catch {}
   }
-  if (heroZoomVideo && zoomReady) {
-    if (shouldPause || !zoomActivated) heroZoomVideo.pause();
-    else {
-      try { await heroZoomVideo.play(); } catch {}
-    }
-  }
+  if (heroZoomVideo) heroZoomVideo.pause();
   updateMotionLabel();
 }
 
@@ -94,7 +112,10 @@ motion.addEventListener('click', () => {
   syncHeroPlayback();
 });
 
-reducedMotion.addEventListener('change', syncHeroPlayback);
+reducedMotion.addEventListener('change', () => {
+  renderScroll();
+  syncHeroPlayback();
+});
 document.addEventListener('visibilitychange', syncHeroPlayback);
 
 if (!reducedMotion.matches) {
@@ -112,29 +133,44 @@ if (!reducedMotion.matches) {
 function getHeroProgress() {
   const bounds = hero.getBoundingClientRect();
   const travel = Math.max(1, hero.offsetHeight - heroStage.offsetHeight);
-  return Math.min(1, Math.max(0, -bounds.top / travel));
+  return clamp01(-bounds.top / travel);
+}
+
+function getZoomScrubProgress() {
+  const heroTop = scrollY + hero.getBoundingClientRect().top;
+  const companyTop = scrollY + company.getBoundingClientRect().top;
+  const heroTravel = Math.max(1, hero.offsetHeight - innerHeight);
+  const start = heroTop + heroTravel * .22;
+  const end = companyTop + innerHeight * .34;
+  return clamp01((scrollY - start) / Math.max(1, end - start));
 }
 
 function renderScroll() {
-  const progress = getHeroProgress();
+  const heroProgress = getHeroProgress();
+  const companyBounds = company.getBoundingClientRect();
+  const companyDepth = clamp01(-companyBounds.top / Math.max(1, innerHeight * .46));
+
   heroLines.forEach((line, index) => {
     const direction = index === 1 ? -1 : 1;
-    line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 7}vw,${progress * 1.5}vh,0)`;
+    line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * heroProgress * 7}vw,${heroProgress * 1.5}vh,0)`;
   });
 
-  const zoomMix = zoomReady ? Math.min(1, Math.max(0, (progress - .18) / .55)) : 0;
-  hero.style.setProperty('--hero-progress', progress.toFixed(4));
-  hero.style.setProperty('--zoom-mix', zoomMix.toFixed(4));
-  hero.style.setProperty('--hero-media-scale', '1');
+  const primaryFade = smoothstep(.32, .94, heroProgress);
+  const transitionIn = smoothstep(.28, .90, heroProgress);
+  const transitionOut = smoothstep(.10, .98, companyDepth);
+  const transitionOpacity = reducedMotion.matches ? 0 : transitionIn * (1 - transitionOut);
 
-  if (zoomReady && progress > .20 && !zoomActivated) {
-    zoomActivated = true;
-    try { heroZoomVideo.currentTime = 0; } catch {}
-    syncHeroPlayback();
-  } else if (progress < .10 && zoomActivated) {
-    zoomActivated = false;
-    heroZoomVideo.pause();
-    try { heroZoomVideo.currentTime = 0; } catch {}
+  hero.style.setProperty('--hero-progress', heroProgress.toFixed(4));
+  hero.style.setProperty('--primary-opacity', (1 - primaryFade).toFixed(4));
+  heroFlow.style.setProperty('--transition-opacity', transitionOpacity.toFixed(4));
+
+  if (zoomReady && heroZoomVideo?.duration && !reducedMotion.matches && !userPaused) {
+    const scrub = getZoomScrubProgress();
+    const target = scrub * Math.max(0, heroZoomVideo.duration - .04);
+    if (Math.abs(target - lastZoomTime) > .025) {
+      heroZoomVideo.currentTime = target;
+      lastZoomTime = target;
+    }
   }
 }
 
@@ -147,6 +183,8 @@ addEventListener('scroll', () => {
   });
 }, { passive: true });
 
+addEventListener('resize', () => requestAnimationFrame(renderScroll), { passive: true });
+
 new IntersectionObserver((entries) => {
   heroVisible = entries[0]?.isIntersecting ?? true;
   syncHeroPlayback();
@@ -157,16 +195,16 @@ heroVideo?.addEventListener('loadeddata', () => {
   syncHeroPlayback();
 }, { once: true });
 
-heroZoomVideo?.addEventListener('loadeddata', () => {
+heroZoomVideo?.addEventListener('loadedmetadata', () => {
   zoomReady = true;
-  hero.classList.add('zoom-ready');
+  heroZoomVideo.pause();
+  lastZoomTime = -1;
   renderScroll();
 }, { once: true });
 
 heroZoomVideo?.addEventListener('error', () => {
   zoomReady = false;
-  hero.classList.remove('zoom-ready');
-  hero.style.setProperty('--zoom-mix', '0');
+  heroFlow.style.setProperty('--transition-opacity', '0');
 }, { once: true });
 
 heroVideo?.addEventListener('play', updateMotionLabel);

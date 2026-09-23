@@ -573,3 +573,168 @@ footer .brand img{
     object-position:56% 0%!important;
   }
 }
+
+
+/* Hero V6 — header overlay, hover menu, scroll-scrubbed zoom-out into Company. */
+header{
+  position:fixed!important;
+  top:0;
+  left:0;
+  right:0;
+  z-index:1000!important;
+  background:rgba(8,22,29,.90)!important;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+header .brand img,
+footer .brand img{
+  filter:none!important;
+}
+.menu:hover,
+.menu:focus-visible{
+  color:var(--red);
+}
+nav{z-index:1001}
+
+.hero-company-flow{
+  --transition-opacity:0;
+  position:relative;
+  background:#08161d;
+  isolation:isolate;
+}
+.hero-transition-media{
+  position:sticky;
+  top:0;
+  height:100svh;
+  margin-bottom:-100svh;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  background:#08161d;
+}
+.hero-transition-media video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 0%;
+  opacity:var(--transition-opacity);
+  filter:saturate(.98) contrast(1.015) brightness(.98);
+  will-change:opacity;
+}
+
+.hero{
+  --primary-opacity:1;
+  position:relative;
+  z-index:1;
+  height:145svh!important;
+  min-height:0!important;
+  max-height:none!important;
+  background:transparent!important;
+}
+.hero-stage{
+  position:sticky!important;
+  top:0!important;
+  height:100svh!important;
+  min-height:620px;
+  overflow:hidden;
+  isolation:isolate;
+  background:transparent;
+}
+.hero-media{
+  inset:0;
+  background:transparent!important;
+}
+.hero-video-primary{
+  opacity:var(--primary-opacity)!important;
+  object-position:50% 0%!important;
+  transform:none!important;
+}
+.hero-media:before{
+  opacity:.16!important;
+}
+.hero-overlay{
+  padding-top:92px!important;
+}
+.hero-caption{
+  padding-bottom:max(22px,env(safe-area-inset-bottom));
+}
+
+/* Company begins over the same zoom-out shot, then resolves into the white editorial section. */
+.intro{
+  position:relative;
+  z-index:2;
+  min-height:118vh!important;
+  padding-top:clamp(340px,42svh,500px)!important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0) 0,
+      rgba(255,255,255,0) 18svh,
+      rgba(255,255,255,.18) 25svh,
+      rgba(255,255,255,.82) 34svh,
+      #fff 43svh,
+      #fff 100%
+    )!important;
+}
+.intro .section-label,
+.intro>div:last-child{
+  position:relative;
+  z-index:2;
+}
+
+@media(max-width:760px){
+  header{
+    height:72px!important;
+  }
+  .hero{
+    height:138svh!important;
+  }
+  .hero-stage{
+    top:0!important;
+    height:100svh!important;
+    min-height:600px;
+  }
+  .hero-overlay{
+    padding-top:72px!important;
+  }
+  .hero-transition-media video,
+  .hero-video-primary{
+    object-position:56% 0%!important;
+  }
+  .intro{
+    min-height:105vh!important;
+    padding-top:clamp(250px,34svh,360px)!important;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(255,255,255,0) 0,
+        rgba(255,255,255,0) 14svh,
+        rgba(255,255,255,.24) 21svh,
+        rgba(255,255,255,.88) 29svh,
+        #fff 37svh,
+        #fff 100%
+      )!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero{
+    height:100svh!important;
+  }
+  .hero-stage{
+    position:relative!important;
+    height:100svh!important;
+  }
+  .hero-transition-media{
+    display:none!important;
+  }
+  .hero-video-primary{
+    opacity:1!important;
+  }
+  .intro{
+    padding-top:130px!important;
+    background:#fff!important;
+  }
+}
