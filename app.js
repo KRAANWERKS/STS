@@ -66,7 +66,7 @@ const hero = $('.hero');
 const heroStage = $('.hero-stage');
 const heroVideo = $('#hero-video');
 const heroZoomVideo = $('#hero-zoom-video');
-const heroLines = $('.hero h1 > *');
+const heroLines = $$('.hero h1 > *');
 const companyPromise = $('.company-promise');
 const motion = $('#motion');
 
