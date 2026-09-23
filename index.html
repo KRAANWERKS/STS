@@ -24,25 +24,32 @@
     </header>
     <main id="main">
         <section class="hero" id="home" aria-label="SUPERFAST tugboat underway at sea">
-            <div class="hero-media" aria-hidden="true">
-                <video class="hero-video" id="hero-video" autoplay muted loop playsinline preload="auto"
-                    poster="assets/floating-crane.png" disablepictureinpicture>
-                    <source src="assets/tugboat-sts.mp4" type="video/mp4">
-                </video>
-            </div>
-            <div class="hero-overlay">
-                <h1 aria-label="New standard, higher performance, engineered reliability">
-                    <span class="hero-line-one"><i>NEW STANDARD</i></span>
-                    <span class="hero-line-two"><i>HIGHER PERFORMANCE</i></span>
-                    <em class="hero-line-three"><i>ENGINEERED RELIABILITY</i></em>
-                </h1>
-                <div class="hero-copy">
-                    <p>New-generation floating assets engineered for higher net loading performance.</p><a href="#fleet"
-                        aria-label="Discover our fleet">EXPLORE <b>↘</b></a>
+            <div class="hero-stage">
+                <div class="hero-media" aria-hidden="true">
+                    <video class="hero-video hero-video-primary" id="hero-video" autoplay muted loop playsinline preload="auto"
+                        poster="assets/floating-crane.png" disablepictureinpicture>
+                        <source src="assets/tugboat-sts.mp4" type="video/mp4">
+                    </video>
+                    <video class="hero-video hero-video-zoom" id="hero-zoom-video" muted playsinline preload="metadata"
+                        disablepictureinpicture>
+                        <source src="assets/tugboat-zoom-out.mp4" type="video/mp4">
+                    </video>
                 </div>
+                <div class="hero-overlay">
+                    <p class="hero-kicker">NEW STANDARD, HIGHER PERFORMANCE, ENGINEERED RELIABILITY</p>
+                    <h1 aria-label="The new standard offshore">
+                        <span class="hero-line-one"><i>THE NEW</i></span>
+                        <span class="hero-line-two"><i>STANDARD</i></span>
+                        <em class="hero-line-three"><i>OFFSHORE.</i></em>
+                    </h1>
+                    <div class="hero-copy">
+                        <p>New-generation floating assets engineered for higher net loading performance.</p><a href="#fleet"
+                            aria-label="Discover our fleet">EXPLORE <b>↘</b></a>
+                    </div>
+                </div>
+                <div class="hero-caption"><span>SUPERFAST / MARINE OPERATIONS</span><span>SAFE / TRUSTED / SWIFT</span><button
+                        id="motion" aria-pressed="false" aria-label="Pause hero video">Pause motion Ⅱ</button></div>
             </div>
-            <div class="hero-caption"><span>SUPERFAST / MARINE OPERATIONS</span><span>SAFE / TRUSTED / SWIFT</span><button
-                    id="motion" aria-pressed="false" aria-label="Pause hero video">Pause motion Ⅱ</button></div>
         </section>
         <section class="intro section" id="company">
             <div class="section-label"><span>01 / COMPANY</span>
