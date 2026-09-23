@@ -232,11 +232,13 @@ header{height:92px;display:flex;grid-template:none;padding:0 5%;background:#0816
   padding-right:27%;
 }
 .hero h1 .hero-line-two{
+  margin-left:0;
   padding-right:8%;
   color:transparent;
   -webkit-text-stroke:1.2px rgba(255,255,255,.92);
 }
 .hero h1 .hero-line-three{
+  margin-left:0;
   padding-right:0;
   color:var(--red);
   font-size:.73em;
