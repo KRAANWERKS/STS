@@ -1053,3 +1053,31 @@ nav{z-index:1001}
     background:#fff!important;
   }
 }
+
+
+/* Hero V11 — flush-right overlay and faster scroll-driven zoom scrub. */
+.hero-overlay{
+  right:0!important;
+  width:min(82vw,1180px)!important;
+  padding-right:4.5vw!important;
+  box-sizing:border-box!important;
+}
+.hero-overlay:before{
+  right:0!important;
+  width:100%!important;
+}
+@media(max-width:1000px){
+  .hero-overlay{
+    right:0!important;
+    width:92vw!important;
+    padding-right:4vw!important;
+  }
+}
+@media(max-width:760px){
+  .hero-overlay{
+    left:5%!important;
+    right:0!important;
+    width:auto!important;
+    padding-right:5%!important;
+  }
+}
