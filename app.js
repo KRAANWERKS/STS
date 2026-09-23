@@ -148,8 +148,9 @@ if (!reducedMotion.matches) {
 }
 
 function getZoomProgress(heroProgress) {
-  // Full zoom-out completes over a shorter portion of the hero scroll.
-  return smoothstep(.025, .46, heroProgress);
+  // Let the zoom-out develop through most of the hero's sticky travel,
+  // so the widest frame lands just before the Company section takes over.
+  return smoothstep(.02, .74, heroProgress);
 }
 
 function animateZoomSeek(now = performance.now()) {
@@ -157,10 +158,10 @@ function animateZoomSeek(now = performance.now()) {
     const current = heroZoomVideo.currentTime || 0;
     const delta = zoomTargetTime - current;
 
-    // Cap seeks at about 30fps so the decoder can finish frames between seeks.
-    // Interpolate toward the target to avoid visible hard jumps.
-    if (Math.abs(delta) > .008 && !heroZoomVideo.seeking && now - zoomLastSeekAt > 32) {
-      const gain = Math.abs(delta) > .55 ? .52 : Math.abs(delta) > .20 ? .40 : .30;
+    // A gentler 25fps seek cadence gives the browser more time to decode each
+    // requested frame, while easing keeps the playhead visually attached to scroll.
+    if (Math.abs(delta) > .006 && !heroZoomVideo.seeking && now - zoomLastSeekAt > 40) {
+      const gain = Math.abs(delta) > .55 ? .34 : Math.abs(delta) > .20 ? .25 : .18;
       const next = current + delta * gain;
       const maxTime = Math.max(0, heroZoomVideo.duration - .04);
       heroZoomVideo.currentTime = Math.min(maxTime, Math.max(0, next));
@@ -178,7 +179,7 @@ function renderScroll() {
     line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 7}vw,${progress * 1.5}vh,0)`;
   });
 
-  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.018, .12, progress);
+  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.018, .16, progress);
   heroFlow.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
   heroFlow.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
   hero.style.setProperty('--hero-progress', progress.toFixed(4));
