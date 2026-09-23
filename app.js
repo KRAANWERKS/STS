@@ -54,13 +54,17 @@ tabs.forEach((tab, index) => {
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const hero = $('.hero');
+const heroStage = $('.hero-stage');
 const heroVideo = $('#hero-video');
+const heroZoomVideo = $('#hero-zoom-video');
 const heroLines = $$('.hero h1 > *');
 const motion = $('#motion');
 
 let userPaused = false;
 let heroVisible = true;
 let scrollScheduled = false;
+let zoomReady = false;
+let zoomActivated = false;
 
 function updateMotionLabel() {
   const paused = reducedMotion.matches || userPaused || heroVideo?.paused;
@@ -69,12 +73,18 @@ function updateMotionLabel() {
 }
 
 async function syncHeroPlayback() {
-  if (!heroVideo) return;
   const shouldPause = reducedMotion.matches || userPaused || !heroVisible || document.hidden;
-  if (shouldPause) {
-    heroVideo.pause();
-  } else {
-    try { await heroVideo.play(); } catch {}
+  if (heroVideo) {
+    if (shouldPause) heroVideo.pause();
+    else {
+      try { await heroVideo.play(); } catch {}
+    }
+  }
+  if (heroZoomVideo && zoomReady) {
+    if (shouldPause || !zoomActivated) heroZoomVideo.pause();
+    else {
+      try { await heroZoomVideo.play(); } catch {}
+    }
   }
   updateMotionLabel();
 }
@@ -84,10 +94,7 @@ motion.addEventListener('click', () => {
   syncHeroPlayback();
 });
 
-reducedMotion.addEventListener('change', () => {
-  syncHeroPlayback();
-});
-
+reducedMotion.addEventListener('change', syncHeroPlayback);
 document.addEventListener('visibilitychange', syncHeroPlayback);
 
 if (!reducedMotion.matches) {
@@ -102,14 +109,33 @@ if (!reducedMotion.matches) {
   });
 }
 
+function getHeroProgress() {
+  const bounds = hero.getBoundingClientRect();
+  const travel = Math.max(1, hero.offsetHeight - heroStage.offsetHeight);
+  return Math.min(1, Math.max(0, -bounds.top / travel));
+}
+
 function renderScroll() {
-  const progress = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / hero.offsetHeight));
+  const progress = getHeroProgress();
   heroLines.forEach((line, index) => {
     const direction = index === 1 ? -1 : 1;
-    line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 9}vw,${progress * 2}vh,0)`;
+    line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 7}vw,${progress * 1.5}vh,0)`;
   });
+
+  const zoomMix = zoomReady ? Math.min(1, Math.max(0, (progress - .18) / .55)) : 0;
   hero.style.setProperty('--hero-progress', progress.toFixed(4));
-  hero.style.setProperty('--hero-media-scale', (1.035 + progress * .025).toFixed(4));
+  hero.style.setProperty('--zoom-mix', zoomMix.toFixed(4));
+  hero.style.setProperty('--hero-media-scale', (1 + progress * .012).toFixed(4));
+
+  if (zoomReady && progress > .20 && !zoomActivated) {
+    zoomActivated = true;
+    try { heroZoomVideo.currentTime = 0; } catch {}
+    syncHeroPlayback();
+  } else if (progress < .10 && zoomActivated) {
+    zoomActivated = false;
+    heroZoomVideo.pause();
+    try { heroZoomVideo.currentTime = 0; } catch {}
+  }
 }
 
 addEventListener('scroll', () => {
@@ -131,6 +157,18 @@ heroVideo?.addEventListener('loadeddata', () => {
   syncHeroPlayback();
 }, { once: true });
 
+heroZoomVideo?.addEventListener('loadeddata', () => {
+  zoomReady = true;
+  hero.classList.add('zoom-ready');
+  renderScroll();
+}, { once: true });
+
+heroZoomVideo?.addEventListener('error', () => {
+  zoomReady = false;
+  hero.classList.remove('zoom-ready');
+  hero.style.setProperty('--zoom-mix', '0');
+}, { once: true });
+
 heroVideo?.addEventListener('play', updateMotionLabel);
 heroVideo?.addEventListener('pause', updateMotionLabel);
 
@@ -140,4 +178,3 @@ requestAnimationFrame(() => {
 
 renderScroll();
 syncHeroPlayback();
-
