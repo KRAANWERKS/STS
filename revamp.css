@@ -1410,3 +1410,105 @@ nav{z-index:1001}
   opacity:.78!important;
   transform:scale(1.025)!important;
 }
+
+
+/* V15 — smoother native hero video playback + expandable Customer Outcomes. */
+.outcome-list .outcome-card{
+  display:block!important;
+  padding:0!important;
+  overflow:hidden;
+  border-bottom:1px solid var(--line);
+  transition:background .28s ease;
+}
+.outcome-toggle{
+  width:100%;
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto 26px;
+  align-items:center;
+  gap:18px;
+  padding:27px 0;
+  border:0;
+  background:transparent;
+  color:inherit;
+  text-align:left;
+}
+.outcome-toggle span{
+  font-size:12px;
+  color:var(--red);
+  letter-spacing:.08em;
+}
+.outcome-toggle h3{
+  margin:0!important;
+}
+.outcome-toggle b{
+  white-space:nowrap;
+}
+.outcome-toggle i{
+  display:grid;
+  place-items:center;
+  width:26px;
+  height:26px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  font-style:normal;
+  color:var(--red);
+  transition:transform .28s ease,border-color .28s ease;
+}
+.outcome-detail{
+  display:grid;
+  grid-template-rows:0fr;
+  opacity:0;
+  transition:grid-template-rows .34s cubic-bezier(.2,.75,.25,1),opacity .24s ease;
+}
+.outcome-detail>p{
+  overflow:hidden;
+  margin:0;
+  padding:0 86px 0 60px;
+  max-width:900px;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.75;
+}
+@media(hover:hover){
+  .outcome-card:hover{
+    background:#f6f9fa;
+  }
+  .outcome-card:hover .outcome-detail{
+    grid-template-rows:1fr;
+    opacity:1;
+  }
+  .outcome-card:hover .outcome-detail>p{
+    padding-bottom:26px;
+  }
+  .outcome-card:hover .outcome-toggle i{
+    transform:rotate(45deg);
+    border-color:var(--red);
+  }
+}
+.outcome-card.is-open .outcome-detail{
+  grid-template-rows:1fr;
+  opacity:1;
+}
+.outcome-card.is-open .outcome-detail>p{
+  padding-bottom:26px;
+}
+.outcome-card.is-open .outcome-toggle i{
+  transform:rotate(45deg);
+  border-color:var(--red);
+}
+
+@media(max-width:760px){
+  .outcome-toggle{
+    grid-template-columns:32px minmax(0,1fr) 26px;
+    gap:12px;
+    padding:22px 0;
+  }
+  .outcome-toggle b{
+    display:none;
+  }
+  .outcome-detail>p{
+    padding-left:44px;
+    padding-right:12px;
+    font-size:14px;
+  }
+}
