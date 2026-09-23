@@ -69,6 +69,7 @@ tabs.forEach((tab, index) => {
 });
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
 const heroStage = $('.hero-stage');
 const heroVideo = $('#hero-video');
@@ -77,7 +78,7 @@ const heroLines = $$('.hero h1 > *');
 const motion = $('#motion');
 
 let userPaused = false;
-let heroVisible = true;
+let flowVisible = true;
 let scrollScheduled = false;
 let zoomReady = false;
 let zoomActive = false;
@@ -88,19 +89,26 @@ const smoothstep = (edge0, edge1, value) => {
   return x * x * (3 - 2 * x);
 };
 
+function getHeroProgress() {
+  const bounds = hero.getBoundingClientRect();
+  const travel = Math.max(1, hero.offsetHeight - heroStage.offsetHeight);
+  return clamp01(-bounds.top / travel);
+}
+
 function updateMotionLabel() {
-  const paused = reducedMotion.matches || userPaused || heroVideo?.paused;
+  const activeVideo = zoomActive ? heroZoomVideo : heroVideo;
+  const paused = reducedMotion.matches || userPaused || activeVideo?.paused;
   motion.setAttribute('aria-pressed', String(paused));
   motion.textContent = paused ? 'Play motion ▷' : 'Pause motion Ⅱ';
 }
 
 async function syncHeroPlayback() {
-  const blocked = reducedMotion.matches || userPaused || !heroVisible || document.hidden;
-  const heroProgress = getHeroProgress();
+  const blocked = reducedMotion.matches || userPaused || !flowVisible || document.hidden;
+  const progress = getHeroProgress();
 
   if (heroVideo) {
-    const keepLoopPlaying = !blocked && heroProgress < .18;
-    if (keepLoopPlaying) {
+    const shouldLoop = !blocked && progress < .18;
+    if (shouldLoop) {
       try { await heroVideo.play(); } catch {}
     } else {
       heroVideo.pause();
@@ -108,7 +116,7 @@ async function syncHeroPlayback() {
   }
 
   if (heroZoomVideo) {
-    heroZoomVideo.playbackRate = 1.35;
+    heroZoomVideo.playbackRate = 1.45;
     if (blocked || !zoomActive) {
       heroZoomVideo.pause();
     } else if (!heroZoomVideo.ended) {
@@ -142,40 +150,35 @@ if (!reducedMotion.matches) {
   });
 }
 
-function getHeroProgress() {
-  const bounds = hero.getBoundingClientRect();
-  const travel = Math.max(1, hero.offsetHeight - heroStage.offsetHeight);
-  return clamp01(-bounds.top / travel);
-}
-
 function renderScroll() {
-  const heroProgress = getHeroProgress();
+  const progress = getHeroProgress();
 
   heroLines.forEach((line, index) => {
     const direction = index === 1 ? -1 : 1;
-    line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * heroProgress * 7}vw,${heroProgress * 1.5}vh,0)`;
+    line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 7}vw,${progress * 1.5}vh,0)`;
   });
 
-  // Fast crossfade in the SAME media viewport.
-  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.025, .14, heroProgress);
-  hero.style.setProperty('--hero-progress', heroProgress.toFixed(4));
-  hero.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
-  hero.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
+  // Scroll controls the replacement; the zoom clip itself plays normally
+  // for smooth decoded motion instead of repeatedly seeking MP4 frames.
+  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.018, .13, progress);
+  heroFlow.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
+  heroFlow.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
+  hero.style.setProperty('--hero-progress', progress.toFixed(4));
 
-  const shouldUseZoom = zoomReady && !reducedMotion.matches && heroProgress > .045;
+  const shouldUseZoom = zoomReady && !reducedMotion.matches && progress > .035;
 
   if (shouldUseZoom && !zoomActive) {
     zoomActive = true;
-    if (heroZoomVideo.ended || heroZoomVideo.currentTime < .02) {
+    if (heroZoomVideo.ended || heroZoomVideo.currentTime < .03) {
       try { heroZoomVideo.currentTime = 0; } catch {}
     }
     syncHeroPlayback();
-  } else if (!shouldUseZoom && zoomActive) {
+  } else if (progress <= .02 && zoomActive) {
     zoomActive = false;
     heroZoomVideo.pause();
     try { heroZoomVideo.currentTime = 0; } catch {}
     syncHeroPlayback();
-  } else if (!shouldUseZoom && heroProgress <= .045 && heroVideo?.paused && !userPaused && heroVisible && !document.hidden) {
+  } else if (progress <= .02 && heroVideo?.paused && !userPaused && flowVisible && !document.hidden) {
     syncHeroPlayback();
   }
 }
@@ -192,12 +195,12 @@ addEventListener('scroll', () => {
 addEventListener('resize', () => requestAnimationFrame(renderScroll), { passive: true });
 
 new IntersectionObserver((entries) => {
-  heroVisible = entries[0]?.isIntersecting ?? true;
+  flowVisible = entries[0]?.isIntersecting ?? true;
   syncHeroPlayback();
-}, { threshold: .01 }).observe(hero);
+}, { threshold: .01 }).observe(heroFlow);
 
 heroVideo?.addEventListener('loadeddata', () => {
-  hero.classList.add('media-ready');
+  heroFlow.classList.add('media-ready');
   syncHeroPlayback();
 }, { once: true });
 
@@ -205,7 +208,7 @@ function prepareZoomVideo() {
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
   zoomReady = true;
   heroZoomVideo.pause();
-  heroZoomVideo.playbackRate = 1.35;
+  heroZoomVideo.playbackRate = 1.45;
   try { heroZoomVideo.currentTime = 0; } catch {}
   renderScroll();
 }
@@ -220,12 +223,14 @@ heroZoomVideo?.addEventListener('durationchange', () => {
 heroZoomVideo?.addEventListener('error', () => {
   zoomReady = false;
   zoomActive = false;
-  hero.style.setProperty('--zoom-opacity', '0');
-  hero.style.setProperty('--primary-opacity', '1');
+  heroFlow.style.setProperty('--zoom-opacity', '0');
+  heroFlow.style.setProperty('--primary-opacity', '1');
 }, { once: true });
 
 heroVideo?.addEventListener('play', updateMotionLabel);
 heroVideo?.addEventListener('pause', updateMotionLabel);
+heroZoomVideo?.addEventListener('play', updateMotionLabel);
+heroZoomVideo?.addEventListener('pause', updateMotionLabel);
 
 requestAnimationFrame(() => {
   requestAnimationFrame(() => hero.classList.add('is-entered'));

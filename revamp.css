@@ -910,3 +910,146 @@ nav{z-index:1001}
     left:38%;
   }
 }
+
+
+/* Hero V10 — shared sticky video background from Hero into Company. */
+.hero-company-flow{
+  --primary-opacity:1;
+  --zoom-opacity:0;
+  position:relative!important;
+  background:#08161d!important;
+  isolation:isolate;
+}
+.hero-flow-media{
+  position:sticky;
+  top:0;
+  height:100svh;
+  margin-bottom:-100svh;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  background:#08161d;
+}
+.hero-flow-media .hero-video{
+  position:absolute!important;
+  top:92px!important;
+  right:0!important;
+  bottom:0!important;
+  left:0!important;
+  width:100%!important;
+  height:calc(100% - 92px)!important;
+  object-fit:cover!important;
+  object-position:50% 0%!important;
+  transform:none!important;
+  filter:saturate(.98) contrast(1.015) brightness(.98)!important;
+}
+.hero-flow-media .hero-video-primary{
+  z-index:0!important;
+  opacity:var(--primary-opacity)!important;
+}
+.hero-flow-media .hero-video-zoom{
+  z-index:1!important;
+  opacity:var(--zoom-opacity)!important;
+}
+.hero-flow-media::after{
+  content:'';
+  position:absolute;
+  z-index:2;
+  inset:92px 0 0;
+  pointer-events:none;
+  background:radial-gradient(circle at 72% 25%,rgba(230,248,251,.10),transparent 25%);
+}
+
+.hero{
+  position:relative!important;
+  z-index:1!important;
+  height:145svh!important;
+  min-height:0!important;
+  max-height:none!important;
+  background:transparent!important;
+}
+.hero-stage{
+  position:sticky!important;
+  top:0!important;
+  height:100svh!important;
+  min-height:620px;
+  overflow:hidden;
+  isolation:isolate;
+  background:transparent!important;
+}
+.hero-media{
+  display:none!important;
+}
+
+/* The zoom-out shot remains behind the beginning of Company, then dissolves into white. */
+.intro{
+  position:relative!important;
+  z-index:2!important;
+  min-height:118vh!important;
+  padding-top:clamp(340px,42svh,500px)!important;
+  padding-bottom:130px!important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,0) 0,
+      rgba(255,255,255,0) 17svh,
+      rgba(255,255,255,.16) 24svh,
+      rgba(255,255,255,.76) 34svh,
+      #fff 44svh,
+      #fff 100%
+    )!important;
+}
+.intro .section-label,
+.intro>div:last-child{
+  position:relative;
+  z-index:2;
+}
+
+@media(max-width:760px){
+  .hero-flow-media .hero-video{
+    top:72px!important;
+    height:calc(100% - 72px)!important;
+    object-position:56% 0%!important;
+  }
+  .hero-flow-media::after{
+    inset:72px 0 0;
+  }
+  .hero{
+    height:138svh!important;
+  }
+  .hero-stage{
+    height:100svh!important;
+    min-height:600px;
+  }
+  .intro{
+    min-height:105vh!important;
+    padding-top:clamp(250px,34svh,360px)!important;
+    padding-bottom:85px!important;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(255,255,255,0) 0,
+        rgba(255,255,255,0) 13svh,
+        rgba(255,255,255,.20) 20svh,
+        rgba(255,255,255,.82) 29svh,
+        #fff 38svh,
+        #fff 100%
+      )!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-flow-media .hero-video-primary{
+    opacity:1!important;
+  }
+  .hero-flow-media .hero-video-zoom{
+    display:none!important;
+  }
+  .hero{
+    height:100svh!important;
+  }
+  .intro{
+    min-height:0!important;
+    padding-top:130px!important;
+    background:#fff!important;
+  }
+}
