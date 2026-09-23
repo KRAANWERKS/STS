@@ -125,7 +125,7 @@ function renderScroll() {
   const zoomMix = zoomReady ? Math.min(1, Math.max(0, (progress - .18) / .55)) : 0;
   hero.style.setProperty('--hero-progress', progress.toFixed(4));
   hero.style.setProperty('--zoom-mix', zoomMix.toFixed(4));
-  hero.style.setProperty('--hero-media-scale', (1 + progress * .012).toFixed(4));
+  hero.style.setProperty('--hero-media-scale', '1');
 
   if (zoomReady && progress > .20 && !zoomActivated) {
     zoomActivated = true;
