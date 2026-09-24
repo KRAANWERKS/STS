@@ -2718,3 +2718,18 @@ footer small{
     line-height:1.5;
   }
 }
+
+
+/* REV1 fleet image tuning — Initial Delivery shifted right + matched subtle blur. */
+.fleet-phase-initial .fleet-phase-bg{
+  object-position:62% center!important;
+  filter:saturate(.9) contrast(1.03) blur(.35px)!important;
+  transform:scale(1.01)!important;
+}
+
+.fleet-phase-expansion .fleet-phase-bg,
+.fleet-phase-expansion .fleet-phase-drawing{
+  object-position:center 43%!important;
+  filter:saturate(.9) contrast(1.03) blur(.35px)!important;
+  transform:scale(1.01)!important;
+}
