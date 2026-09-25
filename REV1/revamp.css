@@ -2733,3 +2733,146 @@ footer small{
   filter:saturate(.9) contrast(1.03) blur(.35px)!important;
   transform:scale(1.01)!important;
 }
+
+
+/* REV1.3 — problem-to-solution Company narrative + clearer fleet blur + compact specifications. */
+.company-narrative{
+  width:100%;
+  max-width:1080px;
+}
+.company-problem{
+  max-width:1040px;
+  margin:0!important;
+  color:var(--ink)!important;
+  font:500 clamp(25px,2.3vw,36px)/1.28 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.018em;
+}
+.company-problem em{
+  font-style:italic;
+}
+.company-solution{
+  display:grid;
+  grid-template-columns:minmax(150px,.34fr) minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(24px,3vw,46px);
+  margin-top:38px;
+  padding-top:26px;
+  border-top:1px solid var(--line);
+  align-items:start;
+}
+.company-solution>span{
+  color:var(--red);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.45;
+  letter-spacing:1.5px;
+}
+.company-solution p{
+  max-width:430px;
+  margin:0!important;
+  color:#445963;
+  font-size:16px;
+  line-height:1.7;
+}
+
+/* Apply visible, controlled blur directly to both fleet artwork layers. */
+.fleet-phase-initial .fleet-phase-bg,
+.fleet-phase-expansion .fleet-phase-bg,
+.fleet-phase-expansion .fleet-phase-drawing{
+  filter:saturate(.9) contrast(1.03) blur(.8px)!important;
+  transform:scale(1.015)!important;
+}
+.fleet-phase-initial .fleet-phase-bg{
+  object-position:62% center!important;
+}
+.fleet-phase-expansion .fleet-phase-bg,
+.fleet-phase-expansion .fleet-phase-drawing{
+  object-position:center 43%!important;
+}
+
+/* Compact the specification/configuration area inside both fleet cards. */
+.fleet-phase-content{
+  min-height:610px!important;
+  padding:30px 32px 24px!important;
+}
+.fleet-phase-content .eyebrow{
+  margin-bottom:auto!important;
+}
+.fleet-phase-content h3{
+  margin-bottom:14px!important;
+}
+.fleet-capacity{
+  margin-bottom:14px!important;
+  padding:13px 0 12px!important;
+  gap:12px!important;
+}
+.fleet-phase-description{
+  margin-bottom:16px!important;
+  line-height:1.55!important;
+}
+.fleet-phase-content dl>div{
+  gap:12px!important;
+  padding:8px 0!important;
+}
+.fleet-phase-tag{
+  margin-top:14px!important;
+}
+
+@media(max-width:1000px){
+  .company-solution{
+    grid-template-columns:1fr 1fr;
+    gap:18px 28px;
+  }
+  .company-solution>span{
+    grid-column:1 / -1;
+  }
+}
+
+@media(max-width:760px){
+  .company-problem{
+    font-size:clamp(24px,7.2vw,31px)!important;
+    line-height:1.28!important;
+  }
+  .company-solution{
+    grid-template-columns:1fr;
+    gap:14px;
+    margin-top:26px;
+    padding-top:20px;
+  }
+  .company-solution>span{
+    grid-column:auto;
+  }
+  .company-solution p{
+    max-width:none;
+    font-size:14.5px;
+    line-height:1.65;
+  }
+  .fleet-phase-content{
+    min-height:0!important;
+    padding:22px 20px 20px!important;
+  }
+  .fleet-phase-content .eyebrow{
+    margin-bottom:20px!important;
+  }
+  .fleet-phase-content h3{
+    margin-bottom:12px!important;
+  }
+  .fleet-capacity{
+    margin-bottom:12px!important;
+    padding:12px 0 10px!important;
+  }
+  .fleet-phase-description{
+    margin-bottom:14px!important;
+  }
+  .fleet-phase-content dl>div{
+    padding:7px 0!important;
+  }
+  .fleet-phase-tag{
+    margin-top:12px!important;
+  }
+  .fleet-phase-initial .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-drawing{
+    filter:saturate(.9) contrast(1.03) blur(.7px)!important;
+    transform:scale(1.012)!important;
+  }
+}
