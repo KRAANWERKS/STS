@@ -322,46 +322,48 @@ addEventListener('pagehide', () => {
 }, { once:true });
 
 
-/* REV1.4 — hover-driven Engineered Availability + equipment marquee + fixed-open HSE. */
+/* REV1.6 — Engineered Availability hover/click state + shared showcase + fixed-open HSE. */
 const availabilityList = $('.reliability-list');
 const availabilityItems = $$('.reliability-list details');
+const availabilityShowcasePanels = $$('.reliability-showcase-panel');
 const availabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
 
-if (availabilityList && availabilityItems.length) {
-  availabilityList.classList.add('show-equipment-marquee');
-  const setEquipmentMarquee = (show) => {
-    if (availabilityList.classList.contains('marquee-persistent')) {
-      availabilityList.classList.add('show-equipment-marquee');
-      return;
-    }
-    availabilityList.classList.toggle('show-equipment-marquee', show);
-  };
+function setAvailabilityShowcase(name = 'equipment') {
+  availabilityShowcasePanels.forEach((panel) => {
+    panel.classList.toggle('is-active', panel.dataset.showcasePanel === name);
+  });
+  $('.reliability-showcase')?.setAttribute('data-active-showcase', name);
+}
 
-  availabilityItems.forEach((item, index) => {
+function activateAvailabilityItem(item) {
+  if (!item) return;
+  availabilityItems.forEach((other) => {
+    if (other !== item) other.removeAttribute('open');
+  });
+  item.setAttribute('open', '');
+  setAvailabilityShowcase(item.dataset.showcase || 'equipment');
+}
+
+if (availabilityList && availabilityItems.length) {
+  const defaultItem = availabilityItems[0];
+  activateAvailabilityItem(defaultItem);
+
+  availabilityItems.forEach((item) => {
     item.addEventListener('pointerenter', () => {
       if (!availabilityHover.matches) return;
-
-      availabilityItems.forEach((other) => {
-        if (other !== item) other.removeAttribute('open');
-      });
-      item.setAttribute('open', '');
-      setEquipmentMarquee(index === 0);
-    });
-
-    item.addEventListener('toggle', () => {
-      if (!item.open && index === 0) setEquipmentMarquee(false);
-      if (item.open && index !== 0) setEquipmentMarquee(false);
+      activateAvailabilityItem(item);
     });
 
     item.querySelector('summary')?.addEventListener('click', () => {
       requestAnimationFrame(() => {
-        setEquipmentMarquee(index === 0 && item.open);
+        if (item.open) setAvailabilityShowcase(item.dataset.showcase || 'equipment');
       });
     });
   });
 
   availabilityList.addEventListener('pointerleave', () => {
-    if (availabilityHover.matches) setEquipmentMarquee(false);
+    if (!availabilityHover.matches) return;
+    activateAvailabilityItem(defaultItem);
   });
 }
 

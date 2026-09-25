@@ -4892,3 +4892,170 @@ footer small {
     transition:none!important;
   }
 }
+
+
+/* REV1.6 — full-width Company answer + restored accordion copy + shared bottom showcase. */
+
+/* 01 / COMPANY — let the answer use the full available narrative width. */
+.company-narrative,
+.company-solution,
+.company-solution p{
+  width:100%!important;
+  max-width:none!important;
+}
+.company-solution{
+  display:block!important;
+  box-sizing:border-box!important;
+  padding-right:0!important;
+}
+.company-solution p:first-child,
+.company-solution p:last-child{
+  max-width:none!important;
+}
+
+/* 03 / ENGINEERED — accordion copy restored to the clean text-only treatment. */
+.reliability-list details p{
+  margin:0!important;
+  padding:0 10px 24px 39px!important;
+  max-width:760px!important;
+  color:#c6d7df!important;
+  font-size:15px!important;
+  line-height:1.68!important;
+}
+
+/* One fixed showcase area below item 05. */
+.reliability-showcase{
+  position:relative;
+  min-height:118px;
+  margin-top:24px;
+  overflow:hidden;
+  background:#f7fafb;
+  border-top:1px solid rgba(255,255,255,.16);
+}
+.reliability-showcase-panel{
+  display:none;
+  margin:0;
+}
+.reliability-showcase-panel.is-active{
+  display:block;
+}
+
+/* Equipment marquee is the default panel. */
+.reliability-showcase .equipment-marquee{
+  height:118px!important;
+  max-height:none!important;
+  margin:0!important;
+  opacity:1!important;
+  border-top:0!important;
+}
+.reliability-showcase .equipment-marquee-track{
+  height:118px!important;
+}
+.equipment-logo{
+  height:74px!important;
+}
+.equipment-logo.ecrane-logo{
+  width:156px!important;
+}
+.equipment-logo.ecrane-logo img{
+  display:block!important;
+  width:138px!important;
+  height:52px!important;
+  max-width:none!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  padding:5px 9px!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
+  border-radius:3px!important;
+}
+.equipment-logo img[src*="nemag.png"]{
+  max-height:42px!important;
+}
+
+/* Critical spares / Technical response replace the marquee in exactly the same area. */
+.reliability-photo-panel{
+  position:relative;
+  height:260px;
+  overflow:hidden;
+  background:#0a2733;
+}
+.reliability-photo-panel img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  filter:saturate(.88) contrast(1.04);
+}
+.reliability-photo-panel::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(5,20,28,.88),rgba(5,20,28,.24) 48%,rgba(5,20,28,0) 72%);
+  pointer-events:none;
+}
+.reliability-photo-panel figcaption{
+  position:absolute;
+  z-index:2;
+  left:22px;
+  right:22px;
+  bottom:18px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  color:#fff;
+}
+.reliability-photo-panel figcaption span{
+  color:#ff7d87;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.4px;
+}
+.reliability-photo-panel figcaption p{
+  max-width:520px!important;
+  margin:0!important;
+  padding:0!important;
+  color:#e0e9ec!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+}
+
+/* Neutralize REV1.5's inline-detail media rules now that imagery lives below item 05. */
+.reliability-detail-media{
+  display:none!important;
+}
+
+@media(max-width:760px){
+  .company-solution{
+    padding-right:0!important;
+  }
+  .reliability-list details p{
+    max-width:none!important;
+    padding:0 0 22px 30px!important;
+    font-size:14px!important;
+    line-height:1.65!important;
+  }
+  .reliability-showcase{
+    min-height:96px;
+    margin-top:18px;
+  }
+  .reliability-showcase .equipment-marquee,
+  .reliability-showcase .equipment-marquee-track{
+    height:96px!important;
+  }
+  .reliability-photo-panel{
+    height:210px;
+  }
+  .reliability-photo-panel figcaption{
+    left:16px;
+    right:16px;
+    bottom:14px;
+    display:block;
+  }
+  .reliability-photo-panel figcaption p{
+    margin-top:6px!important;
+    font-size:12px!important;
+  }
+}
