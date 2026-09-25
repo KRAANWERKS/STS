@@ -5255,3 +5255,132 @@ footer small {
     max-height:31px!important;
   }
 }
+
+
+/* REV1.9 — lock Engineered showcase geometry and remove the top white rule. */
+@media(min-width:761px){
+  /* Tighten the bottom of section 03 now that the showcase is deliberately compact. */
+  .reliability{
+    padding-bottom:96px!important;
+  }
+
+  /* One fixed canvas below item 05. Every state occupies this exact box. */
+  .reliability-showcase{
+    position:relative!important;
+    width:100%!important;
+    height:118px!important;
+    min-height:118px!important;
+    max-height:118px!important;
+    margin:16px 0 0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    background:transparent!important;
+    border-top:0!important;
+    border-bottom:1px solid rgba(255,255,255,.14)!important;
+  }
+
+  .reliability-showcase-panel{
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    width:100%!important;
+    height:118px!important;
+    min-height:118px!important;
+    max-height:118px!important;
+    margin:0!important;
+    padding:0!important;
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+    overflow:hidden!important;
+    transition:opacity .24s ease, visibility .24s ease!important;
+  }
+
+  .reliability-showcase-panel.is-active{
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+  }
+
+  /* Marquee and image panels now share identical geometry. */
+  .reliability-showcase .equipment-marquee,
+  .reliability-showcase .equipment-marquee-track,
+  .reliability-showcase .equipment-logo-set,
+  .reliability-photo-panel{
+    width:100%!important;
+    height:118px!important;
+    min-height:118px!important;
+    max-height:118px!important;
+    margin:0!important;
+    padding-top:0!important;
+    padding-bottom:0!important;
+  }
+
+  .reliability-showcase .equipment-marquee{
+    background:transparent!important;
+    border:0!important;
+  }
+
+  /* Fade into the same navy background on both sides. */
+  .reliability-showcase .equipment-marquee::before{
+    left:0!important;
+    width:82px!important;
+    background:linear-gradient(
+      90deg,
+      #143441 0%,
+      rgba(20,52,65,.88) 28%,
+      rgba(20,52,65,0) 100%
+    )!important;
+  }
+
+  .reliability-showcase .equipment-marquee::after{
+    right:0!important;
+    width:58px!important;
+    background:linear-gradient(
+      270deg,
+      #143441 0%,
+      rgba(20,52,65,.76) 30%,
+      rgba(20,52,65,0) 100%
+    )!important;
+  }
+
+  .equipment-logo{
+    height:58px!important;
+  }
+
+  .equipment-logo img{
+    max-height:34px!important;
+  }
+
+  .equipment-logo.ecrane-logo img{
+    width:122px!important;
+    height:42px!important;
+    max-height:42px!important;
+  }
+
+  /* Hover-swapped imagery stays inside the exact marquee footprint. */
+  .reliability-photo-panel{
+    background:#0a2733!important;
+  }
+
+  .reliability-photo-panel img{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+    object-position:center!important;
+  }
+
+  .reliability-photo-panel figcaption{
+    left:18px!important;
+    right:18px!important;
+    bottom:10px!important;
+  }
+
+  .reliability-photo-panel figcaption p{
+    max-width:440px!important;
+    font-size:12px!important;
+    line-height:1.45!important;
+  }
+}
