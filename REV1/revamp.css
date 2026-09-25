@@ -5059,3 +5059,91 @@ footer small {
     font-size:12px!important;
   }
 }
+
+
+/* REV1.7 — consistent Engineered showcase + softened marquee edges + new Planned imagery. */
+
+/* Keep one stable footprint below item 05, regardless of whether it shows logos or photography. */
+.reliability-showcase{
+  height:210px!important;
+  min-height:210px!important;
+  max-height:210px!important;
+  overflow:hidden!important;
+}
+.reliability-showcase-panel{
+  width:100%!important;
+  height:210px!important;
+  min-height:210px!important;
+  max-height:210px!important;
+  overflow:hidden!important;
+}
+.reliability-showcase-panel.is-active{
+  display:block!important;
+}
+.reliability-showcase .equipment-marquee,
+.reliability-showcase .equipment-marquee-track,
+.reliability-showcase .equipment-logo-set{
+  height:210px!important;
+  min-height:210px!important;
+  max-height:210px!important;
+}
+.reliability-photo-panel{
+  height:210px!important;
+  min-height:210px!important;
+  max-height:210px!important;
+}
+
+/* Blend the logo strip into the navy section instead of exposing a hard vertical edge. */
+.reliability-showcase .equipment-marquee::before{
+  left:0!important;
+  width:112px!important;
+  background:linear-gradient(
+    90deg,
+    #143441 0%,
+    rgba(20,52,65,.84) 18%,
+    rgba(247,250,251,.54) 62%,
+    rgba(247,250,251,0) 100%
+  )!important;
+}
+.reliability-showcase .equipment-marquee::after{
+  right:0!important;
+  width:76px!important;
+  background:linear-gradient(
+    270deg,
+    #f7fafb 0%,
+    rgba(247,250,251,.88) 34%,
+    rgba(247,250,251,0) 100%
+  )!important;
+}
+
+/* 02 / PLANNED EXPANSION — use the new operational image while preserving text readability. */
+.fleet-phase-expansion .fleet-phase-bg,
+.fleet-phase-expansion .fleet-phase-drawing{
+  object-position:center 48%!important;
+  filter:saturate(.90) contrast(1.03) blur(.65px)!important;
+  transform:scale(1.012)!important;
+}
+
+@media(max-width:760px){
+  .reliability-showcase,
+  .reliability-showcase-panel,
+  .reliability-showcase .equipment-marquee,
+  .reliability-showcase .equipment-marquee-track,
+  .reliability-showcase .equipment-logo-set,
+  .reliability-photo-panel{
+    height:176px!important;
+    min-height:176px!important;
+    max-height:176px!important;
+  }
+  .reliability-showcase .equipment-marquee::before{
+    width:72px!important;
+  }
+  .reliability-showcase .equipment-marquee::after{
+    width:46px!important;
+  }
+  .fleet-phase-expansion .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-drawing{
+    object-position:center 50%!important;
+    filter:saturate(.90) contrast(1.03) blur(.55px)!important;
+  }
+}
