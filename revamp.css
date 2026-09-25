@@ -2546,3 +2546,197 @@ footer small{
     text-align:left!important;
   }
 }
+
+
+/* V28 — Company answer flow, hover-driven Reliability and persistent HSE. */
+.company-narrative{
+  width:100%;
+  max-width:1080px;
+}
+.company-problem{
+  max-width:1020px;
+  margin:0!important;
+  color:var(--ink)!important;
+  font:500 clamp(25px,2.3vw,36px)/1.28 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.018em;
+}
+.company-problem em{
+  font-style:italic;
+}
+.company-answer{
+  display:grid;
+  grid-template-columns:minmax(280px,.82fr) minmax(0,1.18fr);
+  gap:clamp(36px,5vw,76px);
+  align-items:start;
+  margin-top:clamp(34px,4.5vw,58px);
+  padding-top:clamp(26px,3vw,36px);
+  border-top:1px solid var(--line);
+}
+.company-answer-lead{
+  margin:0!important;
+  max-width:430px;
+  color:var(--ink)!important;
+  font:600 clamp(31px,3.35vw,50px)/.96 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.032em;
+  text-transform:uppercase;
+}
+.company-answer-lead em{
+  display:block;
+  margin-top:.12em;
+  color:var(--red);
+  font-style:normal;
+}
+.company-answer-copy{
+  max-width:570px;
+  margin:2px 0 0!important;
+  color:#445963!important;
+  font-size:16px!important;
+  line-height:1.78!important;
+}
+
+/* Reserve an elegant strip below 05 so the layout does not jump when logos appear. */
+.equipment-marquee-shell{
+  min-height:116px;
+  padding-top:18px;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(8px);
+  transition:opacity .32s ease,transform .32s ease,visibility .32s;
+}
+.reliability-list.show-equipment-marquee .equipment-marquee-shell{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+}
+.equipment-marquee-window{
+  height:92px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.16);
+  background:#f7fafb;
+}
+.equipment-marquee-track{
+  width:max-content;
+  display:flex;
+  align-items:center;
+  animation:equipment-marquee 26s linear infinite;
+  will-change:transform;
+}
+.equipment-marquee-window:hover .equipment-marquee-track{
+  animation-play-state:paused;
+}
+.equipment-logo-set{
+  flex:none;
+  display:flex;
+  align-items:center;
+  gap:clamp(38px,4vw,64px);
+  padding:0 clamp(24px,3vw,42px);
+}
+.equipment-logo{
+  width:132px;
+  height:66px;
+  flex:0 0 132px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+.equipment-logo img{
+  display:block;
+  max-width:118px;
+  max-height:34px;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+.equipment-logo span{
+  color:#52666f;
+  font-size:8px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:1.15px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+@keyframes equipment-marquee{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
+}
+
+/* HSE remains deliberately expanded in this revision. */
+.hse-pinned summary{
+  cursor:default!important;
+}
+.hse-pinned summary span{
+  transform:none!important;
+}
+.hse-pinned[open] > div{
+  opacity:1;
+}
+
+@media(max-width:1000px){
+  .company-answer{
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+  .company-answer-lead{
+    max-width:640px;
+  }
+  .company-answer-copy{
+    max-width:720px;
+  }
+}
+
+@media(max-width:760px){
+  .company-problem{
+    font-size:clamp(24px,7.1vw,31px)!important;
+    line-height:1.28!important;
+  }
+  .company-answer{
+    margin-top:28px;
+    padding-top:22px;
+    gap:18px;
+  }
+  .company-answer-lead{
+    font-size:clamp(30px,9vw,38px)!important;
+  }
+  .company-answer-copy{
+    font-size:14.5px!important;
+    line-height:1.68!important;
+  }
+  .equipment-marquee-shell{
+    min-height:102px;
+    padding-top:14px;
+  }
+  .equipment-marquee-window{
+    height:82px;
+  }
+  .equipment-logo-set{
+    gap:26px;
+    padding:0 20px;
+  }
+  .equipment-logo{
+    width:112px;
+    height:58px;
+    flex-basis:112px;
+  }
+  .equipment-logo img{
+    max-width:100px;
+    max-height:30px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .equipment-marquee-window{
+    overflow-x:auto;
+    scrollbar-width:thin;
+  }
+  .equipment-marquee-track{
+    animation:none!important;
+  }
+  .equipment-logo-set[aria-hidden="true"]{
+    display:none;
+  }
+}

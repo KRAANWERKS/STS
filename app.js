@@ -50,6 +50,63 @@ outcomeCards.forEach((card) => {
   });
 });
 
+
+
+/* Reliability: hover opens the accordion on fine pointers; click/keyboard still work natively. */
+const reliabilityList = $('.reliability-list');
+const reliabilityDetails = $$('.reliability-list details');
+const reliabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
+let equipmentMarqueeRevealed = !reliabilityHover.matches && Boolean(reliabilityDetails[0]?.open);
+
+function setReliabilityOpen(detail) {
+  reliabilityDetails.forEach((other) => {
+    if (other !== detail) other.open = false;
+  });
+  detail.open = true;
+}
+
+function syncEquipmentMarquee() {
+  if (!reliabilityList) return;
+  reliabilityList.classList.toggle(
+    'show-equipment-marquee',
+    equipmentMarqueeRevealed && Boolean(reliabilityDetails[0]?.open)
+  );
+}
+
+reliabilityDetails.forEach((detail, index) => {
+  if (reliabilityHover.matches) {
+    detail.addEventListener('pointerenter', () => {
+      setReliabilityOpen(detail);
+      equipmentMarqueeRevealed = index === 0;
+      syncEquipmentMarquee();
+    });
+  }
+
+  detail.addEventListener('toggle', () => {
+    if (!detail.open) {
+      syncEquipmentMarquee();
+      return;
+    }
+    if (index === 0) equipmentMarqueeRevealed = true;
+    else equipmentMarqueeRevealed = false;
+    syncEquipmentMarquee();
+  });
+});
+syncEquipmentMarquee();
+
+/* The HSE framework is intentionally always visible. */
+const pinnedHse = $('.hse-pinned');
+if (pinnedHse) {
+  pinnedHse.open = true;
+  pinnedHse.querySelector('summary')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    pinnedHse.open = true;
+  });
+  pinnedHse.addEventListener('toggle', () => {
+    if (!pinnedHse.open) pinnedHse.open = true;
+  });
+}
+
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
