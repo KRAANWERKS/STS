@@ -5384,3 +5384,54 @@ footer small {
     line-height:1.45!important;
   }
 }
+
+
+/* REV1.10 — white equipment marquee; photo-only maintenance/support states. */
+@media(min-width:761px){
+  /* Keep the current compact showcase footprint, but return only the marquee to white. */
+  .reliability-showcase .equipment-marquee{
+    background:#fff!important;
+  }
+
+  .reliability-showcase .equipment-marquee::before{
+    width:72px!important;
+    background:linear-gradient(
+      90deg,
+      #fff 0%,
+      rgba(255,255,255,.92) 34%,
+      rgba(255,255,255,0) 100%
+    )!important;
+  }
+
+  .reliability-showcase .equipment-marquee::after{
+    width:58px!important;
+    background:linear-gradient(
+      270deg,
+      #fff 0%,
+      rgba(255,255,255,.88) 34%,
+      rgba(255,255,255,0) 100%
+    )!important;
+  }
+
+  /* Maintenance, Critical Spares and Technical Response are image-only states. */
+  .reliability-photo-panel::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  .reliability-photo-panel figcaption{
+    display:none!important;
+  }
+
+  .reliability-photo-panel img{
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    filter:saturate(.92) contrast(1.03)!important;
+  }
+
+  .reliability-showcase-panel[data-showcase-panel="maintenance"] img{
+    object-position:center 48%!important;
+  }
+}
