@@ -5435,3 +5435,130 @@ footer small {
     object-position:center 48%!important;
   }
 }
+
+
+/* REV1.11 — faster logo marquee, tighter white strip, fleet-total image gradient. */
+@media(min-width:761px){
+  /* Keep every listed brand visible and make the loop feel more active. */
+  .reliability-showcase{
+    height:96px!important;
+    min-height:96px!important;
+    max-height:96px!important;
+  }
+
+  .reliability-showcase-panel,
+  .reliability-showcase .equipment-marquee,
+  .reliability-showcase .equipment-marquee-track,
+  .reliability-showcase .equipment-logo-set,
+  .reliability-photo-panel{
+    height:96px!important;
+    min-height:96px!important;
+    max-height:96px!important;
+  }
+
+  .reliability-showcase .equipment-marquee{
+    background:#fff!important;
+  }
+
+  .equipment-marquee-track{
+    animation-duration:16s!important;
+  }
+
+  .equipment-logo-set{
+    gap:clamp(28px,3vw,48px)!important;
+    padding-left:28px!important;
+    padding-right:48px!important;
+  }
+
+  .equipment-logo{
+    width:clamp(118px,9.5vw,150px)!important;
+    height:54px!important;
+  }
+
+  .equipment-logo img{
+    max-height:40px!important;
+    max-width:100%!important;
+  }
+
+  .equipment-logo.ecrane-logo{
+    width:150px!important;
+  }
+
+  .equipment-logo.ecrane-logo img{
+    width:136px!important;
+    height:46px!important;
+    max-height:46px!important;
+  }
+
+  /* Keep a readable brand name fallback so no listed vendor disappears if a remote logo fails. */
+  .equipment-logo span{
+    display:block!important;
+    margin-top:5px!important;
+    color:#143441!important;
+    font:600 10px/1 'DM Sans',sans-serif!important;
+    letter-spacing:.08em!important;
+    text-transform:uppercase!important;
+    opacity:.72!important;
+  }
+
+  .equipment-logo.is-fallback img{
+    display:none!important;
+  }
+
+  .equipment-logo.is-fallback span{
+    margin-top:0!important;
+    font:600 16px/1 'Barlow Condensed',sans-serif!important;
+    opacity:1!important;
+  }
+
+  /* Fleet total: black on the left, fading into the supplied fleet image on the right. */
+  .fleet-total{
+    position:relative!important;
+    overflow:hidden!important;
+    isolation:isolate!important;
+    background:#08161d!important;
+  }
+
+  .fleet-total::before{
+    content:''!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:0 0 0 38%!important;
+    background:
+      linear-gradient(
+        90deg,
+        #08161d 0%,
+        rgba(8,22,29,.96) 18%,
+        rgba(8,22,29,.80) 36%,
+        rgba(8,22,29,.46) 58%,
+        rgba(8,22,29,.16) 78%,
+        rgba(8,22,29,.08) 100%
+      ),
+      url('https://kraanwerks.com/wp-content/uploads/2025/03/89a1262d-d9a3-4cb9-80c4-5614fbedf6b7.jpg') center 54% / cover no-repeat!important;
+    pointer-events:none!important;
+  }
+
+  .fleet-total::after{
+    content:''!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:0!important;
+    background:linear-gradient(180deg,rgba(8,22,29,.06),rgba(8,22,29,.30))!important;
+    pointer-events:none!important;
+  }
+
+  .fleet-total>div,
+  .fleet-total>p{
+    position:relative!important;
+    z-index:1!important;
+  }
+
+  .fleet-total>p{
+    max-width:600px!important;
+    padding:16px 18px!important;
+    background:rgba(8,22,29,.40)!important;
+    backdrop-filter:blur(3px)!important;
+    -webkit-backdrop-filter:blur(3px)!important;
+    text-shadow:0 1px 8px rgba(0,0,0,.55)!important;
+  }
+}
