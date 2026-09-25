@@ -4515,3 +4515,206 @@ footer small {
     transform:scale(1.012)!important;
   }
 }
+
+
+/* REV1.4 — elegant problem/answer flow, hover availability accordion, equipment marquee, fixed-open HSE. */
+
+/* Company: solution reads as the answer, without another label competing with the problem. */
+.company-solution{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)!important;
+  gap:clamp(30px,4vw,64px)!important;
+  margin-top:38px!important;
+  padding:28px 0 0 34px!important;
+  border-top:1px solid var(--line)!important;
+  align-items:start!important;
+}
+.company-solution::before{
+  content:''!important;
+  position:absolute;
+  left:0;
+  top:28px;
+  width:3px;
+  height:46px;
+  background:var(--red);
+}
+.company-solution>span{
+  display:none!important;
+}
+.company-solution p{
+  max-width:none!important;
+  margin:0!important;
+}
+.company-solution p:first-child{
+  color:var(--ink)!important;
+  font:500 clamp(21px,1.85vw,28px)/1.43 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.012em;
+}
+.company-solution p:last-child{
+  max-width:440px!important;
+  padding-top:3px;
+  color:#52666f!important;
+  font-size:15px!important;
+  line-height:1.72!important;
+}
+
+/* Engineered Availability: hover remains a real accordion interaction on fine pointers. */
+.reliability-list details{
+  cursor:pointer;
+}
+
+/* Equipment marquee occupies space only while Proven Equipment is active/hovered. */
+.equipment-marquee{
+  position:relative;
+  height:0;
+  max-height:0;
+  margin-top:0;
+  opacity:0;
+  overflow:hidden;
+  background:#f7fafb;
+  border-top:0 solid rgba(255,255,255,.16);
+  transition:
+    height .42s cubic-bezier(.2,.75,.25,1),
+    max-height .42s cubic-bezier(.2,.75,.25,1),
+    margin-top .42s cubic-bezier(.2,.75,.25,1),
+    opacity .24s ease,
+    border-width .24s ease;
+}
+.reliability-list.show-equipment-marquee .equipment-marquee{
+  height:102px;
+  max-height:102px;
+  margin-top:24px;
+  opacity:1;
+  border-top-width:1px;
+}
+.equipment-marquee::before,
+.equipment-marquee::after{
+  content:'';
+  position:absolute;
+  z-index:3;
+  top:0;
+  bottom:0;
+  width:52px;
+  pointer-events:none;
+}
+.equipment-marquee::before{
+  left:0;
+  background:linear-gradient(90deg,#f7fafb,rgba(247,250,251,0));
+}
+.equipment-marquee::after{
+  right:0;
+  background:linear-gradient(270deg,#f7fafb,rgba(247,250,251,0));
+}
+.equipment-marquee-track{
+  display:flex;
+  width:max-content;
+  height:100%;
+  align-items:center;
+  will-change:transform;
+  animation:equipment-marquee-run 28s linear infinite;
+}
+.equipment-marquee:hover .equipment-marquee-track{
+  animation-play-state:paused;
+}
+.equipment-logo-set{
+  display:flex;
+  flex:none;
+  align-items:center;
+  gap:clamp(34px,4vw,68px);
+  padding:0 clamp(34px,4vw,68px) 0 34px;
+}
+.equipment-logo{
+  width:clamp(112px,9vw,148px);
+  height:68px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  opacity:.84;
+  transition:opacity .22s ease,transform .22s ease;
+}
+.equipment-logo img{
+  display:block;
+  max-width:100%;
+  max-height:42px;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+.equipment-logo span{
+  display:none;
+  color:#143441;
+  font:600 18px/1 'Barlow Condensed',sans-serif;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.equipment-logo.is-fallback img{
+  display:none;
+}
+.equipment-logo.is-fallback span{
+  display:block;
+}
+.equipment-logo:hover{
+  opacity:1;
+  transform:translateY(-2px);
+}
+@keyframes equipment-marquee-run{
+  from{transform:translate3d(0,0,0);}
+  to{transform:translate3d(-50%,0,0);}
+}
+
+/* HSE framework remains expanded in this revision. */
+.hse-static[open] summary span{
+  transform:rotate(45deg);
+}
+.hse-static summary{
+  cursor:default!important;
+}
+
+@media(max-width:760px){
+  .company-solution{
+    grid-template-columns:1fr!important;
+    gap:14px!important;
+    margin-top:27px!important;
+    padding:21px 0 0 20px!important;
+  }
+  .company-solution::before{
+    top:21px;
+    height:38px;
+  }
+  .company-solution p:first-child{
+    font-size:20px!important;
+    line-height:1.45!important;
+  }
+  .company-solution p:last-child{
+    max-width:none!important;
+    font-size:14px!important;
+  }
+  .reliability-list.show-equipment-marquee .equipment-marquee{
+    height:88px;
+    max-height:88px;
+    margin-top:18px;
+  }
+  .equipment-logo-set{
+    gap:28px;
+    padding-left:24px;
+    padding-right:28px;
+  }
+  .equipment-logo{
+    width:108px;
+    height:58px;
+  }
+  .equipment-logo img{
+    max-height:36px;
+  }
+  .equipment-marquee::before,
+  .equipment-marquee::after{
+    width:28px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .equipment-marquee-track{
+    animation:none!important;
+  }
+}

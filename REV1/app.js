@@ -320,3 +320,59 @@ zoomControlFrame = requestAnimationFrame(animateZoomPlayback);
 addEventListener('pagehide', () => {
   if (zoomControlFrame) cancelAnimationFrame(zoomControlFrame);
 }, { once:true });
+
+
+/* REV1.4 — hover-driven Engineered Availability + equipment marquee + fixed-open HSE. */
+const availabilityList = $('.reliability-list');
+const availabilityItems = $$('.reliability-list details');
+const availabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
+
+if (availabilityList && availabilityItems.length) {
+  const setEquipmentMarquee = (show) => {
+    availabilityList.classList.toggle('show-equipment-marquee', show);
+  };
+
+  availabilityItems.forEach((item, index) => {
+    item.addEventListener('pointerenter', () => {
+      if (!availabilityHover.matches) return;
+
+      availabilityItems.forEach((other) => {
+        if (other !== item) other.removeAttribute('open');
+      });
+      item.setAttribute('open', '');
+      setEquipmentMarquee(index === 0);
+    });
+
+    item.addEventListener('toggle', () => {
+      if (!item.open && index === 0) setEquipmentMarquee(false);
+      if (item.open && index !== 0) setEquipmentMarquee(false);
+    });
+
+    item.querySelector('summary')?.addEventListener('click', () => {
+      requestAnimationFrame(() => {
+        setEquipmentMarquee(index === 0 && item.open);
+      });
+    });
+  });
+
+  availabilityList.addEventListener('pointerleave', () => {
+    if (availabilityHover.matches) setEquipmentMarquee(false);
+  });
+}
+
+$$('.equipment-logo img').forEach((logo) => {
+  logo.addEventListener('error', () => {
+    logo.closest('.equipment-logo')?.classList.add('is-fallback');
+  }, { once:true });
+});
+
+const staticHse = $('.hse-static');
+if (staticHse) {
+  staticHse.open = true;
+  staticHse.querySelector('summary')?.addEventListener('click', (event) => {
+    event.preventDefault();
+  });
+  staticHse.addEventListener('toggle', () => {
+    if (!staticHse.open) staticHse.open = true;
+  });
+}
