@@ -4718,3 +4718,177 @@ footer small {
     animation:none!important;
   }
 }
+
+
+/* REV1.5 — one-column Company answer, stronger fleet readability, persistent equipment marquee, reliability media. */
+
+/* 01 / COMPANY — answer stays in a single elegant column. */
+.company-solution{
+  display:block!important;
+  max-width:860px!important;
+  padding-left:34px!important;
+}
+.company-solution p{
+  max-width:760px!important;
+}
+.company-solution p:first-child,
+.company-solution p:last-child{
+  color:var(--ink)!important;
+  font:500 clamp(21px,1.85vw,28px)/1.5 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.012em!important;
+  padding-top:0!important;
+}
+
+/* 02 / FLEET — strengthen image readability without losing the photography. */
+.fleet-phase-card::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(5,20,28,.08) 0%,
+      rgba(5,20,28,.10) 24%,
+      rgba(5,20,28,.30) 48%,
+      rgba(5,20,28,.72) 70%,
+      rgba(5,20,28,.96) 100%
+    )!important;
+}
+.fleet-phase-content{
+  position:relative!important;
+  z-index:2!important;
+}
+.fleet-phase-content>.eyebrow{
+  display:inline-flex!important;
+  align-items:center!important;
+  align-self:flex-start!important;
+  width:auto!important;
+  margin:-4px 0 auto!important;
+  padding:8px 11px 7px!important;
+  background:rgba(8,22,29,.82)!important;
+  border:1px solid rgba(255,255,255,.20)!important;
+  box-shadow:0 7px 22px rgba(0,0,0,.16)!important;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  color:#fff!important;
+  line-height:1.25!important;
+}
+.fleet-phase-content h3,
+.fleet-phase-description,
+.fleet-phase-content dl,
+.fleet-phase-tag,
+.fleet-capacity{
+  text-shadow:0 1px 14px rgba(0,0,0,.34);
+}
+
+/* 03 / ENGINEERED — marquee is a permanent supporting strip below item 05. */
+.reliability-list.marquee-persistent .equipment-marquee{
+  height:102px!important;
+  max-height:102px!important;
+  margin-top:24px!important;
+  opacity:1!important;
+  border-top-width:1px!important;
+}
+.reliability-list.marquee-persistent:not(.show-equipment-marquee) .equipment-marquee{
+  height:102px!important;
+  max-height:102px!important;
+  margin-top:24px!important;
+  opacity:1!important;
+}
+.equipment-logo img[src*="E-Crane-Beyaz-Kale.jpg"]{
+  max-height:46px!important;
+  padding:4px 8px;
+  background:#fff;
+  border-radius:3px;
+}
+.equipment-logo img[src*="nemag.png"]{
+  max-height:40px!important;
+}
+
+/* Reliability imagery for Critical spares + Technical response. */
+.reliability-detail-media{
+  margin:4px 10px 24px 39px;
+  height:0;
+  opacity:0;
+  overflow:hidden;
+  border-radius:2px;
+  background:#0b2935;
+  transition:
+    height .42s cubic-bezier(.22,.8,.25,1),
+    opacity .28s ease,
+    margin .42s cubic-bezier(.22,.8,.25,1);
+}
+.reliability-list details[open] .reliability-detail-media{
+  height:190px;
+  opacity:1;
+}
+.reliability-detail-media img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  filter:saturate(.88) contrast(1.04);
+  transition:transform .7s cubic-bezier(.2,.7,.25,1);
+}
+@media(hover:hover){
+  .reliability-detail-media:hover img{
+    transform:scale(1.025);
+  }
+}
+
+@media(max-width:760px){
+  .company-solution{
+    max-width:none!important;
+    padding-left:20px!important;
+  }
+  .company-solution p{
+    max-width:none!important;
+  }
+  .company-solution p:first-child,
+  .company-solution p:last-child{
+    font-size:20px!important;
+    line-height:1.48!important;
+  }
+
+  /* Mobile fleet remains image + panel; retain a localized dark fade for title/copy. */
+  .fleet-phase-card::after{
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(5,20,28,.04) 0%,
+        rgba(5,20,28,.08) 28%,
+        rgba(5,20,28,.28) 48%,
+        rgba(5,20,28,.80) 68%,
+        rgba(5,20,28,.98) 100%
+      )!important;
+  }
+  .fleet-phase-content>.eyebrow{
+    margin:0 0 20px!important;
+    padding:7px 9px 6px!important;
+    font-size:9px!important;
+  }
+
+  .reliability-list.marquee-persistent .equipment-marquee,
+  .reliability-list.marquee-persistent:not(.show-equipment-marquee) .equipment-marquee{
+    height:88px!important;
+    max-height:88px!important;
+    margin-top:18px!important;
+  }
+  .reliability-detail-media{
+    margin:2px 0 20px 30px;
+  }
+  .reliability-list details[open] .reliability-detail-media{
+    height:156px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .reliability-detail-media,
+  .reliability-detail-media img{
+    transition:none!important;
+  }
+}

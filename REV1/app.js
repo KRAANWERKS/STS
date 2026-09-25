@@ -328,7 +328,12 @@ const availabilityItems = $$('.reliability-list details');
 const availabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
 
 if (availabilityList && availabilityItems.length) {
+  availabilityList.classList.add('show-equipment-marquee');
   const setEquipmentMarquee = (show) => {
+    if (availabilityList.classList.contains('marquee-persistent')) {
+      availabilityList.classList.add('show-equipment-marquee');
+      return;
+    }
     availabilityList.classList.toggle('show-equipment-marquee', show);
   };
 
