@@ -51,6 +51,7 @@ outcomeCards.forEach((card) => {
 });
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const mobileHero = matchMedia('(max-width: 760px)');
 const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
 const heroStage = $('.hero-stage');
@@ -100,7 +101,9 @@ async function syncHeroPlayback() {
   const progress = getHeroProgress();
 
   if (heroVideo) {
-    const shouldLoop = !blocked && progress < .16;
+    const shouldLoop = !blocked && (mobileHero.matches
+      ? hero.getBoundingClientRect().bottom > 0
+      : progress < .16);
     if (shouldLoop) {
       try { await heroVideo.play(); } catch {}
     } else {
@@ -121,6 +124,15 @@ motion.addEventListener('click', () => {
 });
 
 reducedMotion.addEventListener('change', () => {
+  renderScroll();
+  syncHeroPlayback();
+});
+
+mobileHero.addEventListener('change', ({ matches }) => {
+  heroFlow.style.setProperty('--primary-opacity', '1');
+  heroFlow.style.setProperty('--zoom-opacity', '0');
+  heroZoomVideo?.pause();
+  if (!matches) prepareZoomVideo();
   renderScroll();
   syncHeroPlayback();
 });
@@ -190,6 +202,17 @@ function animateZoomPlayback() {
 
 function renderScroll() {
   const progress = getHeroProgress();
+
+  /* Mobile uses only the primary looping hero video. */
+  if (mobileHero.matches) {
+    heroLines.forEach((line) => { line.style.transform = ''; });
+    heroFlow.style.setProperty('--primary-opacity', '1');
+    heroFlow.style.setProperty('--zoom-opacity', '0');
+    hero.style.setProperty('--hero-progress', '0');
+    zoomActive = false;
+    heroZoomVideo?.pause();
+    return;
+  }
 
   heroLines.forEach((line, index) => {
     const direction = index === 1 ? -1 : 1;
@@ -279,6 +302,7 @@ heroZoomVideo?.addEventListener('seeked', () => {
 });
 
 function prepareZoomVideo() {
+  if (mobileHero.matches) return;
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
   zoomReady = true;
   heroZoomVideo.pause();

@@ -5562,3 +5562,297 @@ footer small {
     text-shadow:0 1px 8px rgba(0,0,0,.55)!important;
   }
 }
+
+
+/* REV1.12 — cleaner logo-only marquee, faster loop, fleet image framing, mobile hero simplification. */
+
+/* Logo-only marquee: isolate every brand so wide marks never visually merge. */
+.equipment-logo span{
+  display:none!important;
+}
+.equipment-logo.is-fallback span{
+  display:none!important;
+}
+.equipment-marquee-track{
+  animation-duration:12s!important;
+}
+.equipment-logo-set{
+  gap:38px!important;
+  padding-left:30px!important;
+  padding-right:46px!important;
+}
+.equipment-logo{
+  flex:0 0 146px!important;
+  width:146px!important;
+  height:54px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:visible!important;
+}
+.equipment-logo img{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:122px!important;
+  max-height:38px!important;
+  object-fit:contain!important;
+}
+.equipment-logo img[alt="MacGregor"]{
+  max-width:116px!important;
+  max-height:32px!important;
+}
+.equipment-logo img[alt="Yanmar"]{
+  max-width:112px!important;
+  max-height:32px!important;
+}
+.equipment-logo.ecrane-logo{
+  flex-basis:154px!important;
+  width:154px!important;
+}
+.equipment-logo.ecrane-logo img{
+  width:136px!important;
+  height:46px!important;
+  max-width:136px!important;
+  max-height:46px!important;
+}
+
+/* Move the right-side fleet image upward to keep its useful subject detail centered. */
+.fleet-total::before{
+  background-position:center center, center 36%!important;
+}
+
+/* Mobile V1 — keep the loop hero, remove the scroll-scrub movie, and simplify the page rhythm. */
+@media(max-width:760px){
+  .hero-company-flow{
+    --primary-opacity:1!important;
+    --zoom-opacity:0!important;
+    background:#08161d!important;
+  }
+
+  .hero-flow-media{
+    position:absolute!important;
+    top:0!important;
+    left:0!important;
+    right:0!important;
+    height:100svh!important;
+    margin-bottom:0!important;
+    z-index:0!important;
+  }
+
+  .hero-flow-media .hero-video-primary{
+    display:block!important;
+    opacity:1!important;
+  }
+
+  .hero-flow-media .hero-video-zoom{
+    display:none!important;
+    opacity:0!important;
+  }
+
+  .hero-flow-media .hero-video{
+    top:72px!important;
+    height:calc(100svh - 72px)!important;
+    object-position:55% 0%!important;
+  }
+
+  .hero-flow-media::after{
+    inset:72px 0 0!important;
+    background:
+      linear-gradient(180deg,rgba(5,20,28,.12) 0%,rgba(5,20,28,.02) 30%,rgba(5,20,28,.24) 100%),
+      linear-gradient(90deg,rgba(5,20,28,.42) 0%,rgba(5,20,28,.12) 62%,rgba(5,20,28,.04) 100%)!important;
+  }
+
+  .hero{
+    height:100svh!important;
+    min-height:680px!important;
+    max-height:none!important;
+  }
+
+  .hero-stage{
+    position:relative!important;
+    top:auto!important;
+    height:100svh!important;
+    min-height:680px!important;
+  }
+
+  .hero-overlay{
+    top:72px!important;
+    bottom:66px!important;
+    left:20px!important;
+    right:20px!important;
+    width:auto!important;
+    padding:clamp(46px,7svh,72px) 0 58px!important;
+    justify-content:center!important;
+  }
+
+  .hero-kicker{
+    max-width:270px!important;
+    margin-bottom:20px!important;
+    font-size:9px!important;
+    line-height:1.5!important;
+    letter-spacing:1.25px!important;
+  }
+
+  .hero h1{
+    max-width:100%!important;
+    font-size:clamp(54px,16.8vw,72px)!important;
+    line-height:.80!important;
+    letter-spacing:-.04em!important;
+  }
+
+  .hero h1 .hero-line-one,
+  .hero h1 .hero-line-two,
+  .hero h1 .hero-line-three{
+    transform:none!important;
+    margin-left:0!important;
+  }
+
+  .hero h1 .hero-line-two{
+    margin-left:.04em!important;
+  }
+
+  .hero-copy{
+    width:min(100%,300px)!important;
+    margin:26px 0 0!important;
+    gap:12px!important;
+  }
+
+  .hero-copy p{
+    padding-left:12px!important;
+    font-size:12.5px!important;
+    line-height:1.55!important;
+  }
+
+  .hero-caption{
+    left:20px!important;
+    right:20px!important;
+    bottom:14px!important;
+    padding:12px 0!important;
+    gap:10px!important;
+  }
+
+  .hero-caption>span:nth-child(2){
+    display:none!important;
+  }
+
+  .hero-caption button{
+    margin-left:auto!important;
+  }
+
+  /* Company now begins as a clean editorial section, not as another video-scroll stage. */
+  .intro{
+    min-height:0!important;
+    padding-top:74px!important;
+    padding-bottom:74px!important;
+    background:#fff!important;
+  }
+
+  .company-story{
+    max-width:none!important;
+  }
+
+  .company-promise{
+    max-width:100%!important;
+    margin-bottom:24px!important;
+    font-size:clamp(31px,9.5vw,42px)!important;
+    line-height:.96!important;
+  }
+
+  .company-problem{
+    font-size:clamp(24px,7.4vw,31px)!important;
+    line-height:1.30!important;
+  }
+
+  .company-solution{
+    margin-top:24px!important;
+    padding:20px 0 0 18px!important;
+  }
+
+  .company-solution p:first-child,
+  .company-solution p:last-child{
+    font-size:18px!important;
+    line-height:1.52!important;
+  }
+
+  /* Cleaner vertical rhythm for the remaining mobile sections. */
+  .fleet,
+  .reliability,
+  .safety,
+  .outcomes,
+  .contact{
+    padding-top:58px!important;
+    padding-bottom:58px!important;
+  }
+
+  .section{
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+
+  .fleet .section-top h2,
+  .reliability-title h2,
+  .safety .section-top h2,
+  .outcomes h2,
+  .contact h2{
+    font-size:clamp(45px,13vw,56px)!important;
+    line-height:.88!important;
+  }
+
+  .fleet-phase-grid{
+    gap:16px!important;
+  }
+
+  .fleet-total{
+    padding:24px 20px!important;
+  }
+
+  .fleet-total strong{
+    font-size:54px!important;
+  }
+
+  /* Keep the mobile Engineered showcase compact and readable. */
+  .reliability-showcase,
+  .reliability-showcase-panel,
+  .reliability-showcase .equipment-marquee,
+  .reliability-showcase .equipment-marquee-track,
+  .reliability-showcase .equipment-logo-set,
+  .reliability-photo-panel{
+    height:92px!important;
+    min-height:92px!important;
+    max-height:92px!important;
+  }
+
+  .reliability-showcase .equipment-marquee{
+    background:#fff!important;
+  }
+
+  .equipment-logo-set{
+    gap:26px!important;
+    padding-left:22px!important;
+    padding-right:36px!important;
+  }
+
+  .equipment-logo{
+    flex-basis:116px!important;
+    width:116px!important;
+    height:48px!important;
+  }
+
+  .equipment-logo img{
+    max-width:100px!important;
+    max-height:30px!important;
+  }
+
+  .equipment-logo.ecrane-logo{
+    flex-basis:126px!important;
+    width:126px!important;
+  }
+
+  .equipment-logo.ecrane-logo img{
+    width:112px!important;
+    height:38px!important;
+    max-width:112px!important;
+    max-height:38px!important;
+  }
+}
