@@ -408,50 +408,35 @@ if (staticHse) {
   });
 }
 
-
-/* REV1.14 — measure one marquee set so the duplicate loop resets at the exact boundary. */
+/* REV1.17 — single-set marquee: one row, no duplicated loop, constant visual speed. */
+const equipmentMarquee = $('.equipment-marquee');
 const equipmentMarqueeTrack = $('.equipment-marquee-track');
 const equipmentMarqueeSet = $('.equipment-logo-set');
 
-function syncEquipmentMarqueeDistance() {
-  if (!equipmentMarqueeTrack || !equipmentMarqueeSet) return;
-  const width = equipmentMarqueeSet.getBoundingClientRect().width;
-  const styles = getComputedStyle(equipmentMarqueeTrack);
-  const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
-  if (width > 0) {
-    equipmentMarqueeTrack.style.setProperty('--marquee-distance', `${width + gap}px`);
-  }
-}
-
-if (equipmentMarqueeTrack && equipmentMarqueeSet) {
-  requestAnimationFrame(syncEquipmentMarqueeDistance);
-  addEventListener('load', syncEquipmentMarqueeDistance, { once:true });
-  addEventListener('resize', syncEquipmentMarqueeDistance, { passive:true });
-
-  if ('ResizeObserver' in window) {
-    const marqueeResizeObserver = new ResizeObserver(syncEquipmentMarqueeDistance);
-    marqueeResizeObserver.observe(equipmentMarqueeSet);
-  }
-}
-
-
-/* REV1.15 — measure desktop single-pass marquee geometry. */
-const equipmentMarquee = $('.equipment-marquee');
-
-function syncDesktopSingleMarquee() {
+function syncSingleEquipmentMarquee() {
   if (!equipmentMarquee || !equipmentMarqueeTrack || !equipmentMarqueeSet) return;
-  equipmentMarqueeTrack.style.setProperty('--marquee-container-width', `${equipmentMarquee.clientWidth}px`);
-  equipmentMarqueeTrack.style.setProperty('--marquee-set-width', `${equipmentMarqueeSet.scrollWidth}px`);
+
+  const viewportWidth = equipmentMarquee.clientWidth;
+  const setWidth = equipmentMarqueeSet.scrollWidth;
+  const distance = Math.max(0, setWidth - viewportWidth);
+
+  // Preserve approximately the same visual speed the approved desktop version had.
+  const pxPerSecond = 88;
+  const duration = distance > 0 ? Math.max(4.5, distance / pxPerSecond) : 0;
+
+  equipmentMarqueeTrack.style.setProperty('--single-marquee-distance', `${distance}px`);
+  equipmentMarqueeTrack.style.setProperty('--single-marquee-duration', duration ? `${duration}s` : '0s');
+  equipmentMarqueeTrack.classList.toggle('is-static', distance <= 0);
 }
 
 if (equipmentMarquee && equipmentMarqueeTrack && equipmentMarqueeSet) {
-  requestAnimationFrame(syncDesktopSingleMarquee);
-  addEventListener('load', syncDesktopSingleMarquee, { once:true });
-  addEventListener('resize', syncDesktopSingleMarquee, { passive:true });
+  requestAnimationFrame(syncSingleEquipmentMarquee);
+  addEventListener('load', syncSingleEquipmentMarquee, { once:true });
+  addEventListener('resize', syncSingleEquipmentMarquee, { passive:true });
 
   if ('ResizeObserver' in window) {
-    const desktopMarqueeResizeObserver = new ResizeObserver(syncDesktopSingleMarquee);
-    desktopMarqueeResizeObserver.observe(equipmentMarquee);
-    desktopMarqueeResizeObserver.observe(equipmentMarqueeSet);
+    const singleMarqueeResizeObserver = new ResizeObserver(syncSingleEquipmentMarquee);
+    singleMarqueeResizeObserver.observe(equipmentMarquee);
+    singleMarqueeResizeObserver.observe(equipmentMarqueeSet);
   }
 }

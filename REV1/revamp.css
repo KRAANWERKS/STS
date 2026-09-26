@@ -6056,3 +6056,38 @@ footer small {
     }
   }
 }
+
+
+/* REV1.17 — one logo set only; smooth single-row back-and-forth marquee. */
+.equipment-marquee-track{
+  display:flex!important;
+  width:max-content!important;
+  min-width:0!important;
+  column-gap:0!important;
+  gap:0!important;
+  animation-name:equipment-marquee-single-set!important;
+  animation-duration:var(--single-marquee-duration,7s)!important;
+  animation-timing-function:linear!important;
+  animation-iteration-count:infinite!important;
+  animation-direction:alternate!important;
+  animation-delay:0s!important;
+}
+
+.equipment-marquee-track.is-static{
+  animation:none!important;
+  transform:none!important;
+}
+
+.equipment-logo-set{
+  display:flex!important;
+  flex:none!important;
+  width:max-content!important;
+  margin:0!important;
+  padding-left:22px!important;
+  padding-right:22px!important;
+}
+
+@keyframes equipment-marquee-single-set{
+  from{transform:translate3d(0,0,0);}
+  to{transform:translate3d(calc(-1 * var(--single-marquee-distance,0px)),0,0);}
+}
