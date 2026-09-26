@@ -5856,3 +5856,71 @@ footer small {
     max-height:38px!important;
   }
 }
+
+
+/* REV1.13 — faster desktop marquee + new fleet-total image + Performance Control visual. */
+@media(min-width:761px){
+  /* Desktop needs a higher visual travel speed than mobile because the track is wider. */
+  .equipment-marquee-track{
+    animation-duration:7.5s!important;
+  }
+
+  /* Fit more brands on screen and keep each mark visually separated. */
+  .equipment-logo-set{
+    gap:24px!important;
+    padding-left:22px!important;
+    padding-right:30px!important;
+  }
+
+  .equipment-logo{
+    flex:0 0 120px!important;
+    width:120px!important;
+    height:52px!important;
+  }
+
+  .equipment-logo img{
+    max-width:108px!important;
+    max-height:36px!important;
+  }
+
+  .equipment-logo img[alt="MacGregor"]{
+    max-width:102px!important;
+    max-height:30px!important;
+  }
+
+  .equipment-logo img[alt="Yanmar"]{
+    max-width:100px!important;
+    max-height:30px!important;
+  }
+
+  .equipment-logo.ecrane-logo{
+    flex-basis:128px!important;
+    width:128px!important;
+  }
+
+  .equipment-logo.ecrane-logo img{
+    width:116px!important;
+    height:40px!important;
+    max-width:116px!important;
+    max-height:40px!important;
+  }
+
+  /* Swap fleet-total artwork and bias framing upward for useful deck/crane detail. */
+  .fleet-total::before{
+    background:
+      linear-gradient(
+        90deg,
+        #08161d 0%,
+        rgba(8,22,29,.96) 18%,
+        rgba(8,22,29,.80) 36%,
+        rgba(8,22,29,.46) 58%,
+        rgba(8,22,29,.16) 78%,
+        rgba(8,22,29,.08) 100%
+      ),
+      url('https://kraanwerks.com/wp-content/uploads/2024/04/IMG-20230309-WA0010.jpg') center 32% / cover no-repeat!important;
+  }
+
+  .reliability-showcase-panel[data-showcase-panel="performance"] img{
+    object-position:center 48%!important;
+  }
+}
