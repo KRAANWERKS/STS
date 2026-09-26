@@ -431,3 +431,25 @@ if (equipmentMarqueeTrack && equipmentMarqueeSet) {
     marqueeResizeObserver.observe(equipmentMarqueeSet);
   }
 }
+
+
+/* REV1.15 — measure desktop single-pass marquee geometry. */
+const equipmentMarquee = $('.equipment-marquee');
+
+function syncDesktopSingleMarquee() {
+  if (!equipmentMarquee || !equipmentMarqueeTrack || !equipmentMarqueeSet) return;
+  equipmentMarqueeTrack.style.setProperty('--marquee-container-width', `${equipmentMarquee.clientWidth}px`);
+  equipmentMarqueeTrack.style.setProperty('--marquee-set-width', `${equipmentMarqueeSet.scrollWidth}px`);
+}
+
+if (equipmentMarquee && equipmentMarqueeTrack && equipmentMarqueeSet) {
+  requestAnimationFrame(syncDesktopSingleMarquee);
+  addEventListener('load', syncDesktopSingleMarquee, { once:true });
+  addEventListener('resize', syncDesktopSingleMarquee, { passive:true });
+
+  if ('ResizeObserver' in window) {
+    const desktopMarqueeResizeObserver = new ResizeObserver(syncDesktopSingleMarquee);
+    desktopMarqueeResizeObserver.observe(equipmentMarquee);
+    desktopMarqueeResizeObserver.observe(equipmentMarqueeSet);
+  }
+}

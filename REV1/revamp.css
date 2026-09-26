@@ -5963,3 +5963,37 @@ footer small {
       url('https://kraanwerks.com/wp-content/uploads/2025/03/89a1262d-d9a3-4cb9-80c4-5614fbedf6b7.jpg') center 36% / cover no-repeat!important;
   }
 }
+
+
+/* REV1.15 — desktop marquee uses one logo set only; no duplicate overlap. */
+@media(min-width:761px){
+  .equipment-marquee{
+    overflow:hidden!important;
+  }
+
+  /* Keep the duplicated set for mobile, but never render it on laptop/desktop. */
+  .equipment-marquee .equipment-logo-set[aria-hidden="true"]{
+    display:none!important;
+  }
+
+  .equipment-marquee-track{
+    --marquee-container-width:600px;
+    --marquee-set-width:1180px;
+    width:max-content!important;
+    min-width:0!important;
+    animation-name:equipment-marquee-desktop-single!important;
+    animation-duration:8s!important;
+    animation-timing-function:linear!important;
+    animation-iteration-count:infinite!important;
+    animation-delay:-1.5s!important;
+  }
+
+  @keyframes equipment-marquee-desktop-single{
+    from{
+      transform:translate3d(var(--marquee-container-width),0,0);
+    }
+    to{
+      transform:translate3d(calc(-1 * var(--marquee-set-width)),0,0);
+    }
+  }
+}
