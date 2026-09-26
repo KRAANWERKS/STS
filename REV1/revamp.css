@@ -6091,3 +6091,9 @@ footer small {
   from{transform:translate3d(0,0,0);}
   to{transform:translate3d(calc(-1 * var(--single-marquee-distance,0px)),0,0);}
 }
+
+
+/* REV1.18 — single-set marquee loops forward instead of reversing. */
+.equipment-marquee-track{
+  animation-direction:normal!important;
+}
