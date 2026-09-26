@@ -6135,3 +6135,600 @@ footer small {
     to{transform:translate3d(calc(-1 * var(--marquee-loop-distance,1152px)),0,0);}
   }
 }
+
+
+/* REV1.20 — mobile-only composition pass. */
+@media(max-width:760px){
+  /* HERO — one full-screen looping video. No scroll-scrub layer on phones. */
+  .hero-company-flow{
+    --primary-opacity:1!important;
+    --zoom-opacity:0!important;
+    background:#08161d!important;
+  }
+
+  .hero-flow-media{
+    position:absolute!important;
+    inset:0 0 auto 0!important;
+    width:100%!important;
+    height:100svh!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+
+  .hero-flow-media .hero-video-primary{
+    display:block!important;
+    top:0!important;
+    left:0!important;
+    width:100%!important;
+    height:100svh!important;
+    object-fit:cover!important;
+    object-position:54% center!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+
+  .hero-flow-media .hero-video-zoom{
+    display:none!important;
+    opacity:0!important;
+  }
+
+  .hero-flow-media::after{
+    inset:0!important;
+    background:
+      linear-gradient(180deg,rgba(5,20,28,.34) 0%,rgba(5,20,28,.08) 23%,rgba(5,20,28,.08) 55%,rgba(5,20,28,.70) 100%),
+      linear-gradient(90deg,rgba(5,20,28,.30) 0%,rgba(5,20,28,.06) 74%,rgba(5,20,28,.02) 100%)!important;
+  }
+
+  .hero{
+    height:100svh!important;
+    min-height:640px!important;
+    max-height:none!important;
+    overflow:hidden!important;
+  }
+
+  .hero-stage{
+    position:relative!important;
+    top:0!important;
+    height:100svh!important;
+    min-height:640px!important;
+    overflow:hidden!important;
+  }
+
+  .hero-overlay{
+    top:72px!important;
+    bottom:76px!important;
+    left:20px!important;
+    right:20px!important;
+    width:auto!important;
+    padding:clamp(38px,6svh,62px) 0 36px!important;
+    justify-content:flex-end!important;
+    align-items:flex-start!important;
+  }
+
+  .hero-overlay::before{
+    background:linear-gradient(
+      90deg,
+      rgba(8,22,29,.58) 0%,
+      rgba(8,22,29,.30) 58%,
+      rgba(8,22,29,0) 100%
+    )!important;
+    filter:none!important;
+  }
+
+  .hero-kicker{
+    max-width:255px!important;
+    margin:0 0 16px!important;
+    font-size:8.5px!important;
+    line-height:1.5!important;
+    letter-spacing:1.25px!important;
+  }
+
+  .hero h1{
+    width:100%!important;
+    max-width:335px!important;
+    margin:0!important;
+    font-size:clamp(52px,16vw,68px)!important;
+    line-height:.84!important;
+    letter-spacing:-.042em!important;
+  }
+
+  .hero h1 .hero-line-one,
+  .hero h1 .hero-line-two,
+  .hero h1 .hero-line-three{
+    display:block!important;
+    margin-left:0!important;
+    transform:none!important;
+  }
+
+  .hero h1 .hero-line-two{
+    margin-left:.03em!important;
+  }
+
+  .hero h1 .hero-line-three{
+    margin-top:.03em!important;
+  }
+
+  .hero-copy{
+    width:min(100%,305px)!important;
+    margin:22px 0 0!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto!important;
+    gap:14px!important;
+    align-items:end!important;
+  }
+
+  .hero-copy p{
+    margin:0!important;
+    padding:0 0 0 12px!important;
+    border-left:2px solid var(--red)!important;
+    font-size:12.5px!important;
+    line-height:1.5!important;
+  }
+
+  .hero-copy a{
+    align-self:end!important;
+    font-size:9px!important;
+  }
+
+  .hero-copy b{
+    width:38px!important;
+    height:38px!important;
+    margin-top:4px!important;
+  }
+
+  .hero-caption{
+    left:20px!important;
+    right:20px!important;
+    bottom:10px!important;
+    padding:10px 0!important;
+    font-size:7.5px!important;
+    letter-spacing:.72px!important;
+  }
+
+  .hero-caption>span:nth-child(2){
+    display:none!important;
+  }
+
+  .hero-caption button{
+    margin-left:auto!important;
+    font-size:8px!important;
+  }
+
+  /* COMPANY — clean editorial entry immediately after the full-screen hero. */
+  .intro{
+    min-height:0!important;
+    padding-top:64px!important;
+    padding-bottom:68px!important;
+    background:#fff!important;
+  }
+
+  .company-promise{
+    max-width:none!important;
+    margin-bottom:22px!important;
+    font-size:clamp(30px,9vw,39px)!important;
+    line-height:.98!important;
+  }
+
+  .company-problem{
+    max-width:none!important;
+    font-size:clamp(23px,6.8vw,29px)!important;
+    line-height:1.31!important;
+  }
+
+  .company-solution{
+    margin-top:22px!important;
+    padding:18px 0 0 16px!important;
+  }
+
+  .company-solution::before{
+    top:18px!important;
+    height:34px!important;
+  }
+
+  .company-solution p:first-child,
+  .company-solution p:last-child{
+    font-size:17px!important;
+    line-height:1.55!important;
+  }
+
+  /* SECTION 02 — swipeable fleet cards instead of a long vertical stack. */
+  .fleet{
+    overflow:hidden!important;
+  }
+
+  .fleet .section-top{
+    margin-bottom:26px!important;
+  }
+
+  .fleet .section-top h2{
+    font-size:clamp(44px,12vw,54px)!important;
+    line-height:.9!important;
+  }
+
+  .fleet .section-top>p{
+    margin-top:14px!important;
+    max-width:310px!important;
+    font-size:13px!important;
+    line-height:1.55!important;
+  }
+
+  .fleet-phase-grid{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:14px!important;
+    width:auto!important;
+    margin:0 -20px!important;
+    padding:0 20px 10px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-inline:20px!important;
+    overscroll-behavior-inline:contain!important;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+
+  .fleet-phase-grid::-webkit-scrollbar{
+    display:none;
+  }
+
+  .fleet-phase-card{
+    flex:0 0 calc(100vw - 54px)!important;
+    width:calc(100vw - 54px)!important;
+    max-width:390px!important;
+    scroll-snap-align:start!important;
+    scroll-snap-stop:always!important;
+    min-height:0!important;
+    border:1px solid rgba(255,255,255,.10)!important;
+  }
+
+  .fleet-phase-card::after{
+    content:none!important;
+    display:none!important;
+  }
+
+  .fleet-phase-bg,
+  .fleet-phase-initial .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-drawing{
+    position:relative!important;
+    inset:auto!important;
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16 / 10!important;
+    object-fit:cover!important;
+    object-position:center!important;
+    filter:none!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+
+  .fleet-phase-expansion .fleet-phase-drawing{
+    object-position:center 43%!important;
+  }
+
+  .fleet-phase-content{
+    min-height:0!important;
+    padding:20px 18px 18px!important;
+    background:#08161d!important;
+  }
+
+  .fleet-phase-content>.eyebrow{
+    margin:0 0 18px!important;
+    padding:6px 8px 5px!important;
+    font-size:8px!important;
+    letter-spacing:1px!important;
+  }
+
+  .fleet-phase-content h3{
+    margin-bottom:12px!important;
+    font-size:clamp(35px,10vw,43px)!important;
+    line-height:.92!important;
+  }
+
+  .fleet-capacity{
+    margin-bottom:12px!important;
+    padding:10px 0!important;
+  }
+
+  .fleet-capacity strong{
+    font-size:42px!important;
+  }
+
+  .fleet-capacity span{
+    font-size:9px!important;
+  }
+
+  .fleet-phase-description{
+    margin-bottom:12px!important;
+    font-size:13px!important;
+    line-height:1.55!important;
+  }
+
+  .fleet-phase-content dl{
+    margin:12px 0!important;
+  }
+
+  .fleet-phase-content dl>div{
+    padding:7px 0!important;
+    gap:10px!important;
+  }
+
+  .fleet-phase-content dt,
+  .fleet-phase-content dd{
+    font-size:10.5px!important;
+  }
+
+  .fleet-phase-tag{
+    margin-top:10px!important;
+    font-size:8px!important;
+  }
+
+  /* 01 FC / 02 FSC / 03 FLF become compact reference tiles. */
+  .configurations,
+  .fleet .configurations{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:8px!important;
+    margin-top:24px!important;
+  }
+
+  .configurations>div{
+    min-height:88px!important;
+    padding:12px 9px!important;
+    border:1px solid var(--line)!important;
+    background:#f7fafb!important;
+  }
+
+  .configurations>div:hover{
+    background:#f7fafb!important;
+    color:inherit!important;
+  }
+
+  .configurations span{
+    font-size:8px!important;
+    letter-spacing:1px!important;
+  }
+
+  .configurations h3{
+    margin:7px 0 0!important;
+    font:600 10px/1.18 'Barlow Condensed',sans-serif!important;
+    letter-spacing:.01em!important;
+  }
+
+  .configurations h4{
+    margin:5px 0 0!important;
+    font:600 20px/1 'Barlow Condensed',sans-serif!important;
+    color:var(--red)!important;
+  }
+
+  .configurations p{
+    display:none!important;
+  }
+
+  /* SECTION 03 — stronger title hierarchy and a working mobile marquee. */
+  .reliability{
+    display:block!important;
+    padding-top:58px!important;
+    padding-bottom:58px!important;
+  }
+
+  .reliability-title,
+  .reliability-title.reveal{
+    width:100%!important;
+    max-width:none!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+
+  .reliability-title .eyebrow{
+    margin-bottom:16px!important;
+  }
+
+  .reliability-title h2{
+    width:100%!important;
+    max-width:none!important;
+    margin-bottom:20px!important;
+    color:#fff!important;
+    font-size:clamp(43px,12vw,54px)!important;
+    line-height:.90!important;
+    letter-spacing:-.035em!important;
+    overflow:visible!important;
+  }
+
+  .reliability-title h2 br{
+    display:none!important;
+  }
+
+  .reliability-title h2 em{
+    display:block!important;
+    margin-top:5px!important;
+    color:var(--red)!important;
+  }
+
+  .reliability-title>p:not(.eyebrow){
+    max-width:330px!important;
+    font-size:13.5px!important;
+    line-height:1.65!important;
+  }
+
+  .hours{
+    margin-top:24px!important;
+    padding-top:18px!important;
+  }
+
+  .hours strong{
+    font-size:40px!important;
+  }
+
+  .hours span{
+    margin-top:6px!important;
+    font-size:10.5px!important;
+    line-height:1.55!important;
+  }
+
+  .reliability-list{
+    margin-top:24px!important;
+    padding-top:0!important;
+  }
+
+  .reliability-list summary{
+    padding:17px 0!important;
+    gap:11px!important;
+    font-size:16px!important;
+    line-height:1.12!important;
+  }
+
+  .reliability-list details p{
+    padding:0 0 18px 27px!important;
+    font-size:13px!important;
+    line-height:1.58!important;
+  }
+
+  .reliability-showcase{
+    height:92px!important;
+    min-height:92px!important;
+    max-height:92px!important;
+    margin-top:12px!important;
+    border-top:0!important;
+  }
+
+  .reliability-showcase-panel,
+  .reliability-showcase .equipment-marquee,
+  .reliability-showcase .equipment-marquee-track,
+  .reliability-showcase .equipment-logo-set,
+  .reliability-photo-panel{
+    height:92px!important;
+    min-height:92px!important;
+    max-height:92px!important;
+  }
+
+  .reliability-showcase .equipment-marquee{
+    overflow:hidden!important;
+    background:#fff!important;
+  }
+
+  .reliability-showcase .equipment-marquee-track{
+    display:flex!important;
+    width:max-content!important;
+    gap:0!important;
+    animation-name:equipment-marquee-mobile-seamless!important;
+    animation-duration:var(--mobile-marquee-duration,16s)!important;
+    animation-timing-function:linear!important;
+    animation-iteration-count:infinite!important;
+    animation-direction:normal!important;
+    animation-delay:0s!important;
+  }
+
+  .reliability-showcase .equipment-logo-set{
+    display:flex!important;
+    flex:none!important;
+    width:max-content!important;
+    gap:22px!important;
+    margin:0!important;
+    padding:0 22px 0 0!important;
+  }
+
+  .equipment-logo{
+    flex:0 0 105px!important;
+    width:105px!important;
+    height:46px!important;
+  }
+
+  .equipment-logo img{
+    max-width:92px!important;
+    max-height:28px!important;
+  }
+
+  .equipment-logo.ecrane-logo{
+    flex-basis:116px!important;
+    width:116px!important;
+  }
+
+  .equipment-logo.ecrane-logo img{
+    width:104px!important;
+    height:35px!important;
+    max-width:104px!important;
+    max-height:35px!important;
+  }
+
+  @keyframes equipment-marquee-mobile-seamless{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(calc(-1 * var(--mobile-marquee-distance,900px)),0,0);}
+  }
+
+  /* SECTION 04 — cards swipe horizontally to keep the page compact. */
+  .safety{
+    overflow:hidden!important;
+  }
+
+  .safety .section-top{
+    margin-bottom:24px!important;
+  }
+
+  .safety .section-top h2{
+    font-size:clamp(43px,12vw,54px)!important;
+    line-height:.9!important;
+  }
+
+  .execution-visual{
+    margin-bottom:28px!important;
+  }
+
+  .promise-grid{
+    display:flex!important;
+    grid-template-columns:none!important;
+    gap:14px!important;
+    width:auto!important;
+    margin:28px -20px 0!important;
+    padding:0 20px 10px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-inline:20px!important;
+    overscroll-behavior-inline:contain!important;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+
+  .promise-grid::-webkit-scrollbar{
+    display:none;
+  }
+
+  .promise-grid article,
+  .promise-grid article:nth-child(2){
+    flex:0 0 calc(100vw - 58px)!important;
+    width:calc(100vw - 58px)!important;
+    max-width:350px!important;
+    min-height:0!important;
+    scroll-snap-align:start!important;
+    scroll-snap-stop:always!important;
+  }
+
+  .promise-visual{
+    aspect-ratio:4 / 3!important;
+  }
+
+  .promise-copy{
+    margin-top:-38px!important;
+    padding:54px 18px 20px!important;
+    min-height:0!important;
+  }
+
+  .promise-copy h3{
+    margin-bottom:12px!important;
+    font-size:30px!important;
+    line-height:.98!important;
+  }
+
+  .promise-copy p,
+  .promise-grid article:nth-child(2) .promise-copy p{
+    font-size:13px!important;
+    line-height:1.58!important;
+  }
+
+  .hse{
+    margin-top:30px!important;
+  }
+}

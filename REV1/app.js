@@ -467,3 +467,42 @@ if (equipmentMarquee && equipmentMarqueeTrack && equipmentMarqueeSet) {
     seamlessMarqueeResizeObserver.observe(equipmentMarqueeSet);
   }
 }
+
+
+/* REV1.20 — mobile-only seamless equipment marquee. Desktop behavior stays unchanged. */
+const mobileEquipmentMarquee = matchMedia('(max-width: 760px)');
+let mobileEquipmentMarqueeClone = null;
+
+function syncMobileEquipmentMarquee() {
+  if (!equipmentMarquee || !equipmentMarqueeTrack || !equipmentMarqueeSet) return;
+
+  if (!mobileEquipmentMarquee.matches) {
+    if (mobileEquipmentMarqueeClone?.isConnected) {
+      mobileEquipmentMarqueeClone.remove();
+      mobileEquipmentMarqueeClone = null;
+    }
+    return;
+  }
+
+  if (!mobileEquipmentMarqueeClone || !mobileEquipmentMarqueeClone.isConnected) {
+    mobileEquipmentMarqueeClone = equipmentMarqueeSet.cloneNode(true);
+    mobileEquipmentMarqueeClone.setAttribute('aria-hidden', 'true');
+    equipmentMarqueeTrack.appendChild(mobileEquipmentMarqueeClone);
+  }
+
+  const setWidth = equipmentMarqueeSet.getBoundingClientRect().width;
+  if (setWidth <= 0) return;
+
+  const pxPerSecond = 58;
+  const duration = Math.max(13, setWidth / pxPerSecond);
+
+  equipmentMarqueeTrack.style.setProperty('--mobile-marquee-distance', `${setWidth}px`);
+  equipmentMarqueeTrack.style.setProperty('--mobile-marquee-duration', `${duration}s`);
+}
+
+if (equipmentMarquee && equipmentMarqueeTrack && equipmentMarqueeSet) {
+  requestAnimationFrame(syncMobileEquipmentMarquee);
+  addEventListener('load', syncMobileEquipmentMarquee, { once:true });
+  addEventListener('resize', syncMobileEquipmentMarquee, { passive:true });
+  mobileEquipmentMarquee.addEventListener('change', syncMobileEquipmentMarquee);
+}
