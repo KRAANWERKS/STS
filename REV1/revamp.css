@@ -5924,3 +5924,42 @@ footer small {
     object-position:center 48%!important;
   }
 }
+
+
+/* REV1.14 — exact-distance desktop marquee loop + swap fleet/performance imagery back. */
+@media(min-width:761px){
+  /* Move by the measured width of exactly one logo set.
+     This prevents the duplicated MacGregor from catching the preceding SEM at loop reset. */
+  .equipment-marquee-track{
+    --marquee-distance:1180px;
+    animation-name:equipment-marquee-run-exact!important;
+    animation-duration:7.5s!important;
+    animation-timing-function:linear!important;
+    animation-iteration-count:infinite!important;
+  }
+
+  .equipment-logo-set{
+    flex:none!important;
+    width:max-content!important;
+  }
+
+  @keyframes equipment-marquee-run-exact{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(calc(-1 * var(--marquee-distance)),0,0);}
+  }
+
+  /* Restore the previous fleet-total artwork. */
+  .fleet-total::before{
+    background:
+      linear-gradient(
+        90deg,
+        #08161d 0%,
+        rgba(8,22,29,.96) 18%,
+        rgba(8,22,29,.80) 36%,
+        rgba(8,22,29,.46) 58%,
+        rgba(8,22,29,.16) 78%,
+        rgba(8,22,29,.08) 100%
+      ),
+      url('https://kraanwerks.com/wp-content/uploads/2025/03/89a1262d-d9a3-4cb9-80c4-5614fbedf6b7.jpg') center 36% / cover no-repeat!important;
+  }
+}

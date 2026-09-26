@@ -407,3 +407,27 @@ if (staticHse) {
     if (!staticHse.open) staticHse.open = true;
   });
 }
+
+
+/* REV1.14 — measure one marquee set so the duplicate loop resets at the exact boundary. */
+const equipmentMarqueeTrack = $('.equipment-marquee-track');
+const equipmentMarqueeSet = $('.equipment-logo-set');
+
+function syncEquipmentMarqueeDistance() {
+  if (!equipmentMarqueeTrack || !equipmentMarqueeSet) return;
+  const width = equipmentMarqueeSet.getBoundingClientRect().width;
+  if (width > 0) {
+    equipmentMarqueeTrack.style.setProperty('--marquee-distance', `${width}px`);
+  }
+}
+
+if (equipmentMarqueeTrack && equipmentMarqueeSet) {
+  requestAnimationFrame(syncEquipmentMarqueeDistance);
+  addEventListener('load', syncEquipmentMarqueeDistance, { once:true });
+  addEventListener('resize', syncEquipmentMarqueeDistance, { passive:true });
+
+  if ('ResizeObserver' in window) {
+    const marqueeResizeObserver = new ResizeObserver(syncEquipmentMarqueeDistance);
+    marqueeResizeObserver.observe(equipmentMarqueeSet);
+  }
+}
