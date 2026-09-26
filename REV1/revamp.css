@@ -6906,3 +6906,129 @@ footer small {
     padding-right:20px!important;
   }
 }
+
+
+/* REV1.22 — final mobile composition polish using the supplied SUPERFAST tug image. */
+@media(max-width:760px){
+  /* Full-screen static hero: no mobile video/scrub workload. */
+  .hero-flow-media{
+    background:
+      linear-gradient(180deg,rgba(5,20,28,.24) 0%,rgba(5,20,28,.04) 32%,rgba(5,20,28,.10) 58%,rgba(5,20,28,.76) 100%),
+      linear-gradient(90deg,rgba(5,20,28,.34) 0%,rgba(5,20,28,.10) 66%,rgba(5,20,28,.02) 100%),
+      url('assets/mobile-hero-superfast-v2.jpg') 58% center / cover no-repeat!important;
+  }
+
+  .hero-flow-media .hero-video-primary,
+  .hero-flow-media .hero-video-zoom{
+    display:none!important;
+  }
+
+  .hero-overlay{
+    padding-top:clamp(62px,9svh,88px)!important;
+    padding-bottom:34px!important;
+  }
+
+  .hero-kicker{
+    max-width:250px!important;
+  }
+
+  .hero h1{
+    max-width:320px!important;
+    font-size:clamp(49px,15vw,64px)!important;
+    line-height:.86!important;
+  }
+
+  .hero-copy{
+    max-width:286px!important;
+    margin-top:18px!important;
+  }
+
+  .hero-copy p{
+    font-size:12px!important;
+    line-height:1.52!important;
+  }
+
+  /* Fleet cards: compact swipe carousel with a visible next-card peek. */
+  .fleet-phase-grid{
+    gap:12px!important;
+    padding-bottom:8px!important;
+  }
+
+  .fleet-phase-card{
+    flex-basis:calc(100vw - 62px)!important;
+    width:calc(100vw - 62px)!important;
+    max-width:372px!important;
+  }
+
+  .fleet-phase-bg,
+  .fleet-phase-initial .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-drawing{
+    filter:none!important;
+    transform:none!important;
+  }
+
+  /* Keep FC / FSC / FLF descriptive but compact. */
+  .configurations>div{
+    grid-template-columns:24px 42px minmax(0,1fr)!important;
+    min-height:62px!important;
+    padding:9px 11px!important;
+  }
+
+  .configurations p{
+    font-size:10px!important;
+    line-height:1.36!important;
+  }
+
+  /* Engineered Availability: make the title fit naturally on narrow screens. */
+  .reliability-title h2{
+    max-width:340px!important;
+    font-size:clamp(39px,11vw,49px)!important;
+    line-height:.93!important;
+    letter-spacing:-.03em!important;
+  }
+
+  .reliability-title h2 em{
+    margin-top:3px!important;
+  }
+
+  .reliability-title>p:not(.eyebrow){
+    max-width:315px!important;
+  }
+
+  /* Edge-to-edge active showcase; logo animation remains seamless through JS clone. */
+  .reliability-showcase{
+    margin-top:10px!important;
+  }
+
+  .reliability-showcase .equipment-marquee{
+    width:100%!important;
+    overflow:hidden!important;
+  }
+
+  .reliability-showcase .equipment-marquee-track{
+    min-width:max-content!important;
+    will-change:transform!important;
+  }
+
+  /* Safety cards use the same horizontal carousel language as the fleet. */
+  .promise-grid{
+    gap:12px!important;
+    padding-bottom:8px!important;
+  }
+
+  .promise-grid article,
+  .promise-grid article:nth-child(2){
+    flex-basis:calc(100vw - 64px)!important;
+    width:calc(100vw - 64px)!important;
+    max-width:340px!important;
+  }
+
+  .promise-copy{
+    padding:52px 18px 18px!important;
+  }
+
+  .promise-copy h3{
+    font-size:28px!important;
+  }
+}
