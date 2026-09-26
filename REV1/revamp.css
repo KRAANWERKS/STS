@@ -6097,3 +6097,41 @@ footer small {
 .equipment-marquee-track{
   animation-direction:normal!important;
 }
+
+
+/* REV1.19 — true seamless desktop marquee: exact duplicate boundary, no blank gap, no reverse. */
+@media(min-width:761px){
+  .equipment-marquee{
+    overflow:hidden!important;
+  }
+
+  .equipment-marquee-track{
+    display:flex!important;
+    width:max-content!important;
+    min-width:0!important;
+    gap:0!important;
+    column-gap:0!important;
+    animation-name:equipment-marquee-loop-seamless!important;
+    animation-duration:var(--marquee-loop-duration,13s)!important;
+    animation-timing-function:linear!important;
+    animation-iteration-count:infinite!important;
+    animation-direction:normal!important;
+    animation-delay:0s!important;
+  }
+
+  /* Each set is identical. Only 24px separates Weihua from the next MacGregor. */
+  .equipment-marquee .equipment-logo-set,
+  .equipment-marquee .equipment-logo-set[aria-hidden="true"]{
+    display:flex!important;
+    flex:none!important;
+    width:max-content!important;
+    gap:24px!important;
+    margin:0!important;
+    padding:0 24px 0 0!important;
+  }
+
+  @keyframes equipment-marquee-loop-seamless{
+    from{transform:translate3d(0,0,0);}
+    to{transform:translate3d(calc(-1 * var(--marquee-loop-distance,1152px)),0,0);}
+  }
+}
