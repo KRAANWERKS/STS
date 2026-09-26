@@ -101,9 +101,7 @@ async function syncHeroPlayback() {
   const progress = getHeroProgress();
 
   if (heroVideo) {
-    const shouldLoop = !blocked && (mobileHero.matches
-      ? hero.getBoundingClientRect().bottom > 0
-      : progress < .16);
+    const shouldLoop = !blocked && !mobileHero.matches && progress < .16;
     if (shouldLoop) {
       try { await heroVideo.play(); } catch {}
     } else {

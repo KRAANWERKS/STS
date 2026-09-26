@@ -6732,3 +6732,177 @@ footer small {
     margin-top:30px!important;
   }
 }
+
+
+/* REV1.21 — mobile static hero + compact configuration copy + edge-to-edge showcase. */
+@media(max-width:760px){
+  /* MOBILE HERO — use the supplied SUPERFAST tug image; video stays desktop-only. */
+  .hero-flow-media{
+    background:
+      linear-gradient(180deg,rgba(5,20,28,.28) 0%,rgba(5,20,28,.08) 34%,rgba(5,20,28,.14) 62%,rgba(5,20,28,.72) 100%),
+      linear-gradient(90deg,rgba(5,20,28,.36) 0%,rgba(5,20,28,.10) 72%,rgba(5,20,28,.02) 100%),
+      url('assets/mobile-hero-superfast.jpg') 52% center / cover no-repeat!important;
+  }
+
+  .hero-flow-media .hero-video-primary,
+  .hero-flow-media .hero-video-zoom{
+    display:none!important;
+    opacity:0!important;
+  }
+
+  .hero-flow-media::after{
+    background:none!important;
+  }
+
+  .hero-overlay{
+    top:72px!important;
+    bottom:62px!important;
+    padding:clamp(68px,10svh,96px) 0 36px!important;
+    justify-content:flex-start!important;
+  }
+
+  .hero-overlay::before{
+    background:linear-gradient(
+      90deg,
+      rgba(8,22,29,.44) 0%,
+      rgba(8,22,29,.20) 58%,
+      rgba(8,22,29,0) 100%
+    )!important;
+  }
+
+  .hero h1{
+    max-width:330px!important;
+    font-size:clamp(50px,15.5vw,66px)!important;
+    line-height:.85!important;
+  }
+
+  .hero-copy{
+    max-width:292px!important;
+    margin-top:20px!important;
+  }
+
+  .hero-caption button{
+    display:none!important;
+  }
+
+  /* 01 FC / 02 FSC / 03 FLF — compact rows with descriptions visible. */
+  .configurations,
+  .fleet .configurations{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+    margin-top:22px!important;
+  }
+
+  .configurations>div{
+    display:grid!important;
+    grid-template-columns:26px 44px minmax(0,1fr)!important;
+    align-items:center!important;
+    column-gap:10px!important;
+    min-height:66px!important;
+    padding:10px 12px!important;
+  }
+
+  .configurations span{
+    grid-column:1!important;
+    font-size:8px!important;
+    align-self:start!important;
+    padding-top:3px!important;
+  }
+
+  .configurations h3{
+    display:none!important;
+  }
+
+  .configurations h4{
+    grid-column:2!important;
+    margin:0!important;
+    color:var(--red)!important;
+    font:600 19px/1 'Barlow Condensed',sans-serif!important;
+  }
+
+  .configurations p{
+    display:block!important;
+    grid-column:3!important;
+    margin:0!important;
+    max-width:none!important;
+    color:#52666f!important;
+    font-size:10.5px!important;
+    line-height:1.38!important;
+  }
+
+  /* Fleet-total gets its own mobile image treatment. */
+  .fleet-total{
+    position:relative!important;
+    isolation:isolate!important;
+    overflow:hidden!important;
+    padding:24px 20px!important;
+    background:#08161d!important;
+  }
+
+  .fleet-total::before{
+    content:''!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:0!important;
+    background:
+      linear-gradient(180deg,rgba(8,22,29,.72) 0%,rgba(8,22,29,.48) 40%,rgba(8,22,29,.82) 100%),
+      url('https://kraanwerks.com/wp-content/uploads/2025/03/89a1262d-d9a3-4cb9-80c4-5614fbedf6b7.jpg') center 38% / cover no-repeat!important;
+  }
+
+  .fleet-total::after{
+    content:''!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:0!important;
+    background:linear-gradient(90deg,rgba(8,22,29,.56),rgba(8,22,29,.12))!important;
+  }
+
+  .fleet-total>div,
+  .fleet-total>p{
+    position:relative!important;
+    z-index:1!important;
+  }
+
+  .fleet-total>p{
+    padding:12px 0 0!important;
+    background:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+    color:#d8e2e6!important;
+  }
+
+  /* Engineered showcase / marquee runs edge-to-edge on the phone. */
+  .reliability-showcase{
+    width:calc(100% + 40px)!important;
+    max-width:none!important;
+    margin-left:-20px!important;
+    margin-right:-20px!important;
+    border-left:0!important;
+    border-right:0!important;
+  }
+
+  .reliability-showcase .equipment-marquee::before,
+  .reliability-showcase .equipment-marquee::after{
+    display:none!important;
+    content:none!important;
+  }
+
+  .reliability-showcase .equipment-logo-set{
+    gap:18px!important;
+    padding-left:0!important;
+    padding-right:18px!important;
+  }
+
+  .reliability-showcase .equipment-marquee-track{
+    padding:0!important;
+  }
+
+  /* Safety cards keep their horizontal swipe behavior with a clean edge peek. */
+  .promise-grid{
+    margin-left:-20px!important;
+    margin-right:-20px!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+}
