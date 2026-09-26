@@ -6013,3 +6013,46 @@ footer small {
     margin:0!important;
   }
 }
+
+
+/* REV1.16 — seamless two-set desktop marquee with balanced speed. */
+@media(min-width:761px){
+  /* Restore the duplicated logo set on desktop so the loop never has an empty pass. */
+  .equipment-marquee .equipment-logo-set[aria-hidden="true"]{
+    display:flex!important;
+  }
+
+  /* Two identical sets sit directly beside each other.
+     The first set carries the inter-loop spacing in its own right padding. */
+  .equipment-marquee-track{
+    display:flex!important;
+    column-gap:0!important;
+    gap:0!important;
+    width:max-content!important;
+    min-width:0!important;
+    animation-name:equipment-marquee-desktop-seamless!important;
+    animation-duration:13.5s!important;
+    animation-delay:0s!important;
+    animation-timing-function:linear!important;
+    animation-iteration-count:infinite!important;
+  }
+
+  .equipment-logo-set{
+    display:flex!important;
+    flex:none!important;
+    width:max-content!important;
+    gap:24px!important;
+    padding-left:0!important;
+    padding-right:24px!important;
+    margin:0!important;
+  }
+
+  @keyframes equipment-marquee-desktop-seamless{
+    from{
+      transform:translate3d(0,0,0);
+    }
+    to{
+      transform:translate3d(calc(-1 * var(--marquee-distance)),0,0);
+    }
+  }
+}
