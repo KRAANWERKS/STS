@@ -7032,3 +7032,576 @@ footer small {
     font-size:28px!important;
   }
 }
+
+
+/* REV1.23 — mobile-only composition refinement. Desktop remains unchanged. */
+@media(max-width:760px){
+  /* HERO — static supplied SUPERFAST image, full viewport, no scrub/video layer. */
+  .hero-company-flow{
+    position:relative!important;
+    min-height:auto!important;
+    background:#08161d!important;
+    --primary-opacity:1!important;
+    --zoom-opacity:0!important;
+  }
+
+  .hero-flow-media{
+    position:absolute!important;
+    inset:0 0 auto 0!important;
+    top:0!important;
+    width:100%!important;
+    height:100svh!important;
+    min-height:640px!important;
+    margin:0!important;
+    background:
+      linear-gradient(180deg,rgba(5,20,28,.20) 0%,rgba(5,20,28,.04) 31%,rgba(5,20,28,.10) 58%,rgba(5,20,28,.74) 100%),
+      linear-gradient(90deg,rgba(5,20,28,.34) 0%,rgba(5,20,28,.08) 66%,rgba(5,20,28,.01) 100%),
+      url('assets/mobile-hero-superfast-v2.jpg') 57% center / cover no-repeat!important;
+  }
+
+  .hero-flow-media .hero-video-primary,
+  .hero-flow-media .hero-video-zoom{
+    display:none!important;
+    opacity:0!important;
+  }
+
+  .hero-flow-media::after{
+    display:none!important;
+    content:none!important;
+  }
+
+  .hero{
+    position:relative!important;
+    height:100svh!important;
+    min-height:640px!important;
+    max-height:none!important;
+  }
+
+  .hero-stage{
+    position:relative!important;
+    top:auto!important;
+    height:100svh!important;
+    min-height:640px!important;
+    overflow:hidden!important;
+  }
+
+  .hero-overlay{
+    top:72px!important;
+    bottom:58px!important;
+    left:20px!important;
+    right:20px!important;
+    width:auto!important;
+    padding:clamp(58px,8.5svh,82px) 0 34px!important;
+    justify-content:flex-start!important;
+  }
+
+  .hero-overlay::before{
+    left:-20px!important;
+    right:-20px!important;
+    width:auto!important;
+    background:linear-gradient(
+      90deg,
+      rgba(8,22,29,.38) 0%,
+      rgba(8,22,29,.17) 48%,
+      rgba(8,22,29,0) 88%
+    )!important;
+  }
+
+  .hero-kicker{
+    max-width:245px!important;
+    margin-bottom:18px!important;
+    font-size:8.5px!important;
+    line-height:1.5!important;
+    letter-spacing:1.15px!important;
+  }
+
+  .hero h1{
+    width:100%!important;
+    max-width:315px!important;
+    margin-bottom:0!important;
+    font-size:clamp(48px,14.8vw,64px)!important;
+    line-height:.86!important;
+    letter-spacing:-.038em!important;
+  }
+
+  .hero h1 .hero-line-one,
+  .hero h1 .hero-line-two,
+  .hero h1 .hero-line-three{
+    margin-left:0!important;
+    transform:none!important;
+  }
+
+  .hero h1 .hero-line-two{
+    margin-left:.03em!important;
+  }
+
+  .hero-copy{
+    width:min(100%,282px)!important;
+    max-width:282px!important;
+    margin:18px 0 0!important;
+    gap:10px!important;
+    align-items:center!important;
+  }
+
+  .hero-copy p{
+    padding-left:11px!important;
+    font-size:11.5px!important;
+    line-height:1.52!important;
+  }
+
+  .hero-copy a{
+    font-size:9px!important;
+  }
+
+  .hero-copy b{
+    width:38px!important;
+    height:38px!important;
+  }
+
+  .hero-caption{
+    left:20px!important;
+    right:20px!important;
+    bottom:12px!important;
+    padding:10px 0!important;
+    font-size:7.5px!important;
+    letter-spacing:.7px!important;
+  }
+
+  .hero-caption>span:nth-child(2),
+  .hero-caption button{
+    display:none!important;
+  }
+
+  /* Company starts cleanly after the static hero. */
+  .intro{
+    min-height:0!important;
+    padding-top:66px!important;
+    padding-bottom:66px!important;
+    background:#fff!important;
+  }
+
+  .company-promise{
+    max-width:100%!important;
+    margin-bottom:22px!important;
+    font-size:clamp(30px,9vw,40px)!important;
+    line-height:.98!important;
+  }
+
+  .company-problem{
+    font-size:clamp(23px,6.8vw,29px)!important;
+    line-height:1.31!important;
+  }
+
+  .company-solution{
+    margin-top:22px!important;
+    padding:18px 0 0 16px!important;
+  }
+
+  .company-solution p:first-child,
+  .company-solution p:last-child{
+    font-size:16.5px!important;
+    line-height:1.54!important;
+  }
+
+  /* SECTION 02 — compact horizontal fleet cards with an intentional next-card peek. */
+  .fleet{
+    overflow:hidden!important;
+    padding-top:56px!important;
+    padding-bottom:56px!important;
+  }
+
+  .fleet .section-top{
+    margin-bottom:24px!important;
+  }
+
+  .fleet .section-top h2{
+    font-size:clamp(42px,12vw,52px)!important;
+    line-height:.91!important;
+  }
+
+  .fleet .section-top>p{
+    margin-top:12px!important;
+    max-width:295px!important;
+    font-size:12.5px!important;
+    line-height:1.55!important;
+  }
+
+  .fleet-phase-grid{
+    display:flex!important;
+    width:auto!important;
+    margin:0 -20px!important;
+    padding:0 20px 10px!important;
+    gap:12px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-inline:20px!important;
+    overscroll-behavior-inline:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+
+  .fleet-phase-grid::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  .fleet-phase-card{
+    flex:0 0 min(84vw,356px)!important;
+    width:min(84vw,356px)!important;
+    max-width:none!important;
+    min-height:0!important;
+    scroll-snap-align:start!important;
+    scroll-snap-stop:always!important;
+  }
+
+  .fleet-phase-bg,
+  .fleet-phase-initial .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-bg,
+  .fleet-phase-expansion .fleet-phase-drawing{
+    position:relative!important;
+    inset:auto!important;
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16 / 10!important;
+    object-fit:cover!important;
+    filter:none!important;
+    transform:none!important;
+    opacity:1!important;
+  }
+
+  .fleet-phase-content{
+    min-height:0!important;
+    padding:18px 16px 17px!important;
+  }
+
+  .fleet-phase-content>.eyebrow{
+    margin:0 0 15px!important;
+    padding:6px 8px 5px!important;
+    font-size:7.5px!important;
+    line-height:1.25!important;
+  }
+
+  .fleet-phase-content h3{
+    margin-bottom:10px!important;
+    font-size:clamp(33px,9.5vw,40px)!important;
+    line-height:.94!important;
+  }
+
+  .fleet-capacity{
+    margin-bottom:10px!important;
+    padding:9px 0!important;
+  }
+
+  .fleet-capacity strong{
+    font-size:39px!important;
+  }
+
+  .fleet-phase-description{
+    margin-bottom:10px!important;
+    font-size:12px!important;
+    line-height:1.52!important;
+  }
+
+  .fleet-phase-content dl{
+    margin:10px 0!important;
+  }
+
+  .fleet-phase-content dl>div{
+    padding:6px 0!important;
+  }
+
+  .fleet-phase-content dt,
+  .fleet-phase-content dd{
+    font-size:10px!important;
+  }
+
+  /* FC / FSC / FLF — small reference rows, descriptions always visible. */
+  .configurations,
+  .fleet .configurations{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+    margin-top:20px!important;
+  }
+
+  .configurations>div{
+    display:grid!important;
+    grid-template-columns:22px 38px minmax(0,1fr)!important;
+    align-items:center!important;
+    column-gap:9px!important;
+    min-height:58px!important;
+    padding:8px 10px!important;
+    background:#f7fafb!important;
+    border:1px solid var(--line)!important;
+  }
+
+  .configurations span{
+    grid-column:1!important;
+    align-self:start!important;
+    padding-top:2px!important;
+    font-size:7.5px!important;
+  }
+
+  .configurations h3{
+    display:none!important;
+  }
+
+  .configurations h4{
+    display:block!important;
+    grid-column:2!important;
+    margin:0!important;
+    color:var(--red)!important;
+    font:600 18px/1 'Barlow Condensed',sans-serif!important;
+  }
+
+  .configurations p{
+    display:block!important;
+    grid-column:3!important;
+    margin:0!important;
+    max-width:none!important;
+    color:#52666f!important;
+    font-size:10.5px!important;
+    line-height:1.38!important;
+  }
+
+  /* Fleet-total gets a proper image-backed mobile panel. */
+  .fleet-total{
+    position:relative!important;
+    isolation:isolate!important;
+    overflow:hidden!important;
+    padding:22px 18px!important;
+    background:#08161d!important;
+  }
+
+  .fleet-total::before{
+    content:''!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:0!important;
+    background:
+      linear-gradient(180deg,rgba(8,22,29,.76) 0%,rgba(8,22,29,.44) 38%,rgba(8,22,29,.84) 100%),
+      url('https://kraanwerks.com/wp-content/uploads/2025/03/89a1262d-d9a3-4cb9-80c4-5614fbedf6b7.jpg') center 38% / cover no-repeat!important;
+  }
+
+  .fleet-total::after{
+    content:''!important;
+    position:absolute!important;
+    z-index:0!important;
+    inset:0!important;
+    background:linear-gradient(90deg,rgba(8,22,29,.54),rgba(8,22,29,.10))!important;
+  }
+
+  .fleet-total>div,
+  .fleet-total>p{
+    position:relative!important;
+    z-index:1!important;
+  }
+
+  .fleet-total strong{
+    font-size:50px!important;
+  }
+
+  .fleet-total>p{
+    padding:10px 0 0!important;
+    background:none!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+
+  /* SECTION 03 — readable headline + compact accordion/showcase. */
+  .reliability{
+    display:block!important;
+    overflow:hidden!important;
+    padding-top:56px!important;
+    padding-bottom:56px!important;
+  }
+
+  .reliability-title,
+  .reliability-title.reveal{
+    width:100%!important;
+    max-width:none!important;
+    opacity:1!important;
+    transform:none!important;
+  }
+
+  .reliability-title h2{
+    width:100%!important;
+    max-width:100%!important;
+    margin-bottom:18px!important;
+    color:#fff!important;
+    font-size:clamp(38px,10.7vw,47px)!important;
+    line-height:.94!important;
+    letter-spacing:-.028em!important;
+    white-space:normal!important;
+    overflow:visible!important;
+    overflow-wrap:normal!important;
+    word-break:normal!important;
+    text-wrap:balance;
+  }
+
+  .reliability-title h2 br{
+    display:none!important;
+  }
+
+  .reliability-title h2 em{
+    display:block!important;
+    margin-top:4px!important;
+    color:var(--red)!important;
+  }
+
+  .reliability-title>p:not(.eyebrow){
+    max-width:305px!important;
+    font-size:12.5px!important;
+    line-height:1.6!important;
+  }
+
+  .hours{
+    margin-top:22px!important;
+    padding-top:17px!important;
+  }
+
+  .hours strong{
+    font-size:38px!important;
+  }
+
+  .reliability-list{
+    margin-top:22px!important;
+    padding-top:0!important;
+  }
+
+  .reliability-list summary{
+    padding:16px 0!important;
+    gap:10px!important;
+    font-size:15.5px!important;
+    line-height:1.12!important;
+  }
+
+  .reliability-list details p{
+    padding:0 0 17px 26px!important;
+    font-size:12.5px!important;
+    line-height:1.56!important;
+  }
+
+  /* Active showcase/marquee runs fully edge-to-edge on mobile. */
+  .reliability-showcase{
+    width:calc(100% + 40px)!important;
+    max-width:none!important;
+    height:90px!important;
+    min-height:90px!important;
+    max-height:90px!important;
+    margin:10px -20px 0!important;
+    border-left:0!important;
+    border-right:0!important;
+    border-top:0!important;
+  }
+
+  .reliability-showcase-panel,
+  .reliability-showcase .equipment-marquee,
+  .reliability-showcase .equipment-marquee-track,
+  .reliability-showcase .equipment-logo-set,
+  .reliability-photo-panel{
+    height:90px!important;
+    min-height:90px!important;
+    max-height:90px!important;
+  }
+
+  .reliability-showcase .equipment-marquee{
+    width:100%!important;
+    overflow:hidden!important;
+    background:#fff!important;
+  }
+
+  .reliability-showcase .equipment-marquee::before,
+  .reliability-showcase .equipment-marquee::after{
+    display:none!important;
+    content:none!important;
+  }
+
+  .reliability-showcase .equipment-marquee-track{
+    min-width:max-content!important;
+    padding:0!important;
+    animation-play-state:running!important;
+    will-change:transform!important;
+  }
+
+  .reliability-showcase .equipment-logo-set{
+    gap:18px!important;
+    margin:0!important;
+    padding:0 18px 0 0!important;
+  }
+
+  /* SECTION 04 — horizontal cards instead of a long vertical stack. */
+  .safety{
+    overflow:hidden!important;
+    padding-top:56px!important;
+    padding-bottom:56px!important;
+  }
+
+  .safety .section-top{
+    margin-bottom:22px!important;
+  }
+
+  .safety .section-top h2{
+    font-size:clamp(41px,11.5vw,51px)!important;
+    line-height:.91!important;
+  }
+
+  .execution-visual{
+    margin-bottom:24px!important;
+  }
+
+  .promise-grid{
+    display:flex!important;
+    width:auto!important;
+    margin:26px -20px 0!important;
+    padding:0 20px 10px!important;
+    gap:12px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    scroll-snap-type:x mandatory!important;
+    scroll-padding-inline:20px!important;
+    overscroll-behavior-inline:contain!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+
+  .promise-grid::-webkit-scrollbar{
+    display:none!important;
+  }
+
+  .promise-grid article,
+  .promise-grid article:nth-child(2){
+    flex:0 0 min(84vw,336px)!important;
+    width:min(84vw,336px)!important;
+    max-width:none!important;
+    min-height:0!important;
+    scroll-snap-align:start!important;
+    scroll-snap-stop:always!important;
+  }
+
+  .promise-visual{
+    aspect-ratio:4 / 3!important;
+  }
+
+  .promise-copy{
+    margin-top:-36px!important;
+    padding:50px 17px 18px!important;
+    min-height:0!important;
+  }
+
+  .promise-copy h3{
+    margin-bottom:11px!important;
+    font-size:27px!important;
+    line-height:.99!important;
+  }
+
+  .promise-copy p,
+  .promise-grid article:nth-child(2) .promise-copy p{
+    font-size:12.5px!important;
+    line-height:1.56!important;
+  }
+
+  .hse{
+    margin-top:28px!important;
+  }
+}
