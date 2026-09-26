@@ -416,8 +416,10 @@ const equipmentMarqueeSet = $('.equipment-logo-set');
 function syncEquipmentMarqueeDistance() {
   if (!equipmentMarqueeTrack || !equipmentMarqueeSet) return;
   const width = equipmentMarqueeSet.getBoundingClientRect().width;
+  const styles = getComputedStyle(equipmentMarqueeTrack);
+  const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
   if (width > 0) {
-    equipmentMarqueeTrack.style.setProperty('--marquee-distance', `${width}px`);
+    equipmentMarqueeTrack.style.setProperty('--marquee-distance', `${width + gap}px`);
   }
 }
 

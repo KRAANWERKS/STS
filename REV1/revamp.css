@@ -5997,3 +5997,19 @@ footer small {
     }
   }
 }
+
+
+/* REV1.15 — balanced desktop marquee speed and seamless set spacing. */
+@media(min-width:761px){
+  .equipment-marquee-track{
+    column-gap:24px!important;
+    animation-duration:9.5s!important;
+  }
+
+  .equipment-logo-set{
+    gap:24px!important;
+    padding-left:0!important;
+    padding-right:0!important;
+    margin:0!important;
+  }
+}
