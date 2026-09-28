@@ -397,13 +397,22 @@ $$('.equipment-logo img').forEach((logo) => {
 
 const staticHse = $('.hse-static');
 if (staticHse) {
-  staticHse.open = true;
+  const desktopHse = matchMedia('(min-width: 761px)');
+
+  const syncHseMode = () => {
+    staticHse.open = desktopHse.matches;
+  };
+
   staticHse.querySelector('summary')?.addEventListener('click', (event) => {
-    event.preventDefault();
+    if (desktopHse.matches) event.preventDefault();
   });
+
   staticHse.addEventListener('toggle', () => {
-    if (!staticHse.open) staticHse.open = true;
+    if (desktopHse.matches && !staticHse.open) staticHse.open = true;
   });
+
+  desktopHse.addEventListener?.('change', syncHseMode);
+  syncHseMode();
 }
 
 /* REV1.19 — seamless desktop marquee with an accessibility-hidden runtime duplicate. */
