@@ -11,9 +11,14 @@
         content="New-generation floating assets. Higher net loading performance. Engineered availability. Safety-led execution. Discover SUPERFAST, Indonesia's offshore dry-bulk transshipment partner.">
     <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23ed1c2e'/%3E%3Ctext x='8' y='30' font-family='Arial' font-size='30' font-weight='900' font-style='italic' fill='white'%3ES%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="revamp.css?v=20260928-rev1-27">
-    <link rel="preload" as="image" href="assets/mobile-hero-superfast.jpg" media="(max-width: 760px)">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;450;500;600;650;700&display=swap">
+    <link rel="stylesheet" href="style.css?v=20260928-perf1">
+    <link rel="stylesheet" href="revamp.css?v=20260928-rev1-28">
+    <link rel="preload" as="image" href="assets/mobile-hero-superfast-v2.jpg" media="(max-width: 760px)"
+        fetchpriority="high">
 </head>
 
 <body><a class="skip" href="#main">Skip to content</a>
@@ -29,11 +34,11 @@
             <div class="hero-flow-media" aria-hidden="true">
                 <video class="hero-video hero-video-primary" id="hero-video" autoplay muted loop playsinline preload="auto"
                     disablepictureinpicture>
-                    <source src="../assets/tugboat-sts.mp4?v=20260923-11" type="video/mp4">
+                    <source src="../assets/tugboat-sts.mp4?v=20260923-11" type="video/mp4" media="(min-width: 761px)">
                 </video>
-                <video class="hero-video hero-video-zoom" id="hero-zoom-video" muted playsinline preload="auto"
+                <video class="hero-video hero-video-zoom" id="hero-zoom-video" muted playsinline preload="metadata"
                     disablepictureinpicture>
-                    <source src="../assets/tugboat-zoom-out.mp4?v=20260923-11" type="video/mp4">
+                    <source src="../assets/tugboat-zoom-out.mp4?v=20260923-11" type="video/mp4" media="(min-width: 761px)">
                 </video>
             </div>
             <section class="hero" id="home" aria-label="SUPERFAST tugboat underway at sea">
