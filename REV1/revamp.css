@@ -7660,3 +7660,132 @@ footer small {
     object-fit:cover!important;
   }
 }
+
+
+/* REV1.25 — rebalance the longer three-line hero statement. */
+@media(min-width:1001px){
+  .hero-overlay{
+    left:auto!important;
+    right:0!important;
+    top:4%!important;
+    bottom:15%!important;
+    width:min(88vw,1320px)!important;
+    padding:0 5vw 0 2vw!important;
+    align-items:flex-end!important;
+    justify-content:center!important;
+    text-align:right!important;
+  }
+
+  .hero-overlay::before{
+    right:0!important;
+    top:12%!important;
+    bottom:5%!important;
+    width:74%!important;
+  }
+
+  .hero h1{
+    width:100%!important;
+    max-width:none!important;
+    font-size:clamp(72px,6.7vw,110px)!important;
+    line-height:.76!important;
+    letter-spacing:-.048em!important;
+  }
+
+  .hero h1 .hero-line-one{
+    padding-right:22%!important;
+  }
+
+  .hero h1 .hero-line-two{
+    padding-right:5%!important;
+  }
+
+  .hero h1 .hero-line-three{
+    padding-right:0!important;
+    font-size:.96em!important;
+  }
+
+  .hero-copy{
+    margin:30px .5% 0 0!important;
+    max-width:560px!important;
+  }
+}
+
+@media(min-width:761px) and (max-width:1000px){
+  .hero-overlay{
+    top:5%!important;
+    bottom:14%!important;
+    width:94vw!important;
+    padding-right:4vw!important;
+  }
+
+  .hero h1{
+    font-size:clamp(58px,8.4vw,82px)!important;
+    line-height:.78!important;
+    letter-spacing:-.045em!important;
+  }
+
+  .hero h1 .hero-line-one{
+    padding-right:15%!important;
+  }
+
+  .hero h1 .hero-line-two{
+    padding-right:2%!important;
+  }
+
+  .hero h1 .hero-line-three{
+    font-size:.94em!important;
+  }
+}
+
+@media(max-width:760px){
+  .hero-overlay{
+    top:72px!important;
+    bottom:58px!important;
+    left:20px!important;
+    right:20px!important;
+    padding:clamp(48px,7svh,68px) 0 32px!important;
+  }
+
+  .hero h1{
+    width:100%!important;
+    max-width:100%!important;
+    font-size:clamp(43px,13.1vw,56px)!important;
+    line-height:.88!important;
+    letter-spacing:-.035em!important;
+  }
+
+  .hero h1 .hero-line-one,
+  .hero h1 .hero-line-two,
+  .hero h1 .hero-line-three{
+    width:100%!important;
+    max-width:100%!important;
+    margin-left:0!important;
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+
+  .hero h1 .hero-line-two{
+    margin-left:.02em!important;
+  }
+
+  .hero h1 .hero-line-three{
+    margin-top:.04em!important;
+    font-size:.94em!important;
+  }
+
+  .hero-copy{
+    width:min(100%,296px)!important;
+    max-width:296px!important;
+    margin:16px 0 0!important;
+  }
+}
+
+@media(max-width:390px){
+  .hero h1{
+    font-size:clamp(41px,12.6vw,50px)!important;
+  }
+
+  .hero-copy{
+    max-width:276px!important;
+  }
+}
