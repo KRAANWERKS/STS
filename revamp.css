@@ -8023,3 +8023,26 @@ nav.open .nav-contact[aria-current="page"]{
     box-shadow:inset 3px 0 0 var(--red);
   }
 }
+
+
+/* Navigation refinement — reliable section landing + restrained mobile active state. */
+main section[id]{
+  scroll-margin-top:100px;
+}
+
+@media(max-width:760px){
+  main section[id]{
+    scroll-margin-top:80px;
+  }
+
+  nav.open>a.is-active,
+  nav.open>a[aria-current="page"],
+  nav.open .nav-contact.is-active,
+  nav.open .nav-contact[aria-current="page"]{
+    padding-left:4px!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:var(--red)!important;
+    font-weight:inherit!important;
+  }
+}
