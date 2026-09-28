@@ -74,18 +74,22 @@ navLinks.forEach((link) => {
 
     event.preventDefault();
 
-    const offset = header.offsetHeight + 8;
-    const top = Math.max(0, scrollY + target.getBoundingClientRect().top - offset);
+    const sectionId = hash.slice(1);
+    const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
 
     setMenuOpen(false);
-    setActiveNav(hash.slice(1));
+    setActiveNav(sectionId);
 
+    // Let the mobile menu fully leave the layout before resolving the section position.
+    // scroll-margin-top on each section handles the fixed header offset reliably.
     requestAnimationFrame(() => {
-      window.scrollTo({
-        top,
-        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+      requestAnimationFrame(() => {
+        target.scrollIntoView({
+          block: 'start',
+          behavior
+        });
+        history.replaceState(null, '', hash);
       });
-      history.replaceState(null, '', hash);
     });
   });
 });
