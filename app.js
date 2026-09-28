@@ -50,64 +50,8 @@ outcomeCards.forEach((card) => {
   });
 });
 
-
-
-/* Reliability: hover opens the accordion on fine pointers; click/keyboard still work natively. */
-const reliabilityList = $('.reliability-list');
-const reliabilityDetails = $$('.reliability-list details');
-const reliabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
-let equipmentMarqueeRevealed = !reliabilityHover.matches && Boolean(reliabilityDetails[0]?.open);
-
-function setReliabilityOpen(detail) {
-  reliabilityDetails.forEach((other) => {
-    if (other !== detail) other.open = false;
-  });
-  detail.open = true;
-}
-
-function syncEquipmentMarquee() {
-  if (!reliabilityList) return;
-  reliabilityList.classList.toggle(
-    'show-equipment-marquee',
-    equipmentMarqueeRevealed && Boolean(reliabilityDetails[0]?.open)
-  );
-}
-
-reliabilityDetails.forEach((detail, index) => {
-  if (reliabilityHover.matches) {
-    detail.addEventListener('pointerenter', () => {
-      setReliabilityOpen(detail);
-      equipmentMarqueeRevealed = index === 0;
-      syncEquipmentMarquee();
-    });
-  }
-
-  detail.addEventListener('toggle', () => {
-    if (!detail.open) {
-      syncEquipmentMarquee();
-      return;
-    }
-    if (index === 0) equipmentMarqueeRevealed = true;
-    else equipmentMarqueeRevealed = false;
-    syncEquipmentMarquee();
-  });
-});
-syncEquipmentMarquee();
-
-/* The HSE framework is intentionally always visible. */
-const pinnedHse = $('.hse-pinned');
-if (pinnedHse) {
-  pinnedHse.open = true;
-  pinnedHse.querySelector('summary')?.addEventListener('click', (event) => {
-    event.preventDefault();
-    pinnedHse.open = true;
-  });
-  pinnedHse.addEventListener('toggle', () => {
-    if (!pinnedHse.open) pinnedHse.open = true;
-  });
-}
-
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const mobileHero = matchMedia('(max-width: 760px)');
 const heroFlow = $('.hero-company-flow');
 const hero = $('.hero');
 const heroStage = $('.hero-stage');
@@ -157,7 +101,7 @@ async function syncHeroPlayback() {
   const progress = getHeroProgress();
 
   if (heroVideo) {
-    const shouldLoop = !blocked && progress < .16;
+    const shouldLoop = !blocked && !mobileHero.matches && progress < .16;
     if (shouldLoop) {
       try { await heroVideo.play(); } catch {}
     } else {
@@ -178,6 +122,15 @@ motion.addEventListener('click', () => {
 });
 
 reducedMotion.addEventListener('change', () => {
+  renderScroll();
+  syncHeroPlayback();
+});
+
+mobileHero.addEventListener('change', ({ matches }) => {
+  heroFlow.style.setProperty('--primary-opacity', '1');
+  heroFlow.style.setProperty('--zoom-opacity', '0');
+  heroZoomVideo?.pause();
+  if (!matches) prepareZoomVideo();
   renderScroll();
   syncHeroPlayback();
 });
@@ -247,6 +200,17 @@ function animateZoomPlayback() {
 
 function renderScroll() {
   const progress = getHeroProgress();
+
+  /* Mobile uses only the primary looping hero video. */
+  if (mobileHero.matches) {
+    heroLines.forEach((line) => { line.style.transform = ''; });
+    heroFlow.style.setProperty('--primary-opacity', '1');
+    heroFlow.style.setProperty('--zoom-opacity', '0');
+    hero.style.setProperty('--hero-progress', '0');
+    zoomActive = false;
+    heroZoomVideo?.pause();
+    return;
+  }
 
   heroLines.forEach((line, index) => {
     const direction = index === 1 ? -1 : 1;
@@ -336,6 +300,7 @@ heroZoomVideo?.addEventListener('seeked', () => {
 });
 
 function prepareZoomVideo() {
+  if (mobileHero.matches) return;
   if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
   zoomReady = true;
   heroZoomVideo.pause();
@@ -377,3 +342,174 @@ zoomControlFrame = requestAnimationFrame(animateZoomPlayback);
 addEventListener('pagehide', () => {
   if (zoomControlFrame) cancelAnimationFrame(zoomControlFrame);
 }, { once:true });
+
+
+/* REV1.6 — Engineered Availability hover/click state + shared showcase + fixed-open HSE. */
+const availabilityList = $('.reliability-list');
+const availabilityItems = $$('.reliability-list details');
+const availabilityShowcasePanels = $$('.reliability-showcase-panel');
+const availabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
+
+function setAvailabilityShowcase(name = 'equipment') {
+  availabilityShowcasePanels.forEach((panel) => {
+    panel.classList.toggle('is-active', panel.dataset.showcasePanel === name);
+  });
+  $('.reliability-showcase')?.setAttribute('data-active-showcase', name);
+}
+
+function activateAvailabilityItem(item) {
+  if (!item) return;
+  availabilityItems.forEach((other) => {
+    if (other !== item) other.removeAttribute('open');
+  });
+  item.setAttribute('open', '');
+  setAvailabilityShowcase(item.dataset.showcase || 'equipment');
+}
+
+if (availabilityList && availabilityItems.length) {
+  const defaultItem = availabilityItems[0];
+  activateAvailabilityItem(defaultItem);
+
+  availabilityItems.forEach((item) => {
+    item.addEventListener('pointerenter', () => {
+      if (!availabilityHover.matches) return;
+      activateAvailabilityItem(item);
+    });
+
+    item.querySelector('summary')?.addEventListener('click', () => {
+      requestAnimationFrame(() => {
+        if (item.open) setAvailabilityShowcase(item.dataset.showcase || 'equipment');
+      });
+    });
+  });
+
+  availabilityList.addEventListener('pointerleave', () => {
+    if (!availabilityHover.matches) return;
+    activateAvailabilityItem(defaultItem);
+  });
+}
+
+$$('.equipment-logo img').forEach((logo) => {
+  logo.addEventListener('error', () => {
+    logo.closest('.equipment-logo')?.classList.add('is-fallback');
+  }, { once:true });
+});
+
+const staticHse = $('.hse-static');
+if (staticHse) {
+  const desktopHse = matchMedia('(min-width: 761px)');
+
+  const syncHseMode = () => {
+    staticHse.open = desktopHse.matches;
+  };
+
+  staticHse.querySelector('summary')?.addEventListener('click', (event) => {
+    if (desktopHse.matches) event.preventDefault();
+  });
+
+  staticHse.addEventListener('toggle', () => {
+    if (desktopHse.matches && !staticHse.open) staticHse.open = true;
+  });
+
+  desktopHse.addEventListener?.('change', syncHseMode);
+  syncHseMode();
+}
+
+/* REV1.19 — seamless desktop marquee with an accessibility-hidden runtime duplicate. */
+const equipmentMarquee = $('.equipment-marquee');
+const equipmentMarqueeTrack = $('.equipment-marquee-track');
+const equipmentMarqueeSet = $('.equipment-logo-set');
+const desktopMarquee = matchMedia('(min-width: 761px)');
+let equipmentMarqueeClone = null;
+
+function ensureEquipmentMarqueeClone() {
+  if (!equipmentMarqueeTrack || !equipmentMarqueeSet) return;
+
+  if (desktopMarquee.matches) {
+    if (!equipmentMarqueeClone || !equipmentMarqueeClone.isConnected) {
+      equipmentMarqueeClone = equipmentMarqueeSet.cloneNode(true);
+      equipmentMarqueeClone.setAttribute('aria-hidden', 'true');
+      equipmentMarqueeTrack.appendChild(equipmentMarqueeClone);
+
+      $$('img', equipmentMarqueeClone).forEach((logo) => {
+        logo.addEventListener('error', () => {
+          logo.closest('.equipment-logo')?.classList.add('is-fallback');
+        }, { once:true });
+      });
+    }
+  } else if (equipmentMarqueeClone?.isConnected) {
+    equipmentMarqueeClone.remove();
+    equipmentMarqueeClone = null;
+  }
+}
+
+function syncEquipmentMarqueeLoop() {
+  if (!equipmentMarquee || !equipmentMarqueeTrack || !equipmentMarqueeSet) return;
+
+  ensureEquipmentMarqueeClone();
+
+  if (!desktopMarquee.matches) return;
+
+  const setWidth = equipmentMarqueeSet.getBoundingClientRect().width;
+  if (setWidth <= 0) return;
+
+  // Preserve the approved visual speed while looping over the full set width.
+  const pxPerSecond = 88;
+  const duration = Math.max(8, setWidth / pxPerSecond);
+
+  equipmentMarqueeTrack.style.setProperty('--marquee-loop-distance', `${setWidth}px`);
+  equipmentMarqueeTrack.style.setProperty('--marquee-loop-duration', `${duration}s`);
+}
+
+if (equipmentMarquee && equipmentMarqueeTrack && equipmentMarqueeSet) {
+  requestAnimationFrame(syncEquipmentMarqueeLoop);
+  addEventListener('load', syncEquipmentMarqueeLoop, { once:true });
+  addEventListener('resize', syncEquipmentMarqueeLoop, { passive:true });
+
+  desktopMarquee.addEventListener('change', syncEquipmentMarqueeLoop);
+
+  if ('ResizeObserver' in window) {
+    const seamlessMarqueeResizeObserver = new ResizeObserver(syncEquipmentMarqueeLoop);
+    seamlessMarqueeResizeObserver.observe(equipmentMarquee);
+    seamlessMarqueeResizeObserver.observe(equipmentMarqueeSet);
+  }
+}
+
+
+/* REV1.20 — mobile-only seamless equipment marquee. Desktop behavior stays unchanged. */
+const mobileEquipmentMarquee = matchMedia('(max-width: 760px)');
+let mobileEquipmentMarqueeClone = null;
+
+function syncMobileEquipmentMarquee() {
+  if (!equipmentMarquee || !equipmentMarqueeTrack || !equipmentMarqueeSet) return;
+
+  if (!mobileEquipmentMarquee.matches) {
+    if (mobileEquipmentMarqueeClone?.isConnected) {
+      mobileEquipmentMarqueeClone.remove();
+      mobileEquipmentMarqueeClone = null;
+    }
+    return;
+  }
+
+  if (!mobileEquipmentMarqueeClone || !mobileEquipmentMarqueeClone.isConnected) {
+    mobileEquipmentMarqueeClone = equipmentMarqueeSet.cloneNode(true);
+    mobileEquipmentMarqueeClone.setAttribute('aria-hidden', 'true');
+    equipmentMarqueeTrack.appendChild(mobileEquipmentMarqueeClone);
+  }
+
+  const setWidth = equipmentMarqueeSet.getBoundingClientRect().width;
+  if (setWidth <= 0) return;
+
+  const pxPerSecond = 58;
+  const duration = Math.max(13, setWidth / pxPerSecond);
+
+  equipmentMarqueeTrack.style.setProperty('--mobile-marquee-distance', `${setWidth}px`);
+  equipmentMarqueeTrack.style.setProperty('--mobile-marquee-duration', `${duration}s`);
+}
+
+if (equipmentMarquee && equipmentMarqueeTrack && equipmentMarqueeSet) {
+  requestAnimationFrame(syncMobileEquipmentMarquee);
+  addEventListener('load', syncMobileEquipmentMarquee, { once:true });
+  addEventListener('resize', syncMobileEquipmentMarquee, { passive:true });
+  mobileEquipmentMarquee.addEventListener('change', syncMobileEquipmentMarquee);
+}

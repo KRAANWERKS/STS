@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- REV1 — CEO feedback revision. Production root remains unchanged. -->
 <html lang="en">
 
 <head>
@@ -10,8 +11,14 @@
         content="New-generation floating assets. Higher net loading performance. Engineered availability. Safety-led execution. Discover SUPERFAST, Indonesia's offshore dry-bulk transshipment partner.">
     <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23ed1c2e'/%3E%3Ctext x='8' y='30' font-family='Arial' font-size='30' font-weight='900' font-style='italic' fill='white'%3ES%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="revamp.css?v=20260925-34">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;450;500;600;650;700&display=swap">
+    <link rel="stylesheet" href="style.css?v=20260928-perf1">
+    <link rel="stylesheet" href="revamp.css?v=20260928-rev1-30">
+    <link rel="preload" as="image" href="assets/mobile-hero-superfast-v2.jpg" media="(max-width: 760px)"
+        fetchpriority="high">
 </head>
 
 <body><a class="skip" href="#main">Skip to content</a>
@@ -27,21 +34,21 @@
             <div class="hero-flow-media" aria-hidden="true">
                 <video class="hero-video hero-video-primary" id="hero-video" autoplay muted loop playsinline preload="auto"
                     disablepictureinpicture>
-                    <source src="assets/tugboat-sts.mp4?v=20260923-11" type="video/mp4">
+                    <source src="assets/tugboat-sts.mp4?v=20260923-11" type="video/mp4" media="(min-width: 761px)">
                 </video>
-                <video class="hero-video hero-video-zoom" id="hero-zoom-video" muted playsinline preload="auto"
+                <video class="hero-video hero-video-zoom" id="hero-zoom-video" muted playsinline preload="metadata"
                     disablepictureinpicture>
-                    <source src="assets/tugboat-zoom-out.mp4?v=20260923-11" type="video/mp4">
+                    <source src="assets/tugboat-zoom-out.mp4?v=20260923-11" type="video/mp4" media="(min-width: 761px)">
                 </video>
             </div>
             <section class="hero" id="home" aria-label="SUPERFAST tugboat underway at sea">
                 <div class="hero-stage">
                 <div class="hero-overlay">
-                    <p class="hero-kicker">NEW STANDARD, HIGHER PERFORMANCE, ENGINEERED RELIABILITY</p>
-                    <h1 aria-label="The new standard offshore">
-                        <span class="hero-line-one"><i>THE NEW</i></span>
-                        <span class="hero-line-two"><i>STANDARD</i></span>
-                        <em class="hero-line-three"><i>OFFSHORE.</i></em>
+                    <!-- <p class="hero-kicker">NEW STANDARD, HIGHER PERFORMANCE, ENGINEERED RELIABILITY</p> -->
+                    <h1 aria-label="New standard, higher performance, engineered reliability">
+                        <span class="hero-line-one"><i>NEW STANDARD</i></span>
+                        <span class="hero-line-two"><i>HIGHER PERFORMANCE</i></span>
+                        <em class="hero-line-three"><i>ENGINEERED RELIABILITY</i></em>
                     </h1>
                     <div class="hero-copy">
                         <p>New-generation floating assets engineered for higher net loading performance.</p><a href="#fleet"
@@ -59,20 +66,18 @@
             <div class="company-story">
                 <p class="eyebrow company-promise">PREFERRED FOR PERFORMANCE. TRUSTED FOR EXECUTION.</p>
                 <div class="company-narrative">
-                    <p class="company-problem"><em>Every hour a merchant vessel waits for cargo is revenue lost. Uncertain loading windows, coordination gaps, interruptions in cargo flow and floating-asset downtime can extend turnaround and erode voyage economics.</em></p>
-                    <div class="company-answer">
-                        <p class="company-answer-lead">SUPERFAST is engineered around one operating objective: <em>keep cargo moving.</em></p>
-                        <p class="company-answer-copy">High-productivity floating assets, disciplined marine execution and engineered availability work as one system to reduce interruptions, minimise downtime and deliver more predictable loading performance — raising the performance standard for Indonesia's bulk supply chain.</p>
+                    <p class="company-problem"><em>Every hour a merchant vessel waits for cargo is revenue lost. Uncertain loading windows, coordination gaps, interruptions in cargo flow and floating-asset malfunctions can all extend turnaround and erode voyage economics.</em></p>
+                    <div class="company-solution">
+                        <p>SUPERFAST is built as the answer to that exposure — high-productivity floating assets, disciplined marine execution and engineered availability working as one system to reduce interruptions, keep cargo moving and contain downtime. That operating model is designed to support more predictable vessel turnaround and a higher performance standard for Indonesia's bulk supply chain.</p>
                     </div>
                 </div>
             </div>
         </section>
         </div>
         <section class="metrics" aria-label="Fleet programme figures">
-            <div><strong>20,000</strong><span>MTPD / MACGREGOR FC</span><small>Nominal capacity per unit</small></div>
-            <div><strong>30,000</strong><span>MTPD / E-CRANE FC</span><small>Planned expansion per unit</small></div>
-            <div><strong>100,000<span>*</span></strong><span>MTPD / PLANNED FLEET</span><small>Target aggregate
-                    capacity</small></div>
+            <div><strong>20,000</strong><span>TONS / DAY / MACGREGOR FC</span><small>Nominal loading capacity per floating crane</small></div>
+            <div><strong>30,000</strong><span>TONS / DAY / E-CRANE FC</span><small>Planned nominal loading capacity per floating crane</small></div>
+            <div><strong>100,000<span>*</span></strong><span>TONS / DAY / PLANNED FLEET</span><small>Target aggregate nominal capacity</small></div>
         </section>
         <p class="capacity-note">*Planned fleet configuration. Loading figures are targets, not guaranteed net rates;
             performance depends on cargo, marine conditions, barge continuity and operating conditions.</p>
@@ -82,8 +87,9 @@
                     <p class="eyebrow">02 / THE FLEET PLATFORM</p>
                     <h2>Power at the waterline.</h2>
                 </div>
-                <p>Two loading technologies.<br>One ambition: sustained cargo flow.</p>
+                <p>Two floating-crane technologies.<br>One performance standard: sustained cargo flow.</p>
             </div>
+
             <div class="fleet-phase-grid">
                 <article class="fleet-phase-card fleet-phase-initial">
                     <img class="fleet-phase-bg" src="assets/floating-crane.png"
@@ -91,26 +97,35 @@
                     <div class="fleet-phase-content">
                         <p class="eyebrow">INITIAL DELIVERY / 2 FLOATING CRANES</p>
                         <h3>Heavy duty.<br>Ready for the long run.</h3>
+                        <div class="fleet-capacity" aria-label="20,000 tons per day per floating crane">
+                            <strong>20,000</strong>
+                            <span>TONS / DAY<br>PER FLOATING CRANE</span>
+                        </div>
                         <p class="fleet-phase-description">MacGregor K5036 cranes paired with Nemag clamshell grabs form the initial platform for continuous offshore bulk handling.</p>
                         <dl>
                             <div><dt>Crane system</dt><dd>MacGregor K5036</dd></div>
                             <div><dt>Grab system</dt><dd>Nemag clamshell</dd></div>
-                            <div><dt>Combined nominal capacity</dt><dd>40,000 mtpd</dd></div>
+                            <div><dt>2 FC combined capacity</dt><dd>40,000 tons / day</dd></div>
                         </dl>
                         <span class="fleet-phase-tag">FC 201 / INITIAL DELIVERY</span>
                     </div>
                 </article>
+
                 <article class="fleet-phase-card fleet-phase-expansion">
                     <img class="fleet-phase-bg fleet-phase-drawing" src="assets/e-crane-planned-blueprint.png"
-                        alt="" loading="lazy">
+                        alt="Planned E-Crane floating crane platform" loading="lazy">
                     <div class="fleet-phase-content">
                         <p class="eyebrow">PLANNED EXPANSION / 2 FLOATING CRANES</p>
                         <h3>More capacity.<br>The same discipline.</h3>
-                        <p class="fleet-phase-description">Two planned E-Crane units add a target 60,000 mtpd, taking the combined fleet programme to up to 100,000 mtpd under suitable operating conditions.</p>
+                        <div class="fleet-capacity" aria-label="30,000 tons per day per planned floating crane">
+                            <strong>30,000</strong>
+                            <span>TONS / DAY<br>PER FLOATING CRANE</span>
+                        </div>
+                        <p class="fleet-phase-description">Two planned E-Crane units add 60,000 tons per day of nominal capacity, extending the fleet programme under suitable operating conditions.</p>
                         <dl>
-                            <div><dt>Crane system</dt><dd>E-Crane 4000C EC28421</dd></div>
+                            <div><dt>Crane system</dt><dd>E-Crane 4000C</dd></div>
                             <div><dt>Grab system</dt><dd>J&amp;B grab</dd></div>
-                            <div><dt>Combined nominal capacity</dt><dd>60,000 mtpd (planned)</dd></div>
+                            <div><dt>2 FC combined capacity</dt><dd>60,000 tons / day (planned)</dd></div>
                         </dl>
                         <span class="fleet-phase-tag">PLANNED / E-CRANE PLATFORM</span>
                     </div>
@@ -118,23 +133,26 @@
             </div>
             <div class="configurations">
                 <div><span>01</span>
-                    <h3>Floating Crane</h3>
+                    <h3>Floating Crane <h4>FC</h4></h3>
                     <p>Flexible single-grade barge-to-vessel transfer for geared or gearless ocean-going vessels.</p>
-                    <b>FC</b>
                 </div>
                 <div><span>02</span>
-                    <h3>Floating Shiploader</h3>
+                    <h3>Floating Shiploader <h4>FSC</h4></h3>
                     <p>Crane-fed conveying and controlled shiploading for high-volume, single-grade transshipment.</p>
-                    <b>FSC</b>
                 </div>
                 <div><span>03</span>
-                    <h3>Floating Loading Facility</h3>
+                    <h3>Floating Loading Facility <h4>FLF</h4></h3>
                     <p>Multiple barge streams, controlled blending and continuous loading on one offshore platform.</p>
-                    <b>FLF</b>
                 </div>
             </div>
-            <p class="small-note">Configurations support vessels up to Capesize, subject to project and site conditions.
-            </p>
+            <div class="fleet-total" aria-label="Combined planned fleet nominal capacity">
+                <div>
+                    <span>COMBINED NOMINAL FLEET CAPACITY</span>
+                    <strong>UP TO 100,000</strong>
+                    <b>TONS / DAY*</b>
+                </div>
+                <p>*Planned aggregate nominal capacity. Actual loading performance depends on cargo characteristics, vessel and barge interface, weather, sea state, operating restrictions, crew performance and stoppages.</p>
+            </div>
         </section>
         <section class="reliability section" id="reliability">
             <div class="reliability-title">
@@ -146,38 +164,71 @@
                         management partner KraanWerks</span></div>
             </div>
             <div class="reliability-list">
-                <details name="reliability" open>
+                <details name="reliability" open data-showcase="equipment">
                     <summary><span>01</span> Proven equipment <b>+</b></summary>
                     <p>Internationally recognised machinery from Caterpillar, E-Crane, MacGregor, Nemag and Yanmar,
                         selected for demanding duty and established technical support.</p>
                 </details>
-                <details name="reliability">
+                <details name="reliability" data-showcase="maintenance">
                     <summary><span>02</span> Planned maintenance <b>+</b></summary>
                     <p>CMMS-controlled inspections, preventive maintenance and condition monitoring aligned to running
                         hours, equipment condition and loading commitments.</p>
                 </details>
-                <details name="reliability">
+                <details name="reliability" data-showcase="critical">
                     <summary><span>03</span> Critical spares <b>+</b></summary>
                     <p>Risk-ranked critical spares, wire ropes and wear components planned against failure consequence
                         and lead time to protect return-to-service time.</p>
                 </details>
-                <details name="reliability">
+                <details name="reliability" data-showcase="response">
                     <summary><span>04</span> Technical response <b>+</b></summary>
                     <p>Crane specialists, strategically positioned service personnel, remote diagnostics and field
                         intervention support fault isolation and operational recovery.</p>
                 </details>
-                <details name="reliability">
+                <details name="reliability" data-showcase="performance">
                     <summary><span>05</span> Performance control <b>+</b></summary>
                     <p>Loading rates, mechanical availability, utilisation, equipment condition and delay attribution
                         are reviewed to drive corrective action and continuous improvement.</p>
                 </details>
-                <div class="equipment-marquee-shell" aria-label="Proven equipment brands">
-                    <div class="equipment-marquee-window">
-                        <div class="equipment-marquee-track">
-                            <div class="equipment-logo-set"><div class="equipment-logo"><img src="https://cdn.freebiesupply.com/logos/large/2x/macgregor-1-logo-png-transparent.png" alt="MacGregor logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>MacGregor</span></div><div class="equipment-logo"><img src="https://images.seeklogo.com/logo-png/4/1/e-crane-logo-png_seeklogo-44807.png" alt="E-Crane logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>E-Crane</span></div><div class="equipment-logo"><img src="https://www.pngmart.com/files/23/Caterpillar-Logo-PNG-HD-Isolated.png" alt="Caterpillar logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Caterpillar</span></div><div class="equipment-logo"><img src="https://www.pngkey.com/png/full/71-718976_the-gallery-for-xerox-logo-transparent-xerox-logo.png" alt="Yanmar logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Yanmar</span></div><div class="equipment-logo"><img src="https://gecolsa.com/archivosestaticos/2025/01/Logo-sem-1024x504.png" alt="SEM logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>SEM</span></div><div class="equipment-logo"><img src="https://www.nemag.com/favicon.ico" alt="Nemag logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Nemag</span></div><div class="equipment-logo"><img src="https://jb-grijpers.nl/themes/custom/jbgrijpers/img/logo_staand.svg" alt="J&B logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>J&B</span></div><div class="equipment-logo"><img src="https://cdn.brandfetch.io/idVSujTqAM/w/240/h/83/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1778046771507" alt="Weihua logo" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Weihua</span></div></div>
-                            <div class="equipment-logo-set" aria-hidden="true"><div class="equipment-logo"><img src="https://cdn.freebiesupply.com/logos/large/2x/macgregor-1-logo-png-transparent.png" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>MacGregor</span></div><div class="equipment-logo"><img src="https://images.seeklogo.com/logo-png/4/1/e-crane-logo-png_seeklogo-44807.png" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>E-Crane</span></div><div class="equipment-logo"><img src="https://www.pngmart.com/files/23/Caterpillar-Logo-PNG-HD-Isolated.png" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Caterpillar</span></div><div class="equipment-logo"><img src="https://www.pngkey.com/png/full/71-718976_the-gallery-for-xerox-logo-transparent-xerox-logo.png" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Yanmar</span></div><div class="equipment-logo"><img src="https://gecolsa.com/archivosestaticos/2025/01/Logo-sem-1024x504.png" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>SEM</span></div><div class="equipment-logo"><img src="https://www.nemag.com/favicon.ico" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Nemag</span></div><div class="equipment-logo"><img src="https://jb-grijpers.nl/themes/custom/jbgrijpers/img/logo_staand.svg" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>J&B</span></div><div class="equipment-logo"><img src="https://cdn.brandfetch.io/idVSujTqAM/w/240/h/83/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&t=1778046771507" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.hidden=true"><span>Weihua</span></div></div>
+
+                <div class="reliability-showcase" data-active-showcase="equipment">
+                    <div class="reliability-showcase-panel is-active" data-showcase-panel="equipment">
+                        <div class="equipment-marquee" aria-label="Equipment brands">
+                            <div class="equipment-marquee-track">
+
+                        <div class="equipment-logo-set">
+                            <div class="equipment-logo"><img src="https://cdn.brandfetch.io/iddM9zma_Y/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&amp;t=1693450105326" alt="MacGregor" decoding="async" referrerpolicy="no-referrer"><span>MacGregor</span></div>
+                            <div class="equipment-logo ecrane-logo"><img src="https://beyazkale.com.tr/EasyWeb/Resimler/E-Crane-Beyaz-Kale.jpg" alt="E-Crane" decoding="async" referrerpolicy="no-referrer"><span>E-Crane</span></div>
+                            <div class="equipment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Caterpillar_logo.svg/960px-Caterpillar_logo.svg.png" alt="Caterpillar" decoding="async" referrerpolicy="no-referrer"><span>Caterpillar</span></div>
+                            <div class="equipment-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Yanmar_logo_1993_textonly.svg/1280px-Yanmar_logo_1993_textonly.svg.png" alt="Yanmar" decoding="async" referrerpolicy="no-referrer"><span>Yanmar</span></div>
+                            <div class="equipment-logo"><img src="https://cdn.brandfetch.io/idMfLhoRPW/w/150/h/81/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&amp;t=1781801267894" alt="SEM" decoding="async" referrerpolicy="no-referrer"><span>SEM</span></div>
+                            <div class="equipment-logo"><img src="https://ite-prod-cdn-end.azureedge.net/sharedmedia/breakbulkeurope/media/assets/nemag.png?ext=.png" alt="Nemag" decoding="async" referrerpolicy="no-referrer"><span>Nemag</span></div>
+                            <div class="equipment-logo"><img src="https://jb-grijpers.nl/themes/custom/jbgrijpers/img/logo_staand.svg" alt="J&amp;B Grijpers" decoding="async" referrerpolicy="no-referrer"><span>J&amp;B</span></div>
+                            <div class="equipment-logo"><img src="https://cdn.brandfetch.io/idVSujTqAM/w/240/h/83/theme/dark/logo.png?c=1bxid64Mup7aczewSAYMX&amp;t=1778046771507" alt="Weihua" decoding="async" referrerpolicy="no-referrer"><span>Weihua</span></div>
+                        </div>
+</div>
+                            </div>
                         </div>
                     </div>
+
+                    <figure class="reliability-showcase-panel reliability-photo-panel" data-showcase-panel="maintenance">
+                        <img src="assets/planned-expansion-operations.jpg"
+                            alt="Planned maintenance and equipment-health monitoring during offshore loading operations" loading="lazy" decoding="async">
+                    </figure>
+
+                    <figure class="reliability-showcase-panel reliability-photo-panel" data-showcase-panel="critical">
+                        <img src="https://kraanwerks.com/wp-content/uploads/2024/08/Gearbox-overhaul.jpg"
+                            alt="Gearbox overhaul and critical spare maintenance work" loading="lazy" decoding="async">
+                    </figure>
+
+                    <figure class="reliability-showcase-panel reliability-photo-panel" data-showcase-panel="response">
+                        <img src="https://kraanwerks.com/wp-content/uploads/2024/12/Rg-7-Team-Group-photo.jpg"
+                            alt="Technical response team supporting offshore crane operations" loading="lazy" decoding="async">
+                    </figure>
+
+                    <figure class="reliability-showcase-panel reliability-photo-panel" data-showcase-panel="performance">
+                        <img src="https://kraanwerks.com/wp-content/uploads/2024/04/IMG-20230309-WA0010.jpg"
+                            alt="Operational performance monitoring during floating-crane loading operations" loading="lazy" decoding="async">
+                    </figure>
                 </div>
             </div>
         </section>
@@ -187,9 +238,18 @@
                     <p class="eyebrow">04 / SAFETY &amp; EXECUTION</p>
                     <h2>Performance starts<br>with protecting people.</h2>
                 </div>
-                <p>Safe, transparent and standardised execution.<br>The foundation of repeatable loading performance.
-                </p>
+                <p>Safe, transparent and standardised execution.<br>The foundation of repeatable loading performance.</p>
             </div>
+
+            <figure class="execution-visual">
+                <img src="assets/floating-crane.png"
+                    alt="SUPERFAST floating crane in offshore operating conditions" loading="lazy">
+                <figcaption>
+                    <span>EXECUTION IN PRACTICE / OFFSHORE OPERATIONS</span>
+                    <p>Real assets, disciplined transfer controls and operational coordination working together to protect loading continuity.</p>
+                </figcaption>
+            </figure>
+
             <div class="promise-grid">
                 <article aria-label="01 / SAFE — No shortcuts. Clear controls.">
                     <div class="promise-visual">
@@ -219,8 +279,9 @@
                     </div>
                 </article>
             </div>
-            <details class="hse hse-pinned" open>
-                <summary>Explore our HSE control framework <span>—</span></summary>
+
+            <details class="hse hse-static">
+                <summary>Explore our HSE control framework <span>+</span></summary>
                 <div>
                     <p>Project-specific marine assurance, HAZID and transfer risk assessments before mobilisation.
                         Permit-to-work controls, bridge-to-bridge communications and task-specific toolbox talks.</p>
@@ -283,7 +344,7 @@
         <section class="contact section" id="contact">
             <div>
                 <p class="eyebrow light">06 / PARTNER WITH SUPERFAST</p>
-                <h2>Move more cargo.<br>Protect every<br><em>sailing window.</em></h2>
+                <h2>Move More Cargo.<br>Protect Every<br><em>Loading.</em></h2>
                 <p>Long-term commitments. Dedicated deployment.<br>Seasonal campaigns. Capacity when you need it.</p><a
                     class="button white" href="mailto:raymond@sts.id">Let's discuss your project <span>↗</span></a>
             </div>
@@ -304,7 +365,7 @@
         <p>PT Solusi Transshipment Supercepat<br>Offshore dry-bulk transshipment · Indonesia</p><a href="#home">Back to
             top ↑</a><small>© <span id="year">2026</span> SUPERFAST</small>
     </footer>
-    <script type="module" src="app.js?v=20260925-34"></script>
+    <script type="module" src="app.js?v=20260928-rev1-27"></script>
 </body>
 
 </html>
