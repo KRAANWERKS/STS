@@ -7982,3 +7982,50 @@ footer small {
     line-height:1.58!important;
   }
 }
+
+
+/* REV1.28 — preserve hero entrance styling without delaying LCP paint.
+   Headline glyphs are visible from first paint; the existing reveal becomes
+   a lightweight settle motion instead of opacity/blur gating. */
+.hero h1>*>i{
+  opacity:1!important;
+  filter:none!important;
+  transform:translate3d(0,14px,0) skewY(.35deg)!important;
+}
+
+.hero.is-entered h1>*>i{
+  animation:heroLineSettle .72s cubic-bezier(.16,1,.3,1) forwards!important;
+}
+
+.hero.is-entered h1>span:nth-child(1)>i{
+  animation-delay:.03s!important;
+}
+
+.hero.is-entered h1>span:nth-child(2)>i{
+  animation-delay:.09s!important;
+}
+
+.hero.is-entered h1>em>i{
+  animation-delay:.15s!important;
+}
+
+@keyframes heroLineSettle{
+  from{
+    opacity:1;
+    filter:none;
+    transform:translate3d(0,14px,0) skewY(.35deg);
+  }
+  to{
+    opacity:1;
+    filter:none;
+    transform:translate3d(0,0,0) skewY(0);
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hero h1>*>i,
+  .hero.is-entered h1>*>i{
+    animation:none!important;
+    transform:none!important;
+  }
+}
