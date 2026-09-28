@@ -21,7 +21,7 @@ if (hoverMenu.matches) {
   header.addEventListener('pointerleave', () => setMenuOpen(false));
 }
 
-const navLinks = $('#nav a[href^="#"]');
+const navLinks = [...document.querySelectorAll('#nav a[href^="#"]')];
 const navSections = navLinks
   .map((link) => {
     const id = link.getAttribute('href')?.slice(1);
@@ -41,7 +41,7 @@ function setActiveNav(id) {
 
 function getActiveSectionId() {
   const marker = scrollY + header.offsetHeight + Math.min(160, innerHeight * .22);
-  let active = navSections[0]?.id || '';
+  let active = '';
 
   navSections.forEach(({ section, id }) => {
     const top = scrollY + section.getBoundingClientRect().top;
