@@ -15,8 +15,6 @@ menu.addEventListener('click', () => {
   setMenuOpen(menu.getAttribute('aria-expanded') !== 'true');
 });
 
-menu.addEventListener('focus', () => setMenuOpen(true));
-
 if (hoverMenu.matches) {
   menu.addEventListener('pointerenter', () => setMenuOpen(true));
   nav.addEventListener('pointerenter', () => setMenuOpen(true));
