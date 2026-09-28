@@ -7605,3 +7605,58 @@ footer small {
     margin-top:28px!important;
   }
 }
+
+
+/* REV1.24 — desktop Engineered Availability showcase containment.
+   Keep every swapped panel inside the fixed showcase canvas so photography
+   replaces the equipment marquee instead of overlaying the accordion list. */
+@media(min-width:761px){
+  .reliability-list{
+    position:relative!important;
+  }
+
+  .reliability-showcase{
+    position:relative!important;
+    isolation:isolate!important;
+    display:grid!important;
+    grid-template-areas:"showcase"!important;
+    width:100%!important;
+    overflow:hidden!important;
+  }
+
+  .reliability-showcase-panel{
+    grid-area:showcase!important;
+    position:relative!important;
+    inset:auto!important;
+    z-index:0!important;
+    display:none!important;
+    width:100%!important;
+    margin:0!important;
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+
+  .reliability-showcase-panel.is-active{
+    z-index:1!important;
+    display:block!important;
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:auto!important;
+  }
+
+  .reliability-photo-panel{
+    position:relative!important;
+    inset:auto!important;
+    overflow:hidden!important;
+  }
+
+  .reliability-photo-panel img{
+    position:absolute!important;
+    inset:0!important;
+    display:block!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+  }
+}
