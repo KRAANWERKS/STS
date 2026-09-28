@@ -7789,3 +7789,74 @@ footer small {
     max-width:276px!important;
   }
 }
+
+
+/* REV1.26 — refine hero scale and spacing after longer title review. */
+@media(min-width:1001px){
+  .hero-overlay{
+    top:2.5%!important;
+    bottom:16%!important;
+    width:min(90vw,1360px)!important;
+    padding:0 5.2vw 0 2.5vw!important;
+  }
+
+  .hero h1{
+    font-size:clamp(64px,6vw,98px)!important;
+    line-height:.78!important;
+    letter-spacing:-.046em!important;
+  }
+
+  .hero h1 .hero-line-one{
+    padding-right:24%!important;
+  }
+
+  .hero h1 .hero-line-two{
+    padding-right:7%!important;
+  }
+
+  .hero h1 .hero-line-three{
+    padding-right:0!important;
+    font-size:.93em!important;
+  }
+
+  .hero-copy{
+    margin:38px .6% 0 0!important;
+    max-width:540px!important;
+  }
+}
+
+@media(min-width:761px) and (max-width:1000px){
+  .hero h1{
+    font-size:clamp(54px,7.6vw,76px)!important;
+    line-height:.80!important;
+  }
+
+  .hero h1 .hero-line-three{
+    font-size:.92em!important;
+  }
+
+  .hero-copy{
+    margin-top:30px!important;
+  }
+}
+
+@media(max-width:760px){
+  .hero h1{
+    font-size:clamp(40px,12.2vw,52px)!important;
+    line-height:.89!important;
+  }
+
+  .hero h1 .hero-line-three{
+    font-size:.92em!important;
+  }
+
+  .hero-copy{
+    margin-top:18px!important;
+  }
+}
+
+@media(max-width:390px){
+  .hero h1{
+    font-size:clamp(38px,11.8vw,47px)!important;
+  }
+}
