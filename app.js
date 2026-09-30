@@ -15,15 +15,89 @@ menu.addEventListener('click', () => {
   setMenuOpen(menu.getAttribute('aria-expanded') !== 'true');
 });
 
-menu.addEventListener('focus', () => setMenuOpen(true));
-
 if (hoverMenu.matches) {
   menu.addEventListener('pointerenter', () => setMenuOpen(true));
   nav.addEventListener('pointerenter', () => setMenuOpen(true));
   header.addEventListener('pointerleave', () => setMenuOpen(false));
 }
 
-$$('#nav a').forEach((link) => link.addEventListener('click', () => setMenuOpen(false)));
+const navLinks = [...document.querySelectorAll('#nav a[href^="#"]')];
+const navSections = navLinks
+  .map((link) => {
+    const id = link.getAttribute('href')?.slice(1);
+    const section = id ? document.getElementById(id) : null;
+    return section ? { link, section, id } : null;
+  })
+  .filter(Boolean);
+
+function setActiveNav(id) {
+  navSections.forEach(({ link, id: sectionId }) => {
+    const active = sectionId === id;
+    link.classList.toggle('is-active', active);
+    if (active) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
+}
+
+function getActiveSectionId() {
+  const marker = scrollY + header.offsetHeight + Math.min(160, innerHeight * .22);
+  let active = '';
+
+  navSections.forEach(({ section, id }) => {
+    const top = scrollY + section.getBoundingClientRect().top;
+    if (top <= marker) active = id;
+  });
+
+  const nearBottom = innerHeight + scrollY >= document.documentElement.scrollHeight - 8;
+  if (nearBottom && navSections.length) active = navSections[navSections.length - 1].id;
+
+  return active;
+}
+
+let navSpyScheduled = false;
+function syncActiveNav() {
+  setActiveNav(getActiveSectionId());
+  navSpyScheduled = false;
+}
+
+function scheduleActiveNavSync() {
+  if (navSpyScheduled) return;
+  navSpyScheduled = true;
+  requestAnimationFrame(syncActiveNav);
+}
+
+navLinks.forEach((link) => {
+  link.addEventListener('click', (event) => {
+    const hash = link.getAttribute('href');
+    const target = hash ? document.querySelector(hash) : null;
+    if (!target) return;
+
+    event.preventDefault();
+
+    const sectionId = hash.slice(1);
+    const behavior = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
+    setMenuOpen(false);
+    setActiveNav(sectionId);
+
+    // Let the mobile menu fully leave the layout before resolving the section position.
+    // scroll-margin-top on each section handles the fixed header offset reliably.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        target.scrollIntoView({
+          block: 'start',
+          behavior
+        });
+        history.replaceState(null, '', hash);
+      });
+    });
+  });
+});
+
+addEventListener('scroll', scheduleActiveNavSync, { passive: true });
+addEventListener('resize', scheduleActiveNavSync, { passive: true });
+addEventListener('hashchange', scheduleActiveNavSync);
+
 addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     setMenuOpen(false);
@@ -31,6 +105,7 @@ addEventListener('keydown', (event) => {
   }
 });
 $('#year').textContent = new Date().getFullYear();
+requestAnimationFrame(syncActiveNav);
 
 const outcomeCards = $$('.outcome-card');
 outcomeCards.forEach((card) => {
