@@ -8189,3 +8189,15 @@ main section[id]{
     letter-spacing:1.5px;
   }
 }
+
+
+/* HSE disclosure — closed by default, native click-to-expand/collapse. */
+.hse.hse-static summary span{
+  transform:none;
+  transform-origin:center;
+  transition:transform .24s ease;
+}
+
+.hse.hse-static[open] summary span{
+  transform:rotate(45deg);
+}
