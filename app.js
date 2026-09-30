@@ -472,22 +472,9 @@ $$('.equipment-logo img').forEach((logo) => {
 
 const staticHse = $('.hse-static');
 if (staticHse) {
-  const desktopHse = matchMedia('(min-width: 761px)');
-
-  const syncHseMode = () => {
-    staticHse.open = desktopHse.matches;
-  };
-
-  staticHse.querySelector('summary')?.addEventListener('click', (event) => {
-    if (desktopHse.matches) event.preventDefault();
-  });
-
-  staticHse.addEventListener('toggle', () => {
-    if (desktopHse.matches && !staticHse.open) staticHse.open = true;
-  });
-
-  desktopHse.addEventListener?.('change', syncHseMode);
-  syncHseMode();
+  // Keep the HSE framework collapsed on initial load on every viewport.
+  // Native <details> behavior handles open/close clicks accessibly.
+  staticHse.open = false;
 }
 
 /* REV1.19 — seamless desktop marquee with an accessibility-hidden runtime duplicate. */
