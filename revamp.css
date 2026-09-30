@@ -8286,3 +8286,27 @@ main section[id]{
     height:4px!important;
   }
 }
+
+
+/* Performance principle — mirror the Company closing statement typography. */
+.performance-principle{
+  color:var(--ink)!important;
+  font-weight:400!important;
+}
+
+.performance-principle em{
+  display:block;
+  max-width:760px;
+  color:var(--ink)!important;
+  font:500 clamp(21px,1.85vw,28px)/1.5 'Barlow Condensed',sans-serif!important;
+  letter-spacing:-.012em!important;
+  font-style:italic;
+}
+
+@media(max-width:760px){
+  .performance-principle em{
+    max-width:none;
+    font-size:16.5px!important;
+    line-height:1.54!important;
+  }
+}
