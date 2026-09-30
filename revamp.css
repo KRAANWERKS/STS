@@ -8310,3 +8310,58 @@ main section[id]{
     line-height:1.54!important;
   }
 }
+
+
+/* HSE V3 — mobile alignment and spacing refinement. */
+@media(max-width:760px){
+  .hse.hse-static{
+    width:100%!important;
+    box-sizing:border-box!important;
+    margin:22px 0 0!important;
+    padding:0 12px!important;
+  }
+
+  .hse.hse-static summary{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 24px!important;
+    align-items:center!important;
+    column-gap:12px!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    padding:14px 0 13px!important;
+    text-align:left!important;
+    cursor:pointer!important;
+  }
+
+  .hse.hse-static summary span{
+    justify-self:end!important;
+    align-self:center!important;
+    margin:0!important;
+    line-height:1!important;
+  }
+
+  .hse.hse-static>div{
+    width:100%!important;
+    box-sizing:border-box!important;
+    padding:0 0 6px!important;
+  }
+
+  .hse-control-list{
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  .hse-control-list li{
+    box-sizing:border-box!important;
+    width:100%!important;
+    margin:0!important;
+    padding:9px 0 9px 17px!important;
+    text-align:left!important;
+  }
+
+  .hse-control-list li::before{
+    left:1px!important;
+    top:15px!important;
+  }
+}
