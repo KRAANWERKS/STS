@@ -6740,7 +6740,7 @@ footer small {
     background:
       linear-gradient(180deg,rgba(5,20,28,.28) 0%,rgba(5,20,28,.08) 34%,rgba(5,20,28,.14) 62%,rgba(5,20,28,.72) 100%),
       linear-gradient(90deg,rgba(5,20,28,.36) 0%,rgba(5,20,28,.10) 72%,rgba(5,20,28,.02) 100%),
-      url('assets/mobile-hero-superfast.jpg') 52% center / cover no-repeat!important;
+      url('assets/mobile-hero-superfast.png') 52% center / cover no-repeat!important;
   }
 
   .hero-flow-media .hero-video-primary,
@@ -6914,7 +6914,7 @@ footer small {
     background:
       linear-gradient(180deg,rgba(5,20,28,.24) 0%,rgba(5,20,28,.04) 32%,rgba(5,20,28,.10) 58%,rgba(5,20,28,.76) 100%),
       linear-gradient(90deg,rgba(5,20,28,.34) 0%,rgba(5,20,28,.10) 66%,rgba(5,20,28,.02) 100%),
-      url('assets/mobile-hero-superfast-v2.jpg') 58% center / cover no-repeat!important;
+      url('assets/mobile-hero-superfast.png') 58% center / cover no-repeat!important;
   }
 
   .hero-flow-media .hero-video-primary,
@@ -7055,7 +7055,7 @@ footer small {
     background:
       linear-gradient(180deg,rgba(5,20,28,.20) 0%,rgba(5,20,28,.04) 31%,rgba(5,20,28,.10) 58%,rgba(5,20,28,.74) 100%),
       linear-gradient(90deg,rgba(5,20,28,.34) 0%,rgba(5,20,28,.08) 66%,rgba(5,20,28,.01) 100%),
-      url('assets/mobile-hero-superfast-v2.jpg') 57% center / cover no-repeat!important;
+      url('assets/mobile-hero-superfast.png') 57% center / cover no-repeat!important;
   }
 
   .hero-flow-media .hero-video-primary,
