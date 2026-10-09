@@ -1,0 +1,145 @@
+/* SUPERFAST header logo — restrained velocity-pass animation.
+   The logo itself stays still; only a narrow highlight and soft trailing streak
+   pass through the real logo silhouette, then rest before repeating. */
+
+header .brand {
+  --brand-logo-w: 250px;
+  --brand-logo-h: 125px;
+  --brand-logo-x: -15px;
+  --brand-logo-y: -38px;
+  isolation: isolate;
+}
+
+header .brand::before,
+header .brand::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-mask-image: url('assets/logo.png');
+  mask-image: url('assets/logo.png');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: var(--brand-logo-w) var(--brand-logo-h);
+  mask-size: var(--brand-logo-w) var(--brand-logo-h);
+  -webkit-mask-position: var(--brand-logo-x) var(--brand-logo-y);
+  mask-position: var(--brand-logo-x) var(--brand-logo-y);
+  will-change: background-position, opacity;
+}
+
+/* Fast, narrow white-hot pass. */
+header .brand::before {
+  background:
+    linear-gradient(
+      102deg,
+      transparent 0%,
+      transparent 42%,
+      rgba(255,255,255,.12) 46%,
+      rgba(255,255,255,.98) 50%,
+      rgba(255,190,196,.72) 53%,
+      transparent 59%,
+      transparent 100%
+    );
+  background-size: 260% 100%;
+  background-position: 132% 0;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,.44));
+  animation: headerLogoVelocityPass 4.6s cubic-bezier(.22,.7,.18,1) infinite;
+}
+
+/* Softer red speed streak trailing the main pass. */
+header .brand::after {
+  z-index: 1;
+  background:
+    linear-gradient(
+      98deg,
+      transparent 0%,
+      transparent 34%,
+      rgba(237,28,46,0) 40%,
+      rgba(237,28,46,.10) 46%,
+      rgba(255,92,103,.30) 52%,
+      rgba(255,255,255,.16) 56%,
+      rgba(237,28,46,.08) 63%,
+      transparent 72%,
+      transparent 100%
+    );
+  background-size: 235% 100%;
+  background-position: 138% 0;
+  filter: blur(.25px) drop-shadow(0 0 5px rgba(237,28,46,.16));
+  animation: headerLogoVelocityTrail 4.6s cubic-bezier(.22,.7,.18,1) infinite;
+}
+
+@keyframes headerLogoVelocityPass {
+  0%, 56% {
+    opacity: 0;
+    background-position: 132% 0;
+  }
+  60% {
+    opacity: .18;
+  }
+  65% {
+    opacity: .92;
+  }
+  72% {
+    opacity: .48;
+  }
+  77% {
+    opacity: 0;
+    background-position: -34% 0;
+  }
+  100% {
+    opacity: 0;
+    background-position: -34% 0;
+  }
+}
+
+@keyframes headerLogoVelocityTrail {
+  0%, 57% {
+    opacity: 0;
+    background-position: 138% 0;
+  }
+  62% {
+    opacity: .10;
+  }
+  68% {
+    opacity: .42;
+  }
+  76% {
+    opacity: .16;
+  }
+  81% {
+    opacity: 0;
+    background-position: -28% 0;
+  }
+  100% {
+    opacity: 0;
+    background-position: -28% 0;
+  }
+}
+
+@media (max-width: 1000px) {
+  header .brand {
+    --brand-logo-w: 205px;
+    --brand-logo-h: 102.5px;
+    --brand-logo-x: -12px;
+    --brand-logo-y: -27px;
+  }
+}
+
+@media (max-width: 760px) {
+  header .brand {
+    --brand-logo-w: 178px;
+    --brand-logo-h: 89px;
+    --brand-logo-x: -11px;
+    --brand-logo-y: -26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header .brand::before,
+  header .brand::after {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
