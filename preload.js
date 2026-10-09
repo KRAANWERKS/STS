@@ -5,11 +5,6 @@ root.classList.add('site-preloading');
 
 const style = document.createElement('style');
 style.textContent = `
-  @property --trace-angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
   html.site-preloading, html.site-preloading body { overflow: hidden !important; }
   #site-preloader {
     position: fixed;
@@ -40,53 +35,64 @@ style.textContent = `
   .site-preloader-logo-wrap::before {
     content: '';
     position: absolute;
-    inset: 10% 7%;
+    left: 5%;
+    right: 5%;
+    top: 50%;
+    height: 2px;
+    z-index: 0;
+    opacity: 0;
+    transform: translate3d(-24%, 15px, 0) scaleX(.24);
+    transform-origin: left center;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(237,28,46,0) 18%,
+      rgba(237,28,46,.12) 44%,
+      rgba(237,28,46,.52) 72%,
+      rgba(255,95,105,.9) 88%,
+      transparent 100%);
+    filter: blur(.2px) drop-shadow(0 0 5px rgba(237,28,46,.18));
+    animation: siteLogoSpeedLine 3.2s cubic-bezier(.22,.61,.36,1) infinite;
+  }
+  .site-preloader-logo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 10% 8%;
     z-index: -1;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(237,28,46,.08) 0%, rgba(237,28,46,0) 70%);
+    background: radial-gradient(circle, rgba(237,28,46,.055) 0%, rgba(237,28,46,0) 72%);
     filter: blur(20px);
-    animation: siteLogoBreath 1.8s ease-in-out infinite alternate;
-  }
-  .site-logo-trace {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: conic-gradient(
-      from var(--trace-angle),
-      transparent 0deg,
-      transparent 300deg,
-      rgba(255,255,255,.08) 314deg,
-      rgba(255,255,255,.55) 324deg,
-      #ffffff 332deg,
-      #ff6873 338deg,
-      #ed1c2e 344deg,
-      rgba(237,28,46,.28) 350deg,
-      transparent 360deg
-    );
-    -webkit-mask: url('assets/logo.png') center / contain no-repeat;
-    mask: url('assets/logo.png') center / contain no-repeat;
-    transform: scale(1.012);
-    transform-origin: center;
-    filter:
-      drop-shadow(0 0 1px rgba(255,255,255,.95))
-      drop-shadow(0 0 3px rgba(255,255,255,.72))
-      drop-shadow(0 0 5px rgba(237,28,46,.88))
-      drop-shadow(0 0 11px rgba(237,28,46,.42));
-    animation: siteLogoTrace 2.1s linear infinite;
-  }
-  .site-logo-trace.trace-b {
-    --trace-angle: 180deg;
-    animation-delay: -1.05s;
-    opacity: .92;
   }
   .site-preloader-logo {
     position: relative;
-    z-index: 2;
+    z-index: 1;
     width: 100%;
     height: auto;
     display: block;
-    filter: drop-shadow(0 8px 22px rgba(17,24,39,.08));
+    filter: drop-shadow(0 8px 22px rgba(17,24,39,.075));
+    animation: siteLogoPresence 3.2s ease-in-out infinite;
+  }
+  .site-logo-sheen {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(104deg,
+      transparent 0%,
+      transparent 38%,
+      rgba(255,255,255,.08) 44%,
+      rgba(255,255,255,.95) 49%,
+      rgba(255,222,224,.85) 52%,
+      rgba(255,255,255,.12) 57%,
+      transparent 63%,
+      transparent 100%);
+    background-size: 240% 100%;
+    background-position: 130% 0;
+    -webkit-mask: url('assets/logo.png') center / contain no-repeat;
+    mask: url('assets/logo.png') center / contain no-repeat;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 0 3px rgba(255,255,255,.42));
+    animation: siteLogoVelocityPass 3.2s cubic-bezier(.22,.61,.36,1) infinite;
   }
   .site-preloader-label {
     font: 600 11px/1.3 'DM Sans', Arial, sans-serif;
@@ -108,17 +114,58 @@ style.textContent = `
     color: #111827;
     letter-spacing: .08em;
   }
-  @keyframes siteLogoTrace {
-    from { --trace-angle: 0deg; }
-    to { --trace-angle: 360deg; }
+  @keyframes siteLogoVelocityPass {
+    0%, 12% {
+      opacity: 0;
+      background-position: 130% 0;
+    }
+    18% {
+      opacity: .22;
+    }
+    31% {
+      opacity: 1;
+    }
+    45% {
+      opacity: .35;
+      background-position: -135% 0;
+    }
+    50%, 100% {
+      opacity: 0;
+      background-position: -135% 0;
+    }
   }
-  @keyframes siteLogoBreath {
-    from { opacity: .38; transform: scale(.97); }
-    to { opacity: .8; transform: scale(1.035); }
+  @keyframes siteLogoSpeedLine {
+    0%, 14% {
+      opacity: 0;
+      transform: translate3d(-24%, 15px, 0) scaleX(.24);
+    }
+    22% {
+      opacity: .34;
+    }
+    38% {
+      opacity: .18;
+      transform: translate3d(34%, 15px, 0) scaleX(.64);
+    }
+    48%, 100% {
+      opacity: 0;
+      transform: translate3d(72%, 15px, 0) scaleX(.25);
+    }
+  }
+  @keyframes siteLogoPresence {
+    0%, 18%, 52%, 100% {
+      filter: drop-shadow(0 8px 22px rgba(17,24,39,.075)) brightness(1);
+      transform: translate3d(0,0,0);
+    }
+    31% {
+      filter: drop-shadow(0 8px 22px rgba(17,24,39,.075)) brightness(1.035);
+      transform: translate3d(1px,0,0);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .site-logo-trace,
+    .site-logo-sheen,
+    .site-preloader-logo,
     .site-preloader-logo-wrap::before { animation: none; }
+    .site-logo-sheen { display: none; }
   }
   @media (max-width: 760px) {
     .site-preloader-inner { width: min(360px, 86vw); gap: 20px; }
@@ -135,9 +182,8 @@ preloader.setAttribute('aria-live', 'polite');
 preloader.innerHTML = `
   <div class="site-preloader-inner">
     <div class="site-preloader-logo-wrap">
-      <span class="site-logo-trace trace-a" aria-hidden="true"></span>
-      <span class="site-logo-trace trace-b" aria-hidden="true"></span>
       <img class="site-preloader-logo" src="assets/logo.png" alt="SUPERFAST">
+      <span class="site-logo-sheen" aria-hidden="true"></span>
     </div>
     <div class="site-preloader-label" id="site-preload-label">PREPARING SUPERFAST</div>
     <div class="site-preloader-track" aria-hidden="true">
