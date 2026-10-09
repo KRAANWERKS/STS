@@ -152,8 +152,6 @@ let zoomFrameDuration = 1 / 30;
 let zoomLastMediaTime = null;
 let zoomSeekTarget = 0;
 let zoomSeekBusy = false;
-let zoomSeekStartedAt = 0;
-let zoomLoadRequested = false;
 
 const clamp01 = (value) => Math.min(1, Math.max(0, value));
 const smoothstep = (edge0, edge1, value) => {
@@ -196,11 +194,9 @@ async function syncHeroPlayback() {
 motion.addEventListener('click', () => {
   userPaused = !userPaused;
   syncHeroPlayback();
-  renderScroll();
 });
 
 reducedMotion.addEventListener('change', () => {
-  if (!reducedMotion.matches) requestZoomLoad();
   renderScroll();
   syncHeroPlayback();
 });
@@ -209,7 +205,7 @@ mobileHero.addEventListener('change', ({ matches }) => {
   heroFlow.style.setProperty('--primary-opacity', '1');
   heroFlow.style.setProperty('--zoom-opacity', '0');
   heroZoomVideo?.pause();
-  if (!matches) requestZoomLoad();
+  if (!matches) prepareZoomVideo();
   renderScroll();
   syncHeroPlayback();
 });
@@ -255,11 +251,6 @@ function requestZoomSeek(targetTime) {
   const frame = Math.max(1 / 60, zoomFrameDuration);
   zoomSeekTarget = Math.min(endTime, Math.max(0, targetTime));
 
-  // Recover if a browser/host combination leaves a seek lock hanging.
-  if (zoomSeekBusy && performance.now() - zoomSeekStartedAt > 900) {
-    zoomSeekBusy = false;
-  }
-
   // Let the browser finish the current decode, then jump immediately to the
   // newest scroll target. This avoids piling up seeks that visibly stutter.
   if (zoomSeekBusy || heroZoomVideo.seeking) return;
@@ -268,12 +259,10 @@ function requestZoomSeek(targetTime) {
   if (Math.abs(delta) <= frame * .20) return;
 
   zoomSeekBusy = true;
-  zoomSeekStartedAt = performance.now();
   try {
     heroZoomVideo.currentTime = zoomSeekTarget;
   } catch {
     zoomSeekBusy = false;
-    zoomSeekStartedAt = 0;
   }
 }
 
@@ -287,7 +276,7 @@ function animateZoomPlayback() {
 function renderScroll() {
   const progress = getHeroProgress();
 
-  /* Mobile uses only the static/primary hero treatment. */
+  /* Mobile uses only the primary looping hero video. */
   if (mobileHero.matches) {
     heroLines.forEach((line) => { line.style.transform = ''; });
     heroFlow.style.setProperty('--primary-opacity', '1');
@@ -303,24 +292,16 @@ function renderScroll() {
     line.style.transform = reducedMotion.matches ? '' : `translate3d(${direction * progress * 7}vw,${progress * 1.5}vh,0)`;
   });
 
-  // Do not fade away the primary hero until the zoom clip has decoded data.
-  const canShowZoom = Boolean(
-    zoomReady &&
-    heroZoomVideo &&
-    heroZoomVideo.readyState >= 2 &&
-    !reducedMotion.matches &&
-    !userPaused
-  );
-  const replaceMix = canShowZoom ? smoothstep(.025, .23, progress) : 0;
+  const replaceMix = reducedMotion.matches ? 0 : smoothstep(.025, .23, progress);
   heroFlow.style.setProperty('--primary-opacity', (1 - replaceMix).toFixed(4));
   heroFlow.style.setProperty('--zoom-opacity', replaceMix.toFixed(4));
   hero.style.setProperty('--hero-progress', progress.toFixed(4));
 
   const zoomProgress = getZoomProgress();
-  const shouldUseZoom = canShowZoom && zoomProgress > .012;
+  const shouldUseZoom = zoomReady && !reducedMotion.matches && zoomProgress > .012;
   zoomActive = shouldUseZoom;
 
-  if (canShowZoom && heroZoomVideo?.duration) {
+  if (zoomReady && heroZoomVideo?.duration && !reducedMotion.matches && !userPaused) {
     zoomTargetTime = zoomProgress * getZoomEndTime();
     requestZoomSeek(zoomTargetTime);
   }
@@ -383,7 +364,6 @@ function trackZoomFrame(now, metadata) {
 
 heroZoomVideo?.addEventListener('seeked', () => {
   zoomSeekBusy = false;
-  zoomSeekStartedAt = 0;
 
   if (!zoomReady || reducedMotion.matches || userPaused) return;
 
@@ -396,12 +376,8 @@ heroZoomVideo?.addEventListener('seeked', () => {
 
 function prepareZoomVideo() {
   if (mobileHero.matches) return;
-  if (!heroZoomVideo || heroZoomVideo.readyState < 2) return;
-  if (!Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
-
+  if (!heroZoomVideo || !Number.isFinite(heroZoomVideo.duration) || heroZoomVideo.duration <= 0) return;
   zoomReady = true;
-  zoomSeekBusy = false;
-  zoomSeekStartedAt = 0;
   heroZoomVideo.pause();
   zoomTargetTime = 0;
   try { heroZoomVideo.currentTime = 0; } catch {}
@@ -411,49 +387,19 @@ function prepareZoomVideo() {
   renderScroll();
 }
 
-function requestZoomLoad() {
-  if (mobileHero.matches || reducedMotion.matches || !heroZoomVideo) return;
-
-  // This clip is small enough to preload fully on desktop. Metadata-only loading
-  // proved unreliable on some production hosts when the first action is a seek.
-  heroZoomVideo.preload = 'auto';
-
-  if (heroZoomVideo.readyState >= 2) {
-    prepareZoomVideo();
-    return;
-  }
-
-  if (!zoomLoadRequested) {
-    zoomLoadRequested = true;
-    try { heroZoomVideo.load(); } catch {}
-  }
-}
-
-if (heroZoomVideo?.readyState >= 2) prepareZoomVideo();
-else {
-  heroZoomVideo?.addEventListener('loadeddata', prepareZoomVideo, { once: true });
-  heroZoomVideo?.addEventListener('canplay', prepareZoomVideo, { once: true });
-}
+if (heroZoomVideo?.readyState >= 1) prepareZoomVideo();
+else heroZoomVideo?.addEventListener('loadedmetadata', prepareZoomVideo, { once: true });
 
 heroZoomVideo?.addEventListener('durationchange', () => {
-  if (!zoomReady && heroZoomVideo.readyState >= 2) prepareZoomVideo();
-});
-
-heroZoomVideo?.addEventListener('stalled', () => {
-  zoomSeekBusy = false;
-  zoomSeekStartedAt = 0;
+  if (!zoomReady) prepareZoomVideo();
 });
 
 heroZoomVideo?.addEventListener('error', () => {
   zoomReady = false;
   zoomActive = false;
-  zoomSeekBusy = false;
-  zoomSeekStartedAt = 0;
   heroFlow.style.setProperty('--zoom-opacity', '0');
   heroFlow.style.setProperty('--primary-opacity', '1');
 }, { once: true });
-
-if (!mobileHero.matches && !reducedMotion.matches) requestZoomLoad();
 
 heroVideo?.addEventListener('play', updateMotionLabel);
 heroVideo?.addEventListener('pause', updateMotionLabel);
