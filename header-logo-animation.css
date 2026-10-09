@@ -1,6 +1,6 @@
 /* SUPERFAST header logo — restrained velocity-pass animation.
-   The logo itself stays still. A narrow highlight crosses the real logo shape,
-   followed by a longer laser-like red speed streak. */
+   The logo stays still. The light enters quickly, eases across the center,
+   then accelerates cleanly through FAST so it never appears to stop on the word. */
 
 header .brand {
   --brand-logo-w: 250px;
@@ -29,7 +29,7 @@ header .brand::after {
   will-change: background-position, opacity;
 }
 
-/* Main white-hot velocity pass. Deliberately slower so it reads clearly. */
+/* White-hot leading pass. */
 header .brand::before {
   background:
     linear-gradient(
@@ -44,14 +44,15 @@ header .brand::before {
       transparent 100%
     );
   background-size: 230% 100%;
-  background-position: 126% 0;
+  background-position: 132% 0;
   filter:
     drop-shadow(0 0 2px rgba(255,255,255,.76))
     drop-shadow(0 0 6px rgba(255,122,132,.24));
-  animation: headerLogoVelocityPass 4.9s cubic-bezier(.28,.56,.24,1) infinite;
+  animation: headerLogoVelocityPass 4.9s linear infinite;
 }
 
-/* Longer laser trail: brighter core, longer tail, slower fade. */
+/* Longer red laser trail. It follows the same fast -> slow -> fast travel,
+   then fades only after it has cleared the end of the logo. */
 header .brand::after {
   z-index: 1;
   background:
@@ -74,69 +75,96 @@ header .brand::after {
       transparent 100%
     );
   background-size: 190% 100%;
-  background-position: 132% 0;
+  background-position: 138% 0;
   filter:
     blur(.08px)
     drop-shadow(0 0 3px rgba(255,78,91,.66))
     drop-shadow(0 0 8px rgba(237,28,46,.44))
     drop-shadow(0 0 14px rgba(237,28,46,.22));
-  animation: headerLogoVelocityTrail 4.9s cubic-bezier(.28,.56,.24,1) infinite;
+  animation: headerLogoVelocityTrail 4.9s linear infinite;
 }
 
 @keyframes headerLogoVelocityPass {
   0%, 18% {
     opacity: 0;
-    background-position: 126% 0;
+    background-position: 132% 0;
   }
-  24% {
-    opacity: .20;
+
+  /* Quick entrance from the S side, easing into the center. */
+  22% {
+    opacity: .22;
+    background-position: 118% 0;
+    animation-timing-function: cubic-bezier(.12,.72,.22,1);
   }
-  38% {
+  36% {
     opacity: 1;
+    background-position: 38% 0;
+    animation-timing-function: linear;
   }
-  56% {
-    opacity: .78;
+
+  /* Deliberately calmer through the middle of SUPER. */
+  62% {
+    opacity: .84;
+    background-position: 2% 0;
+    animation-timing-function: cubic-bezier(.58,0,.9,.34);
   }
-  70% {
-    opacity: .42;
+
+  /* Accelerate through RFAST and clear the final T without lingering. */
+  76% {
+    opacity: .52;
+    background-position: -34% 0;
   }
-  80% {
-    opacity: .14;
-    background-position: -26% 0;
+  82% {
+    opacity: .16;
+    background-position: -46% 0;
   }
-  86%, 100% {
+  87%, 100% {
     opacity: 0;
-    background-position: -26% 0;
+    background-position: -46% 0;
   }
 }
 
 @keyframes headerLogoVelocityTrail {
   0%, 20% {
     opacity: 0;
-    background-position: 132% 0;
+    background-position: 138% 0;
   }
-  26% {
+
+  /* Fast entry. */
+  24% {
     opacity: .16;
+    background-position: 124% 0;
+    animation-timing-function: cubic-bezier(.12,.72,.22,1);
   }
-  41% {
-    opacity: .66;
+  39% {
+    opacity: .68;
+    background-position: 42% 0;
+    animation-timing-function: linear;
   }
-  58% {
-    opacity: .62;
+
+  /* Longer, readable tail across the center. */
+  65% {
+    opacity: .64;
+    background-position: 5% 0;
+    animation-timing-function: cubic-bezier(.58,0,.9,.34);
   }
-  72% {
-    opacity: .48;
+
+  /* Fast exit: carry the laser fully beyond FAST before fading away. */
+  79% {
+    opacity: .50;
+    background-position: -31% 0;
   }
-  82% {
-    opacity: .30;
+  85% {
+    opacity: .34;
+    background-position: -44% 0;
   }
-  90% {
+  91% {
     opacity: .14;
-    background-position: -20% 0;
+    background-position: -54% 0;
   }
-  95%, 100% {
+  96%, 100% {
     opacity: 0;
-    background-position: -20% 0;
+    background-position: -54% 0;
   }
 }
 
