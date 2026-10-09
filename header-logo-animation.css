@@ -1,6 +1,6 @@
 /* SUPERFAST header logo — restrained velocity-pass animation.
-   The logo stays still. The light enters quickly, slows slightly across the center,
-   then accelerates straight through FAST and disappears cleanly without lingering. */
+   The logo stays still. The light is readable through SUPER, then snaps quickly
+   through FAST and disappears just after the final T without a long overshoot. */
 
 header .brand {
   --brand-logo-w: 250px;
@@ -35,15 +35,15 @@ header .brand::before {
     linear-gradient(
       102deg,
       transparent 0%,
-      transparent 37%,
-      rgba(255,255,255,.18) 43%,
+      transparent 39%,
+      rgba(255,255,255,.16) 44%,
       rgba(255,255,255,1) 49%,
-      rgba(255,205,210,.90) 54%,
-      rgba(255,102,114,.30) 60%,
-      transparent 69%,
+      rgba(255,205,210,.88) 53%,
+      rgba(255,102,114,.26) 58%,
+      transparent 64%,
       transparent 100%
     );
-  background-size: 230% 100%;
+  background-size: 235% 100%;
   background-position: 132% 0;
   filter:
     drop-shadow(0 0 2px rgba(255,255,255,.76))
@@ -51,33 +51,34 @@ header .brand::before {
   animation: headerLogoVelocityPass 4.9s linear infinite;
 }
 
-/* Shorter laser tail so it stays close to FAST instead of extending too far past it. */
+/* Compact red laser trail. The luminous tail is intentionally kept short so
+   it stays visually attached to FAST instead of running far past the word. */
 header .brand::after {
   z-index: 1;
   background:
     linear-gradient(
       96deg,
       transparent 0%,
-      transparent 18%,
-      rgba(237,28,46,0) 25%,
-      rgba(237,28,46,.09) 33%,
-      rgba(237,28,46,.18) 40%,
-      rgba(255,55,73,.48) 49%,
+      transparent 28%,
+      rgba(237,28,46,0) 35%,
+      rgba(237,28,46,.10) 40%,
+      rgba(237,28,46,.20) 45%,
+      rgba(255,55,73,.50) 51%,
       rgba(255,130,142,.72) 56%,
-      rgba(255,248,249,.44) 60%,
-      rgba(255,84,98,.52) 65%,
-      rgba(237,28,46,.30) 72%,
-      rgba(237,28,46,.16) 79%,
-      transparent 88%,
+      rgba(255,248,249,.44) 59%,
+      rgba(255,84,98,.48) 63%,
+      rgba(237,28,46,.24) 68%,
+      rgba(237,28,46,.10) 73%,
+      transparent 79%,
       transparent 100%
     );
-  background-size: 198% 100%;
+  background-size: 215% 100%;
   background-position: 136% 0;
   filter:
     blur(.08px)
     drop-shadow(0 0 3px rgba(255,78,91,.62))
-    drop-shadow(0 0 8px rgba(237,28,46,.40))
-    drop-shadow(0 0 12px rgba(237,28,46,.18));
+    drop-shadow(0 0 8px rgba(237,28,46,.38))
+    drop-shadow(0 0 11px rgba(237,28,46,.16));
   animation: headerLogoVelocityTrail 4.9s linear infinite;
 }
 
@@ -87,7 +88,6 @@ header .brand::after {
     background-position: 132% 0;
   }
 
-  /* Quick entry. */
   22% {
     opacity: .22;
     background-position: 118% 0;
@@ -97,28 +97,28 @@ header .brand::after {
     background-position: 38% 0;
   }
 
-  /* Slightly slower through SUPER. */
-  62% {
-    opacity: .86;
-    background-position: 2% 0;
+  /* Readable through SUPER. */
+  58% {
+    opacity: .88;
+    background-position: 5% 0;
   }
 
-  /* No ease-out: accelerate continuously through FAST and clear the T. */
-  72% {
-    opacity: .84;
-    background-position: -14% 0;
+  /* FAST is intentionally very quick: no easing, no pause. */
+  62% {
+    opacity: .86;
+    background-position: -5% 0;
   }
-  78% {
-    opacity: .72;
-    background-position: -28% 0;
+  65% {
+    opacity: .78;
+    background-position: -16% 0;
   }
-  82% {
+  67% {
     opacity: 0;
-    background-position: -34% 0;
+    background-position: -21% 0;
   }
   100% {
     opacity: 0;
-    background-position: -34% 0;
+    background-position: -21% 0;
   }
 }
 
@@ -128,7 +128,6 @@ header .brand::after {
     background-position: 136% 0;
   }
 
-  /* Quick entry. */
   24% {
     opacity: .16;
     background-position: 122% 0;
@@ -138,28 +137,28 @@ header .brand::after {
     background-position: 42% 0;
   }
 
-  /* Readable tail through the center. */
-  65% {
+  /* Keep the tail visible across SUPER. */
+  60% {
     opacity: .64;
-    background-position: 5% 0;
+    background-position: 7% 0;
   }
 
-  /* Fast, direct exit with no slowdown and no long overshoot beyond FAST. */
-  74% {
-    opacity: .60;
-    background-position: -10% 0;
+  /* Snap through FAST and switch off just beyond the final T. */
+  63% {
+    opacity: .62;
+    background-position: -3% 0;
   }
-  80% {
-    opacity: .50;
-    background-position: -24% 0;
+  66% {
+    opacity: .52;
+    background-position: -13% 0;
   }
-  84% {
+  68% {
     opacity: 0;
-    background-position: -32% 0;
+    background-position: -19% 0;
   }
   100% {
     opacity: 0;
-    background-position: -32% 0;
+    background-position: -19% 0;
   }
 }
 
