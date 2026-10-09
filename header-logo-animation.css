@@ -1,6 +1,6 @@
 /* SUPERFAST header logo — restrained velocity-pass animation.
    The logo itself stays still. A narrow highlight crosses the real logo shape,
-   followed by a slightly brighter laser-like red speed streak. */
+   followed by a longer laser-like red speed streak. */
 
 header .brand {
   --brand-logo-w: 250px;
@@ -29,112 +29,114 @@ header .brand::after {
   will-change: background-position, opacity;
 }
 
-/* Main white-hot velocity pass. Slower and a little easier to read. */
+/* Main white-hot velocity pass. Deliberately slower so it reads clearly. */
 header .brand::before {
   background:
     linear-gradient(
       102deg,
       transparent 0%,
-      transparent 38%,
+      transparent 37%,
       rgba(255,255,255,.18) 43%,
       rgba(255,255,255,1) 49%,
-      rgba(255,205,210,.88) 54%,
-      rgba(255,102,114,.28) 59%,
-      transparent 67%,
+      rgba(255,205,210,.90) 54%,
+      rgba(255,102,114,.30) 60%,
+      transparent 69%,
       transparent 100%
     );
-  background-size: 238% 100%;
-  background-position: 130% 0;
+  background-size: 230% 100%;
+  background-position: 126% 0;
   filter:
-    drop-shadow(0 0 2px rgba(255,255,255,.72))
-    drop-shadow(0 0 6px rgba(255,122,132,.22));
-  animation: headerLogoVelocityPass 4.15s cubic-bezier(.30,.58,.24,1) infinite;
+    drop-shadow(0 0 2px rgba(255,255,255,.76))
+    drop-shadow(0 0 6px rgba(255,122,132,.24));
+  animation: headerLogoVelocityPass 4.9s cubic-bezier(.28,.56,.24,1) infinite;
 }
 
-/* Longer laser trail: a little brighter and slower to fade, while remaining secondary. */
+/* Longer laser trail: brighter core, longer tail, slower fade. */
 header .brand::after {
   z-index: 1;
   background:
     linear-gradient(
       96deg,
       transparent 0%,
-      transparent 18%,
-      rgba(237,28,46,0) 25%,
-      rgba(237,28,46,.10) 31%,
-      rgba(237,28,46,.20) 38%,
-      rgba(255,63,79,.48) 46%,
-      rgba(255,132,143,.68) 53%,
-      rgba(255,255,255,.38) 57%,
-      rgba(255,78,92,.48) 62%,
-      rgba(237,28,46,.26) 70%,
-      rgba(237,28,46,.12) 79%,
-      transparent 90%,
+      transparent 10%,
+      rgba(237,28,46,0) 17%,
+      rgba(237,28,46,.08) 24%,
+      rgba(237,28,46,.15) 32%,
+      rgba(237,28,46,.24) 40%,
+      rgba(255,55,73,.50) 49%,
+      rgba(255,130,142,.72) 56%,
+      rgba(255,248,249,.44) 60%,
+      rgba(255,84,98,.54) 65%,
+      rgba(237,28,46,.34) 72%,
+      rgba(237,28,46,.22) 80%,
+      rgba(237,28,46,.10) 88%,
+      transparent 96%,
       transparent 100%
     );
-  background-size: 202% 100%;
-  background-position: 138% 0;
+  background-size: 190% 100%;
+  background-position: 132% 0;
   filter:
-    blur(.10px)
-    drop-shadow(0 0 3px rgba(255,78,91,.58))
-    drop-shadow(0 0 8px rgba(237,28,46,.38))
-    drop-shadow(0 0 13px rgba(237,28,46,.18));
-  animation: headerLogoVelocityTrail 4.15s cubic-bezier(.30,.58,.24,1) infinite;
+    blur(.08px)
+    drop-shadow(0 0 3px rgba(255,78,91,.66))
+    drop-shadow(0 0 8px rgba(237,28,46,.44))
+    drop-shadow(0 0 14px rgba(237,28,46,.22));
+  animation: headerLogoVelocityTrail 4.9s cubic-bezier(.28,.56,.24,1) infinite;
 }
 
 @keyframes headerLogoVelocityPass {
-  0%, 27% {
+  0%, 18% {
     opacity: 0;
-    background-position: 130% 0;
+    background-position: 126% 0;
   }
-  32% {
+  24% {
     opacity: .20;
   }
-  43% {
+  38% {
     opacity: 1;
   }
-  58% {
-    opacity: .76;
+  56% {
+    opacity: .78;
   }
   70% {
-    opacity: .30;
+    opacity: .42;
   }
-  76% {
-    opacity: 0;
-    background-position: -30% 0;
+  80% {
+    opacity: .14;
+    background-position: -26% 0;
   }
-  100% {
+  86%, 100% {
     opacity: 0;
-    background-position: -30% 0;
+    background-position: -26% 0;
   }
 }
 
 @keyframes headerLogoVelocityTrail {
-  0%, 28% {
+  0%, 20% {
     opacity: 0;
-    background-position: 138% 0;
+    background-position: 132% 0;
   }
-  34% {
+  26% {
     opacity: .16;
   }
-  46% {
+  41% {
+    opacity: .66;
+  }
+  58% {
     opacity: .62;
   }
-  62% {
-    opacity: .56;
+  72% {
+    opacity: .48;
   }
-  76% {
-    opacity: .34;
+  82% {
+    opacity: .30;
   }
-  84% {
+  90% {
     opacity: .14;
+    background-position: -20% 0;
   }
-  89% {
+  95%, 100% {
     opacity: 0;
-    background-position: -24% 0;
-  }
-  100% {
-    opacity: 0;
-    background-position: -24% 0;
+    background-position: -20% 0;
   }
 }
 
