@@ -1,6 +1,6 @@
 const headerLogoAnimationStylesheet = document.createElement('link');
 headerLogoAnimationStylesheet.rel = 'stylesheet';
-headerLogoAnimationStylesheet.href = './header-logo-animation.css?v=20261009-velocity2';
+headerLogoAnimationStylesheet.href = './header-logo-animation.css?v=20261009-velocity3';
 document.head.appendChild(headerLogoAnimationStylesheet);
 
 await import('./preload.js?v=20261009-preload1');
