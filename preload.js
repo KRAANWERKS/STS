@@ -5,6 +5,11 @@ root.classList.add('site-preloading');
 
 const style = document.createElement('style');
 style.textContent = `
+  @property --logo-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
   html.site-preloading, html.site-preloading body { overflow: hidden !important; }
   #site-preloader {
     position: fixed;
@@ -19,20 +24,65 @@ style.textContent = `
   }
   #site-preloader.is-ready { opacity: 0; pointer-events: none; }
   .site-preloader-inner {
-    width: min(320px, 72vw);
+    width: min(470px, 84vw);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 22px;
+    gap: 24px;
   }
-  .site-preloader-logo { width: min(230px, 62vw); height: auto; display: block; }
+  .site-preloader-logo-wrap {
+    position: relative;
+    width: min(410px, 76vw);
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+  }
+  .site-preloader-logo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--logo-angle),
+      transparent 0deg,
+      transparent 255deg,
+      rgba(255,255,255,.25) 282deg,
+      rgba(255,255,255,1) 305deg,
+      #ff5662 322deg,
+      #ed1c2e 338deg,
+      transparent 360deg
+    );
+    -webkit-mask: url('assets/logo.png') center / contain no-repeat;
+    mask: url('assets/logo.png') center / contain no-repeat;
+    filter: drop-shadow(0 0 5px rgba(237,28,46,.42)) drop-shadow(0 0 15px rgba(237,28,46,.22));
+    animation: siteLogoTrace 1.8s linear infinite;
+  }
+  .site-preloader-logo-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 12% 8%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(237,28,46,.09) 0%, rgba(237,28,46,0) 68%);
+    filter: blur(18px);
+    animation: siteLogoBreath 1.8s ease-in-out infinite alternate;
+  }
+  .site-preloader-logo {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 8px 22px rgba(17,24,39,.08));
+  }
   .site-preloader-label {
     font: 600 11px/1.3 'DM Sans', Arial, sans-serif;
     letter-spacing: .18em;
     color: #60646b;
     text-align: center;
   }
-  .site-preloader-track { width: 100%; height: 2px; background: #e5e7eb; overflow: hidden; }
+  .site-preloader-track { width: min(360px, 74vw); height: 2px; background: #e5e7eb; overflow: hidden; }
   .site-preloader-bar {
     width: 100%;
     height: 100%;
@@ -46,9 +96,21 @@ style.textContent = `
     color: #111827;
     letter-spacing: .08em;
   }
+  @keyframes siteLogoTrace {
+    to { --logo-angle: 360deg; }
+  }
+  @keyframes siteLogoBreath {
+    from { opacity: .45; transform: scale(.96); }
+    to { opacity: .9; transform: scale(1.04); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-preloader-logo-wrap::before,
+    .site-preloader-logo-wrap::after { animation: none; }
+  }
   @media (max-width: 760px) {
-    .site-preloader-inner { width: min(280px, 70vw); gap: 18px; }
-    .site-preloader-logo { width: min(205px, 58vw); }
+    .site-preloader-inner { width: min(360px, 86vw); gap: 20px; }
+    .site-preloader-logo-wrap { width: min(320px, 76vw); }
+    .site-preloader-track { width: min(300px, 70vw); }
   }
 `;
 document.head.appendChild(style);
@@ -59,7 +121,9 @@ preloader.setAttribute('role', 'status');
 preloader.setAttribute('aria-live', 'polite');
 preloader.innerHTML = `
   <div class="site-preloader-inner">
-    <img class="site-preloader-logo" src="assets/logo.png" alt="SUPERFAST">
+    <div class="site-preloader-logo-wrap">
+      <img class="site-preloader-logo" src="assets/logo.png" alt="SUPERFAST">
+    </div>
     <div class="site-preloader-label" id="site-preload-label">PREPARING SUPERFAST</div>
     <div class="site-preloader-track" aria-hidden="true">
       <div class="site-preloader-bar" id="site-preload-bar"></div>
