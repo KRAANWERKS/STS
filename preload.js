@@ -5,6 +5,11 @@ root.classList.add('site-preloading');
 
 const style = document.createElement('style');
 style.textContent = `
+  @property --trace-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
   html.site-preloading, html.site-preloading body { overflow: hidden !important; }
   #site-preloader {
     position: fixed;
@@ -19,56 +24,61 @@ style.textContent = `
   }
   #site-preloader.is-ready { opacity: 0; pointer-events: none; }
   .site-preloader-inner {
-    width: min(520px, 90vw);
+    width: min(470px, 84vw);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 26px;
+    gap: 24px;
   }
   .site-preloader-logo-wrap {
     position: relative;
-    width: min(470px, 84vw);
-    box-sizing: border-box;
+    width: min(410px, 76vw);
     display: grid;
     place-items: center;
-    padding: 24px 30px;
-    border-radius: 30px;
-    border: 1px solid rgba(237,28,46,.10);
-    box-shadow: 0 18px 55px rgba(17,24,39,.05), 0 0 42px rgba(237,28,46,.05);
     isolation: isolate;
   }
-  .site-preloader-logo-wrap::before,
-  .site-preloader-logo-wrap::after {
+  .site-preloader-logo-wrap::before {
     content: '';
     position: absolute;
-    inset: -2px;
-    z-index: 0;
-    padding: 2px;
-    border-radius: 32px;
+    inset: 10% 7%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(237,28,46,.08) 0%, rgba(237,28,46,0) 70%);
+    filter: blur(20px);
+    animation: siteLogoBreath 1.8s ease-in-out infinite alternate;
+  }
+  .site-logo-trace {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     pointer-events: none;
     background: conic-gradient(
-      from 0deg,
+      from var(--trace-angle),
       transparent 0deg,
-      transparent 292deg,
-      rgba(237,28,46,.05) 306deg,
-      rgba(255,120,130,.55) 321deg,
-      #ed1c2e 337deg,
-      #fff 344deg,
-      #ed1c2e 350deg,
-      rgba(237,28,46,.20) 355deg,
+      transparent 300deg,
+      rgba(255,255,255,.08) 314deg,
+      rgba(255,255,255,.55) 324deg,
+      #ffffff 332deg,
+      #ff6873 338deg,
+      #ed1c2e 344deg,
+      rgba(237,28,46,.28) 350deg,
       transparent 360deg
     );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    filter: drop-shadow(0 0 4px rgba(237,28,46,.55)) drop-shadow(0 0 12px rgba(237,28,46,.28));
-    animation: siteLogoOrbit 1.7s linear infinite;
+    -webkit-mask: url('assets/logo.png') center / contain no-repeat;
+    mask: url('assets/logo.png') center / contain no-repeat;
+    transform: scale(1.012);
+    transform-origin: center;
+    filter:
+      drop-shadow(0 0 1px rgba(255,255,255,.95))
+      drop-shadow(0 0 3px rgba(255,255,255,.72))
+      drop-shadow(0 0 5px rgba(237,28,46,.88))
+      drop-shadow(0 0 11px rgba(237,28,46,.42));
+    animation: siteLogoTrace 2.1s linear infinite;
   }
-  .site-preloader-logo-wrap::after {
-    animation-delay: -.85s;
-    opacity: .88;
+  .site-logo-trace.trace-b {
+    --trace-angle: 180deg;
+    animation-delay: -1.05s;
+    opacity: .92;
   }
   .site-preloader-logo {
     position: relative;
@@ -76,7 +86,7 @@ style.textContent = `
     width: 100%;
     height: auto;
     display: block;
-    filter: drop-shadow(0 9px 24px rgba(17,24,39,.08));
+    filter: drop-shadow(0 8px 22px rgba(17,24,39,.08));
   }
   .site-preloader-label {
     font: 600 11px/1.3 'DM Sans', Arial, sans-serif;
@@ -84,7 +94,7 @@ style.textContent = `
     color: #60646b;
     text-align: center;
   }
-  .site-preloader-track { width: min(380px, 76vw); height: 2px; background: #e5e7eb; overflow: hidden; }
+  .site-preloader-track { width: min(360px, 74vw); height: 2px; background: #e5e7eb; overflow: hidden; }
   .site-preloader-bar {
     width: 100%;
     height: 100%;
@@ -98,23 +108,22 @@ style.textContent = `
     color: #111827;
     letter-spacing: .08em;
   }
-  @keyframes siteLogoOrbit {
-    to { transform: rotate(360deg); }
+  @keyframes siteLogoTrace {
+    from { --trace-angle: 0deg; }
+    to { --trace-angle: 360deg; }
+  }
+  @keyframes siteLogoBreath {
+    from { opacity: .38; transform: scale(.97); }
+    to { opacity: .8; transform: scale(1.035); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .site-preloader-logo-wrap::before,
-    .site-preloader-logo-wrap::after { animation: none; }
+    .site-logo-trace,
+    .site-preloader-logo-wrap::before { animation: none; }
   }
   @media (max-width: 760px) {
-    .site-preloader-inner { width: min(390px, 90vw); gap: 21px; }
-    .site-preloader-logo-wrap {
-      width: min(350px, 82vw);
-      padding: 20px 24px;
-      border-radius: 25px;
-    }
-    .site-preloader-logo-wrap::before,
-    .site-preloader-logo-wrap::after { border-radius: 27px; }
-    .site-preloader-track { width: min(310px, 72vw); }
+    .site-preloader-inner { width: min(360px, 86vw); gap: 20px; }
+    .site-preloader-logo-wrap { width: min(320px, 76vw); }
+    .site-preloader-track { width: min(300px, 70vw); }
   }
 `;
 document.head.appendChild(style);
@@ -126,6 +135,8 @@ preloader.setAttribute('aria-live', 'polite');
 preloader.innerHTML = `
   <div class="site-preloader-inner">
     <div class="site-preloader-logo-wrap">
+      <span class="site-logo-trace trace-a" aria-hidden="true"></span>
+      <span class="site-logo-trace trace-b" aria-hidden="true"></span>
       <img class="site-preloader-logo" src="assets/logo.png" alt="SUPERFAST">
     </div>
     <div class="site-preloader-label" id="site-preload-label">PREPARING SUPERFAST</div>
