@@ -28,6 +28,7 @@ style.textContent = `
   .site-preloader-logo-wrap {
     position: relative;
     width: min(410px, 76vw);
+    aspect-ratio: 2 / 1;
     display: grid;
     place-items: center;
     isolation: isolate;
@@ -66,8 +67,11 @@ style.textContent = `
     position: relative;
     z-index: 1;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
     display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
     filter: drop-shadow(0 8px 22px rgba(17,24,39,.075));
     animation: siteLogoPresence 3.2s ease-in-out infinite;
   }
@@ -168,9 +172,10 @@ style.textContent = `
     .site-logo-sheen { display: none; }
   }
   @media (max-width: 760px) {
-    .site-preloader-inner { width: min(360px, 86vw); gap: 20px; }
-    .site-preloader-logo-wrap { width: min(320px, 76vw); }
-    .site-preloader-track { width: min(300px, 70vw); }
+    .site-preloader-inner { width: min(370px, 90vw); gap: 20px; }
+    .site-preloader-logo-wrap { width: min(330px, 82vw); }
+    .site-preloader-track { width: min(300px, 72vw); }
+    .site-preloader-label { font-size: 10px; }
   }
 `;
 document.head.appendChild(style);
@@ -204,6 +209,32 @@ const setProgress = (value, label) => {
   if (progressText) progressText.textContent = `${percent}%`;
   if (label && preloadLabel) preloadLabel.textContent = label;
 };
+
+const waitForImage = (image, timeout = 3000) => new Promise((resolve) => {
+  if (!image) {
+    resolve();
+    return;
+  }
+
+  if (image.complete && image.naturalWidth > 0) {
+    if (image.decode) image.decode().catch(() => {}).finally(resolve);
+    else resolve();
+    return;
+  }
+
+  let settled = false;
+  const finish = () => {
+    if (settled) return;
+    settled = true;
+    image.removeEventListener('load', finish);
+    image.removeEventListener('error', finish);
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  };
+
+  image.addEventListener('load', finish, { once: true });
+  image.addEventListener('error', finish, { once: true });
+  setTimeout(finish, timeout);
+});
 
 const waitForMedia = (video, timeout = 8000) => new Promise((resolve) => {
   if (!video || video.readyState >= 2) {
@@ -294,12 +325,16 @@ async function runSitePreloader() {
     setProgress(95, 'LOADING HERO');
     await waitForMedia(document.getElementById('hero-video'), 5000);
   } else {
+    const logo = document.querySelector('.site-preloader-logo');
+    setProgress(38, 'PREPARING SUPERFAST');
+    await waitForImage(logo, 3000);
+    setProgress(78, 'LOADING EXPERIENCE');
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
   }
 
   setProgress(100, 'READY');
 
-  const minimumDisplay = 500;
+  const minimumDisplay = desktop ? 500 : 1050;
   const elapsed = performance.now() - startedAt;
   if (elapsed < minimumDisplay) {
     await new Promise((resolve) => setTimeout(resolve, minimumDisplay - elapsed));
