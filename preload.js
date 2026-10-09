@@ -5,11 +5,6 @@ root.classList.add('site-preloading');
 
 const style = document.createElement('style');
 style.textContent = `
-  @property --logo-angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
   html.site-preloading, html.site-preloading body { overflow: hidden !important; }
   #site-preloader {
     position: fixed;
@@ -24,57 +19,64 @@ style.textContent = `
   }
   #site-preloader.is-ready { opacity: 0; pointer-events: none; }
   .site-preloader-inner {
-    width: min(470px, 84vw);
+    width: min(520px, 90vw);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 26px;
   }
   .site-preloader-logo-wrap {
     position: relative;
-    width: min(410px, 76vw);
+    width: min(470px, 84vw);
+    box-sizing: border-box;
     display: grid;
     place-items: center;
+    padding: 24px 30px;
+    border-radius: 30px;
+    border: 1px solid rgba(237,28,46,.10);
+    box-shadow: 0 18px 55px rgba(17,24,39,.05), 0 0 42px rgba(237,28,46,.05);
     isolation: isolate;
   }
-  .site-preloader-logo-wrap::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background: conic-gradient(
-      from var(--logo-angle),
-      transparent 0deg,
-      transparent 255deg,
-      rgba(255,255,255,.25) 282deg,
-      rgba(255,255,255,1) 305deg,
-      #ff5662 322deg,
-      #ed1c2e 338deg,
-      transparent 360deg
-    );
-    -webkit-mask: url('assets/logo.png') center / contain no-repeat;
-    mask: url('assets/logo.png') center / contain no-repeat;
-    filter: drop-shadow(0 0 5px rgba(237,28,46,.42)) drop-shadow(0 0 15px rgba(237,28,46,.22));
-    animation: siteLogoTrace 1.8s linear infinite;
-  }
+  .site-preloader-logo-wrap::before,
   .site-preloader-logo-wrap::after {
     content: '';
     position: absolute;
-    inset: 12% 8%;
-    z-index: -1;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(237,28,46,.09) 0%, rgba(237,28,46,0) 68%);
-    filter: blur(18px);
-    animation: siteLogoBreath 1.8s ease-in-out infinite alternate;
+    inset: -2px;
+    z-index: 0;
+    padding: 2px;
+    border-radius: 32px;
+    pointer-events: none;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      transparent 292deg,
+      rgba(237,28,46,.05) 306deg,
+      rgba(255,120,130,.55) 321deg,
+      #ed1c2e 337deg,
+      #fff 344deg,
+      #ed1c2e 350deg,
+      rgba(237,28,46,.20) 355deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    filter: drop-shadow(0 0 4px rgba(237,28,46,.55)) drop-shadow(0 0 12px rgba(237,28,46,.28));
+    animation: siteLogoOrbit 1.7s linear infinite;
+  }
+  .site-preloader-logo-wrap::after {
+    animation-delay: -.85s;
+    opacity: .88;
   }
   .site-preloader-logo {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     height: auto;
     display: block;
-    filter: drop-shadow(0 8px 22px rgba(17,24,39,.08));
+    filter: drop-shadow(0 9px 24px rgba(17,24,39,.08));
   }
   .site-preloader-label {
     font: 600 11px/1.3 'DM Sans', Arial, sans-serif;
@@ -82,7 +84,7 @@ style.textContent = `
     color: #60646b;
     text-align: center;
   }
-  .site-preloader-track { width: min(360px, 74vw); height: 2px; background: #e5e7eb; overflow: hidden; }
+  .site-preloader-track { width: min(380px, 76vw); height: 2px; background: #e5e7eb; overflow: hidden; }
   .site-preloader-bar {
     width: 100%;
     height: 100%;
@@ -96,21 +98,23 @@ style.textContent = `
     color: #111827;
     letter-spacing: .08em;
   }
-  @keyframes siteLogoTrace {
-    to { --logo-angle: 360deg; }
-  }
-  @keyframes siteLogoBreath {
-    from { opacity: .45; transform: scale(.96); }
-    to { opacity: .9; transform: scale(1.04); }
+  @keyframes siteLogoOrbit {
+    to { transform: rotate(360deg); }
   }
   @media (prefers-reduced-motion: reduce) {
     .site-preloader-logo-wrap::before,
     .site-preloader-logo-wrap::after { animation: none; }
   }
   @media (max-width: 760px) {
-    .site-preloader-inner { width: min(360px, 86vw); gap: 20px; }
-    .site-preloader-logo-wrap { width: min(320px, 76vw); }
-    .site-preloader-track { width: min(300px, 70vw); }
+    .site-preloader-inner { width: min(390px, 90vw); gap: 21px; }
+    .site-preloader-logo-wrap {
+      width: min(350px, 82vw);
+      padding: 20px 24px;
+      border-radius: 25px;
+    }
+    .site-preloader-logo-wrap::before,
+    .site-preloader-logo-wrap::after { border-radius: 27px; }
+    .site-preloader-track { width: min(310px, 72vw); }
   }
 `;
 document.head.appendChild(style);
