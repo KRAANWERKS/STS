@@ -5,16 +5,19 @@ root.classList.add('site-preloading');
 
 const style = document.createElement('style');
 style.textContent = `
-  html.site-preloading, html.site-preloading body { overflow: hidden !important; }
+  html.site-preloading, html.site-preloading body {
+    overflow: hidden !important;
+    background: #000 !important;
+  }
   #site-preloader {
     position: fixed;
     inset: 0;
     z-index: 2147483000;
     display: grid;
     place-items: center;
-    background: #fff;
+    background: #000;
     opacity: 1;
-    transition: opacity .36s ease;
+    transition: opacity .42s ease;
     pointer-events: auto;
   }
   #site-preloader.is-ready { opacity: 0; pointer-events: none; }
@@ -36,23 +39,29 @@ style.textContent = `
   .site-preloader-logo-wrap::before {
     content: '';
     position: absolute;
-    left: 5%;
-    right: 5%;
-    top: 50%;
-    height: 2px;
+    left: 3%;
+    right: 3%;
+    top: 52%;
+    height: 2.5px;
     z-index: 0;
     opacity: 0;
-    transform: translate3d(-24%, 15px, 0) scaleX(.24);
+    transform: translate3d(-28%, 15px, 0) scaleX(.34);
     transform-origin: left center;
     background: linear-gradient(90deg,
       transparent 0%,
-      rgba(237,28,46,0) 18%,
-      rgba(237,28,46,.12) 44%,
-      rgba(237,28,46,.52) 72%,
-      rgba(255,95,105,.9) 88%,
+      rgba(237,28,46,0) 8%,
+      rgba(237,28,46,.10) 22%,
+      rgba(237,28,46,.22) 40%,
+      rgba(255,45,62,.54) 61%,
+      rgba(255,108,120,.86) 78%,
+      rgba(255,224,227,.98) 90%,
+      rgba(237,28,46,.24) 96%,
       transparent 100%);
-    filter: blur(.2px) drop-shadow(0 0 5px rgba(237,28,46,.18));
-    animation: siteLogoSpeedLine 3.2s cubic-bezier(.22,.61,.36,1) infinite;
+    filter:
+      blur(.12px)
+      drop-shadow(0 0 4px rgba(255,64,80,.52))
+      drop-shadow(0 0 10px rgba(237,28,46,.32));
+    animation: siteLogoSpeedLine 4.4s cubic-bezier(.28,.56,.24,1) infinite;
   }
   .site-preloader-logo-wrap::after {
     content: '';
@@ -60,8 +69,8 @@ style.textContent = `
     inset: 10% 8%;
     z-index: -1;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(237,28,46,.055) 0%, rgba(237,28,46,0) 72%);
-    filter: blur(20px);
+    background: radial-gradient(circle, rgba(237,28,46,.10) 0%, rgba(237,28,46,0) 72%);
+    filter: blur(22px);
   }
   .site-preloader-logo {
     position: relative;
@@ -72,8 +81,8 @@ style.textContent = `
     display: block;
     opacity: 1 !important;
     visibility: visible !important;
-    filter: drop-shadow(0 8px 22px rgba(17,24,39,.075));
-    animation: siteLogoPresence 3.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 16px rgba(237,28,46,.10));
+    animation: siteLogoPresence 4.4s ease-in-out infinite;
   }
   .site-logo-sheen {
     position: absolute;
@@ -83,86 +92,116 @@ style.textContent = `
     opacity: 0;
     background: linear-gradient(104deg,
       transparent 0%,
-      transparent 38%,
-      rgba(255,255,255,.08) 44%,
-      rgba(255,255,255,.95) 49%,
-      rgba(255,222,224,.85) 52%,
-      rgba(255,255,255,.12) 57%,
-      transparent 63%,
+      transparent 34%,
+      rgba(255,255,255,.08) 41%,
+      rgba(255,255,255,.94) 48%,
+      rgba(255,214,218,.82) 53%,
+      rgba(255,92,105,.20) 59%,
+      transparent 69%,
       transparent 100%);
-    background-size: 240% 100%;
-    background-position: 130% 0;
+    background-size: 225% 100%;
+    background-position: 126% 0;
     -webkit-mask: url('assets/logo.png') center / contain no-repeat;
     mask: url('assets/logo.png') center / contain no-repeat;
     mix-blend-mode: screen;
-    filter: drop-shadow(0 0 3px rgba(255,255,255,.42));
-    animation: siteLogoVelocityPass 3.2s cubic-bezier(.22,.61,.36,1) infinite;
+    filter:
+      drop-shadow(0 0 3px rgba(255,255,255,.55))
+      drop-shadow(0 0 7px rgba(237,28,46,.18));
+    animation: siteLogoVelocityPass 4.4s cubic-bezier(.28,.56,.24,1) infinite;
   }
   .site-preloader-label {
     font: 600 11px/1.3 'DM Sans', Arial, sans-serif;
     letter-spacing: .18em;
-    color: #60646b;
+    color: #c8cdd2;
     text-align: center;
   }
-  .site-preloader-track { width: min(360px, 74vw); height: 2px; background: #e5e7eb; overflow: hidden; }
+  .site-preloader-track {
+    width: min(360px, 74vw);
+    height: 2px;
+    background: #252525;
+    overflow: hidden;
+  }
   .site-preloader-bar {
     width: 100%;
     height: 100%;
     background: #ed1c2e;
+    box-shadow: 0 0 7px rgba(237,28,46,.36);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform .12s linear;
   }
   .site-preloader-percent {
     font: 600 12px/1 'DM Sans', Arial, sans-serif;
-    color: #111827;
+    color: #f3f4f6;
     letter-spacing: .08em;
   }
   @keyframes siteLogoVelocityPass {
-    0%, 12% {
+    0%, 8% {
       opacity: 0;
-      background-position: 130% 0;
+      background-position: 126% 0;
     }
-    18% {
+    15% {
       opacity: .22;
     }
     31% {
       opacity: 1;
     }
-    45% {
-      opacity: .35;
-      background-position: -135% 0;
+    49% {
+      opacity: .82;
     }
-    50%, 100% {
+    62% {
+      opacity: .48;
+      background-position: -118% 0;
+    }
+    72% {
+      opacity: .16;
+    }
+    78%, 100% {
       opacity: 0;
-      background-position: -135% 0;
+      background-position: -118% 0;
     }
   }
   @keyframes siteLogoSpeedLine {
-    0%, 14% {
+    0%, 9% {
       opacity: 0;
-      transform: translate3d(-24%, 15px, 0) scaleX(.24);
+      transform: translate3d(-28%, 15px, 0) scaleX(.34);
     }
-    22% {
-      opacity: .34;
+    16% {
+      opacity: .28;
     }
-    38% {
-      opacity: .18;
-      transform: translate3d(34%, 15px, 0) scaleX(.64);
+    32% {
+      opacity: .72;
+      transform: translate3d(4%, 15px, 0) scaleX(.62);
     }
-    48%, 100% {
+    51% {
+      opacity: .58;
+      transform: translate3d(28%, 15px, 0) scaleX(.86);
+    }
+    67% {
+      opacity: .36;
+      transform: translate3d(48%, 15px, 0) scaleX(.74);
+    }
+    78% {
+      opacity: .16;
+      transform: translate3d(62%, 15px, 0) scaleX(.56);
+    }
+    86%, 100% {
       opacity: 0;
-      transform: translate3d(72%, 15px, 0) scaleX(.25);
+      transform: translate3d(72%, 15px, 0) scaleX(.40);
     }
   }
   @keyframes siteLogoPresence {
-    0%, 18%, 52%, 100% {
-      filter: drop-shadow(0 8px 22px rgba(17,24,39,.075)) brightness(1);
+    0%, 16%, 78%, 100% {
+      filter: drop-shadow(0 0 16px rgba(237,28,46,.10)) brightness(1);
       transform: translate3d(0,0,0);
     }
-    31% {
-      filter: drop-shadow(0 8px 22px rgba(17,24,39,.075)) brightness(1.035);
-      transform: translate3d(1px,0,0);
+    36% {
+      filter: drop-shadow(0 0 18px rgba(237,28,46,.14)) brightness(1.035);
+      transform: translate3d(.75px,0,0);
+    }
+    58% {
+      filter: drop-shadow(0 0 16px rgba(237,28,46,.11)) brightness(1.015);
+      transform: translate3d(.25px,0,0);
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -187,7 +226,7 @@ preloader.setAttribute('aria-live', 'polite');
 preloader.innerHTML = `
   <div class="site-preloader-inner">
     <div class="site-preloader-logo-wrap">
-      <img class="site-preloader-logo" src="assets/logo.png" alt="SUPERFAST">
+      <img class="site-preloader-logo" src="assets/logo.png" alt="SUPERFAST" fetchpriority="high" decoding="sync">
       <span class="site-logo-sheen" aria-hidden="true"></span>
     </div>
     <div class="site-preloader-label" id="site-preload-label">PREPARING SUPERFAST</div>
@@ -266,7 +305,7 @@ async function preloadZoomForScrub() {
   const sourceUrl = source?.getAttribute('src');
   if (!zoomVideo || !sourceUrl) return;
 
-  setProgress(5, 'PREPARING MARINE OPERATIONS');
+  setProgress(8, 'PREPARING MARINE OPERATIONS');
 
   try {
     const response = await fetch(sourceUrl, { cache: 'force-cache' });
@@ -287,7 +326,7 @@ async function preloadZoomForScrub() {
         chunks.push(value);
         loaded += value.byteLength;
         const ratio = Math.min(1, loaded / expectedBytes);
-        setProgress(5 + ratio * 82, 'LOADING SCROLL VIDEO');
+        setProgress(8 + ratio * 79, 'LOADING SCROLL VIDEO');
       }
 
       blob = new Blob(chunks, { type: contentType });
@@ -318,23 +357,25 @@ async function preloadZoomForScrub() {
 
 async function runSitePreloader() {
   const startedAt = performance.now();
-  setProgress(2, desktop ? 'PREPARING MARINE OPERATIONS' : 'PREPARING SUPERFAST');
+  const logo = document.querySelector('.site-preloader-logo');
+
+  setProgress(2, 'PREPARING SUPERFAST');
+
+  // Let the brand mark win the network/decode race before larger media requests begin.
+  await waitForImage(logo, 3000);
+  setProgress(desktop ? 8 : 48, desktop ? 'PREPARING MARINE OPERATIONS' : 'LOADING EXPERIENCE');
 
   if (desktop) {
     await preloadZoomForScrub();
     setProgress(95, 'LOADING HERO');
     await waitForMedia(document.getElementById('hero-video'), 5000);
   } else {
-    const logo = document.querySelector('.site-preloader-logo');
-    setProgress(38, 'PREPARING SUPERFAST');
-    await waitForImage(logo, 3000);
-    setProgress(78, 'LOADING EXPERIENCE');
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
   }
 
   setProgress(100, 'READY');
 
-  const minimumDisplay = desktop ? 500 : 1050;
+  const minimumDisplay = desktop ? 700 : 1050;
   const elapsed = performance.now() - startedAt;
   if (elapsed < minimumDisplay) {
     await new Promise((resolve) => setTimeout(resolve, minimumDisplay - elapsed));
@@ -345,7 +386,7 @@ async function runSitePreloader() {
   setTimeout(() => {
     preloader.remove();
     style.remove();
-  }, 420);
+  }, 460);
 }
 
 await runSitePreloader();
