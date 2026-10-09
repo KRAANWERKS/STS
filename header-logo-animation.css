@@ -1,6 +1,6 @@
 /* SUPERFAST header logo — restrained velocity-pass animation.
-   The logo itself stays still; only a narrow highlight and soft trailing streak
-   pass through the real logo silhouette, then rest before repeating. */
+   The logo itself stays still. A narrow highlight crosses the real logo shape,
+   followed by a slightly brighter laser-like red speed streak. */
 
 header .brand {
   --brand-logo-w: 250px;
@@ -29,92 +29,106 @@ header .brand::after {
   will-change: background-position, opacity;
 }
 
-/* Fast, narrow white-hot pass. */
+/* Main white-hot velocity pass. Slower and a little easier to read. */
 header .brand::before {
   background:
     linear-gradient(
       102deg,
       transparent 0%,
-      transparent 42%,
-      rgba(255,255,255,.12) 46%,
-      rgba(255,255,255,.98) 50%,
-      rgba(255,190,196,.72) 53%,
-      transparent 59%,
+      transparent 39%,
+      rgba(255,255,255,.16) 44%,
+      rgba(255,255,255,1) 49%,
+      rgba(255,200,205,.84) 53%,
+      rgba(255,102,114,.24) 57%,
+      transparent 64%,
       transparent 100%
     );
-  background-size: 260% 100%;
-  background-position: 132% 0;
-  filter: drop-shadow(0 0 2px rgba(255,255,255,.44));
-  animation: headerLogoVelocityPass 4.6s cubic-bezier(.22,.7,.18,1) infinite;
+  background-size: 245% 100%;
+  background-position: 130% 0;
+  filter:
+    drop-shadow(0 0 2px rgba(255,255,255,.62))
+    drop-shadow(0 0 5px rgba(255,122,132,.18));
+  animation: headerLogoVelocityPass 3.7s cubic-bezier(.28,.62,.24,1) infinite;
 }
 
-/* Softer red speed streak trailing the main pass. */
+/* Laser-like red trail. Slightly brighter, but still subordinate to the logo. */
 header .brand::after {
   z-index: 1;
   background:
     linear-gradient(
-      98deg,
+      96deg,
       transparent 0%,
-      transparent 34%,
-      rgba(237,28,46,0) 40%,
-      rgba(237,28,46,.10) 46%,
-      rgba(255,92,103,.30) 52%,
-      rgba(255,255,255,.16) 56%,
-      rgba(237,28,46,.08) 63%,
-      transparent 72%,
+      transparent 28%,
+      rgba(237,28,46,0) 36%,
+      rgba(237,28,46,.14) 42%,
+      rgba(255,75,89,.42) 48%,
+      rgba(255,149,158,.58) 52%,
+      rgba(255,255,255,.30) 55%,
+      rgba(255,72,87,.36) 59%,
+      rgba(237,28,46,.14) 66%,
+      transparent 76%,
       transparent 100%
     );
-  background-size: 235% 100%;
-  background-position: 138% 0;
-  filter: blur(.25px) drop-shadow(0 0 5px rgba(237,28,46,.16));
-  animation: headerLogoVelocityTrail 4.6s cubic-bezier(.22,.7,.18,1) infinite;
+  background-size: 220% 100%;
+  background-position: 136% 0;
+  filter:
+    blur(.15px)
+    drop-shadow(0 0 3px rgba(255,78,91,.44))
+    drop-shadow(0 0 7px rgba(237,28,46,.28));
+  animation: headerLogoVelocityTrail 3.7s cubic-bezier(.28,.62,.24,1) infinite;
 }
 
 @keyframes headerLogoVelocityPass {
-  0%, 56% {
+  0%, 34% {
     opacity: 0;
-    background-position: 132% 0;
+    background-position: 130% 0;
   }
-  60% {
-    opacity: .18;
+  38% {
+    opacity: .22;
   }
-  65% {
-    opacity: .92;
+  46% {
+    opacity: .96;
+  }
+  58% {
+    opacity: .70;
+  }
+  68% {
+    opacity: .22;
   }
   72% {
-    opacity: .48;
-  }
-  77% {
     opacity: 0;
-    background-position: -34% 0;
+    background-position: -30% 0;
   }
   100% {
     opacity: 0;
-    background-position: -34% 0;
+    background-position: -30% 0;
   }
 }
 
 @keyframes headerLogoVelocityTrail {
-  0%, 57% {
+  0%, 36% {
     opacity: 0;
-    background-position: 138% 0;
+    background-position: 136% 0;
+  }
+  41% {
+    opacity: .14;
+  }
+  50% {
+    opacity: .54;
   }
   62% {
-    opacity: .10;
-  }
-  68% {
     opacity: .42;
   }
-  76% {
-    opacity: .16;
+  72% {
+    opacity: .18;
   }
-  81% {
+  77% {
     opacity: 0;
-    background-position: -28% 0;
+    background-position: -24% 0;
   }
   100% {
     opacity: 0;
-    background-position: -28% 0;
+    background-position: -24% 0;
   }
 }
 
