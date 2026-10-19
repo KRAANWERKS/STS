@@ -1,0 +1,189 @@
+/* SUPERFAST header logo — restrained velocity-pass animation.
+   The logo stays still. The light is readable through SUPER, then snaps quickly
+   through FAST and disappears just after the final T without a long overshoot. */
+
+header .brand {
+  --brand-logo-w: 250px;
+  --brand-logo-h: 125px;
+  --brand-logo-x: -15px;
+  --brand-logo-y: -38px;
+  isolation: isolate;
+}
+
+header .brand::before,
+header .brand::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-mask-image: url('assets/logo.png');
+  mask-image: url('assets/logo.png');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: var(--brand-logo-w) var(--brand-logo-h);
+  mask-size: var(--brand-logo-w) var(--brand-logo-h);
+  -webkit-mask-position: var(--brand-logo-x) var(--brand-logo-y);
+  mask-position: var(--brand-logo-x) var(--brand-logo-y);
+  will-change: background-position, opacity;
+}
+
+/* White-hot leading pass. */
+header .brand::before {
+  background:
+    linear-gradient(
+      102deg,
+      transparent 0%,
+      transparent 39%,
+      rgba(255,255,255,.16) 44%,
+      rgba(255,255,255,1) 49%,
+      rgba(255,205,210,.88) 53%,
+      rgba(255,102,114,.26) 58%,
+      transparent 64%,
+      transparent 100%
+    );
+  background-size: 235% 100%;
+  background-position: 132% 0;
+  filter:
+    drop-shadow(0 0 2px rgba(255,255,255,.76))
+    drop-shadow(0 0 6px rgba(255,122,132,.24));
+  animation: headerLogoVelocityPass 4.9s linear infinite;
+}
+
+/* Compact red laser trail. The luminous tail is intentionally kept short so
+   it stays visually attached to FAST instead of running far past the word. */
+header .brand::after {
+  z-index: 1;
+  background:
+    linear-gradient(
+      96deg,
+      transparent 0%,
+      transparent 28%,
+      rgba(237,28,46,0) 35%,
+      rgba(237,28,46,.10) 40%,
+      rgba(237,28,46,.20) 45%,
+      rgba(255,55,73,.50) 51%,
+      rgba(255,130,142,.72) 56%,
+      rgba(255,248,249,.44) 59%,
+      rgba(255,84,98,.48) 63%,
+      rgba(237,28,46,.24) 68%,
+      rgba(237,28,46,.10) 73%,
+      transparent 79%,
+      transparent 100%
+    );
+  background-size: 215% 100%;
+  background-position: 136% 0;
+  filter:
+    blur(.08px)
+    drop-shadow(0 0 3px rgba(255,78,91,.62))
+    drop-shadow(0 0 8px rgba(237,28,46,.38))
+    drop-shadow(0 0 11px rgba(237,28,46,.16));
+  animation: headerLogoVelocityTrail 4.9s linear infinite;
+}
+
+@keyframes headerLogoVelocityPass {
+  0%, 18% {
+    opacity: 0;
+    background-position: 132% 0;
+  }
+
+  22% {
+    opacity: .22;
+    background-position: 118% 0;
+  }
+  36% {
+    opacity: 1;
+    background-position: 38% 0;
+  }
+
+  /* Readable through SUPER. */
+  58% {
+    opacity: .88;
+    background-position: 5% 0;
+  }
+
+  /* FAST is intentionally very quick: no easing, no pause. */
+  62% {
+    opacity: .86;
+    background-position: -5% 0;
+  }
+  65% {
+    opacity: .78;
+    background-position: -16% 0;
+  }
+  67% {
+    opacity: 0;
+    background-position: -21% 0;
+  }
+  100% {
+    opacity: 0;
+    background-position: -21% 0;
+  }
+}
+
+@keyframes headerLogoVelocityTrail {
+  0%, 20% {
+    opacity: 0;
+    background-position: 136% 0;
+  }
+
+  24% {
+    opacity: .16;
+    background-position: 122% 0;
+  }
+  39% {
+    opacity: .68;
+    background-position: 42% 0;
+  }
+
+  /* Keep the tail visible across SUPER. */
+  60% {
+    opacity: .64;
+    background-position: 7% 0;
+  }
+
+  /* Snap through FAST and switch off just beyond the final T. */
+  63% {
+    opacity: .62;
+    background-position: -3% 0;
+  }
+  66% {
+    opacity: .52;
+    background-position: -13% 0;
+  }
+  68% {
+    opacity: 0;
+    background-position: -19% 0;
+  }
+  100% {
+    opacity: 0;
+    background-position: -19% 0;
+  }
+}
+
+@media (max-width: 1000px) {
+  header .brand {
+    --brand-logo-w: 205px;
+    --brand-logo-h: 102.5px;
+    --brand-logo-x: -12px;
+    --brand-logo-y: -27px;
+  }
+}
+
+@media (max-width: 760px) {
+  header .brand {
+    --brand-logo-w: 178px;
+    --brand-logo-h: 89px;
+    --brand-logo-x: -11px;
+    --brand-logo-y: -26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header .brand::before,
+  header .brand::after {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
