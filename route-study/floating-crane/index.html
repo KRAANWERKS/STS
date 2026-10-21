@@ -65,7 +65,7 @@ function putLine(role,key){
  const id='concept-'+role,source=id+'-data',data=lineData(key);
  if(!map.getSource(source))map.addSource(source,{type:'geojson',data});
  else map.getSource(source).setData(data);
- if(!map.getLayer(id))map.addLayer({id,type:'line',source,layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':role==='selected'?'#28e3d5':'#ffb04b','line-width':role==='selected'?5:3.5,'line-opacity':role==='selected'?1:0.78,'line-dasharray':role==='selected'?[1,0]:[2,2.5]}});
+ if(!map.getLayer(id))map.addLayer({id,type:'line',source,layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':role==='selected'?'#28e3d5':'#ffb04b','line-width':role==='selected'?5:3.5,'line-opacity':role==='selected'?1:0.78,'line-dasharray':role==='selected'?[1,9999]:[2,2.5]}});
  else map.setPaintProperty(id,'line-color',role==='selected'?'#28e3d5':'#ffb04b');
  map.setLayoutProperty(id,'visibility',role==='alternate'&&!el('showAlt').checked?'none':'visible');
 }
