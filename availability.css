@@ -1,0 +1,86 @@
+/* Section 03 only. Retire the legacy 90/96px marquee footprint for photography.
+   ID scoping intentionally wins over revamp.css's historical !important rules. */
+#reliability .reliability-showcase {
+  position: relative !important;
+  display: block !important;
+  isolation: isolate;
+  width: 100% !important;
+  max-width: none !important;
+  height: clamp(280px, 22vw, 420px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 18px 0 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  background: #0a2733 !important;
+  border-radius: 14% 9% 12% 7% / 21% 15% 16% 12%;
+}
+
+#reliability .reliability-showcase > .reliability-photo-panel {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: opacity .3s ease, visibility .3s ease !important;
+}
+
+#reliability .reliability-showcase > .is-active {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#reliability .reliability-photo-panel img {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+}
+
+/* Original organic sprite wipe inspired by Codrops' Demo 1 mask technique.
+   Only the incoming image is masked; the previous image fades underneath. */
+@supports (mask-image: url("assets/availability-reveal.svg")) or (-webkit-mask-image: url("assets/availability-reveal.svg")) {
+  @media (prefers-reduced-motion: no-preference) {
+    #reliability .is-in-view > .is-active img {
+      -webkit-mask-image: url("assets/availability-reveal.svg");
+      mask-image: url("assets/availability-reveal.svg");
+      -webkit-mask-size: 2400% 100%;
+      mask-size: 2400% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      animation: availability-image-reveal .85s steps(23) both;
+    }
+  }
+}
+
+@keyframes availability-image-reveal {
+  from { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
+  to { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+}
+
+@media (max-width: 760px) {
+  #reliability .reliability-showcase {
+    height: clamp(230px, 65vw, 360px) !important;
+    margin-top: 16px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #reliability .reliability-showcase > .reliability-photo-panel {
+    transition: none !important;
+  }
+}

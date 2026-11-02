@@ -422,14 +422,17 @@ addEventListener('pagehide', () => {
 /* REV1.6 — Engineered Availability hover/click state + shared showcase + fixed-open HSE. */
 const availabilityList = $('.reliability-list');
 const availabilityItems = $$('.reliability-list details');
-const availabilityShowcasePanels = $$('.reliability-showcase-panel');
+const availabilityShowcase = $('.reliability-showcase');
+const availabilityShowcasePanels = $$('#reliability .reliability-showcase > .reliability-showcase-panel');
 const availabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
 
 function setAvailabilityShowcase(name = 'equipment') {
   availabilityShowcasePanels.forEach((panel) => {
-    panel.classList.toggle('is-active', panel.dataset.showcasePanel === name);
+    const active = panel.dataset.showcasePanel === name;
+    panel.classList.toggle('is-active', active);
+    panel.setAttribute('aria-hidden', String(!active));
   });
-  $('.reliability-showcase')?.setAttribute('data-active-showcase', name);
+  availabilityShowcase?.setAttribute('data-active-showcase', name);
 }
 
 function activateAvailabilityItem(item) {
@@ -451,6 +454,10 @@ if (availabilityList && availabilityItems.length) {
       activateAvailabilityItem(item);
     });
 
+    item.querySelector('summary')?.addEventListener('focus', () => {
+      activateAvailabilityItem(item);
+    });
+
     item.querySelector('summary')?.addEventListener('click', () => {
       requestAnimationFrame(() => {
         if (item.open) setAvailabilityShowcase(item.dataset.showcase || 'equipment');
@@ -462,6 +469,16 @@ if (availabilityList && availabilityItems.length) {
     if (!availabilityHover.matches) return;
     activateAvailabilityItem(defaultItem);
   });
+}
+
+// Progressive enhancement: images remain visible without an observer or CSS masks.
+if (availabilityShowcase && 'IntersectionObserver' in window) {
+  const availabilityEntryObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      availabilityShowcase.classList.toggle('is-in-view', entry.isIntersecting);
+    });
+  }, { threshold: 0.15 });
+  availabilityEntryObserver.observe(availabilityShowcase);
 }
 
 $$('.equipment-logo img').forEach((logo) => {
