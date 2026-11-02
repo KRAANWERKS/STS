@@ -1,10 +1,15 @@
+/* Let only the image bleed through the section gutter. */
+#reliability { padding-bottom: 0 !important; }
+#reliability .reliability-list { display: flex; flex-direction: column; min-width: 0; }
+#reliability .reliability-title { padding-bottom: 32px; }
+
 /* Section 03 only. Retire the legacy 90/96px marquee footprint for photography.
    ID scoping intentionally wins over revamp.css's historical !important rules. */
 #reliability .reliability-showcase {
   position: relative !important;
   display: block !important;
   isolation: isolate;
-  width: 100% !important;
+  width: calc(100% + var(--availability-bleed, 0px)) !important;
   max-width: none !important;
   height: clamp(280px, 22vw, 420px) !important;
   min-height: 0 !important;
@@ -12,9 +17,10 @@
   margin: 18px 0 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  overflow: hidden !important;
-  background: #0a2733 !important;
-  border-radius: 14% 9% 12% 7% / 21% 15% 16% 12%;
+  overflow: visible !important;
+  background: transparent !important;
+  border-radius: 0;
+  flex: 1 0 auto;
 }
 
 #reliability .reliability-showcase > .reliability-photo-panel {
@@ -32,6 +38,14 @@
   visibility: hidden !important;
   pointer-events: none !important;
   transition: opacity .3s ease, visibility .3s ease !important;
+  background: transparent !important;
+  overflow: visible !important;
+  -webkit-mask-image: var(--availability-crop, url("assets/availability-crop-0.svg"));
+  mask-image: var(--availability-crop, url("assets/availability-crop-0.svg"));
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 #reliability .reliability-showcase > .is-active {
@@ -51,15 +65,15 @@
   transform: none !important;
 }
 
-/* Original organic sprite wipe inspired by Codrops' Demo 1 mask technique.
-   Only the incoming image is masked; the previous image fades underneath. */
+/* Three original watercolor bloom sprites inspired by Codrops' Demo 1 mask technique.
+   The figure retains its watercolor crop after the incoming image is revealed. */
 @supports (mask-image: url("assets/availability-reveal.svg")) or (-webkit-mask-image: url("assets/availability-reveal.svg")) {
   @media (prefers-reduced-motion: no-preference) {
     #reliability .is-in-view > .is-active img {
       -webkit-mask-image: url("assets/availability-reveal.svg");
       mask-image: url("assets/availability-reveal.svg");
-      -webkit-mask-size: 2400% 100%;
-      mask-size: 2400% 100%;
+      -webkit-mask-size: 2400% 300%;
+      mask-size: 2400% 300%;
       -webkit-mask-repeat: no-repeat;
       mask-repeat: no-repeat;
       animation: availability-image-reveal .85s steps(23) both;
@@ -68,8 +82,8 @@
 }
 
 @keyframes availability-image-reveal {
-  from { -webkit-mask-position: 0% 0; mask-position: 0% 0; }
-  to { -webkit-mask-position: 100% 0; mask-position: 100% 0; }
+  from { -webkit-mask-position: 0% var(--availability-mask-row, 0%); mask-position: 0% var(--availability-mask-row, 0%); }
+  to { -webkit-mask-position: 100% var(--availability-mask-row, 0%); mask-position: 100% var(--availability-mask-row, 0%); }
 }
 
 @media (max-width: 760px) {

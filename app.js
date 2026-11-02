@@ -4,4 +4,4 @@ headerLogoAnimationStylesheet.href = './header-logo-animation.css?v=20261009-vel
 document.head.appendChild(headerLogoAnimationStylesheet);
 
 await import('./preload.js?v=20261009-preload1');
-await import('./app-core.js?v=20261102-availability1');
+await import('./app-core.js?v=20261102-availability2');

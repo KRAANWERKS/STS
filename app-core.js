@@ -426,9 +426,31 @@ const availabilityShowcase = $('.reliability-showcase');
 const availabilityShowcasePanels = $$('#reliability .reliability-showcase > .reliability-showcase-panel');
 const availabilityHover = matchMedia('(hover:hover) and (pointer:fine)');
 
+let availabilityVariant = -1;
+function varyAvailabilityMask(panel) {
+  if (!panel) return;
+  // Pick another bloom each time; repeated hovers never reuse the last variant.
+  availabilityVariant = (availabilityVariant + 1 + Math.floor(Math.random() * 2)) % 3;
+  panel.style.setProperty('--availability-mask-row', `${availabilityVariant * 50}%`);
+  panel.style.setProperty('--availability-crop', `url("assets/availability-crop-${availabilityVariant}.svg")`);
+  panel.dataset.maskVariant = String(availabilityVariant);
+}
+
+// Read the actual section gutter so the image reaches the edge at every width.
+const availabilitySection = $('#reliability');
+function sizeAvailabilityBleed() {
+  availabilityShowcase?.style.setProperty('--availability-bleed', getComputedStyle(availabilitySection).paddingRight);
+}
+if (availabilitySection && availabilityShowcase) {
+  sizeAvailabilityBleed();
+  if ('ResizeObserver' in window) new ResizeObserver(sizeAvailabilityBleed).observe(availabilitySection);
+  else addEventListener('resize', sizeAvailabilityBleed, { passive: true });
+}
+
 function setAvailabilityShowcase(name = 'equipment') {
   availabilityShowcasePanels.forEach((panel) => {
     const active = panel.dataset.showcasePanel === name;
+    if (active && !panel.classList.contains('is-active')) varyAvailabilityMask(panel);
     panel.classList.toggle('is-active', active);
     panel.setAttribute('aria-hidden', String(!active));
   });
@@ -475,6 +497,9 @@ if (availabilityList && availabilityItems.length) {
 if (availabilityShowcase && 'IntersectionObserver' in window) {
   const availabilityEntryObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
+      if (entry.isIntersecting && !availabilityShowcase.classList.contains('is-in-view')) {
+        varyAvailabilityMask(availabilityShowcase.querySelector('.is-active'));
+      }
       availabilityShowcase.classList.toggle('is-in-view', entry.isIntersecting);
     });
   }, { threshold: 0.15 });
